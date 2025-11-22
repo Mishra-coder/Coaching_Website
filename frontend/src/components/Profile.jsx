@@ -127,7 +127,7 @@ const Profile = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div style={{ padding: '20px' }}>
+                            <div style={{ padding: '20px', paddingTop: '40px' }}>
                                 <button style={sidebarLinkStyle(activeTab === 'profile')} onClick={() => setActiveTab('profile')}>
                                     <i className="fas fa-user me-3"></i> Profile Details
                                 </button>
