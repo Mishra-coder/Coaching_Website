@@ -30,6 +30,48 @@ export const quizData = {
                 question: "The decimal expansion of the rational number 14587/1250 will terminate after:",
                 options: ["one decimal place", "two decimal places", "three decimal places", "four decimal places"],
                 correctAnswer: "four decimal places"
+            },
+            {
+                id: 6,
+                question: "The HCF of 96 and 404 is:",
+                options: ["4", "8", "12", "16"],
+                correctAnswer: "4"
+            },
+            {
+                id: 7,
+                question: "The LCM of two numbers is 1200. Which of the following cannot be their HCF?",
+                options: ["600", "500", "400", "200"],
+                correctAnswer: "500"
+            },
+            {
+                id: 8,
+                question: "If two positive integers p and q can be expressed as p = ab² and q = a³b; a, b being prime numbers, then LCM (p, q) is:",
+                options: ["ab", "a²b²", "a³b²", "a³b³"],
+                correctAnswer: "a³b²"
+            },
+            {
+                id: 9,
+                question: "The sum of the reciprocals of Rehman's ages (in years) 3 years ago and 5 years from now is 1/3. The present age of Rehman is:",
+                options: ["7", "10", "5", "6"],
+                correctAnswer: "7"
+            },
+            {
+                id: 10,
+                question: "The roots of the equation x² - 3x - m(m + 3) = 0, where m is a constant, are:",
+                options: ["m, m + 3", "m, -(m + 3)", "-m, m + 3", "-m, -(m + 3)"],
+                correctAnswer: "-m, m + 3"
+            },
+            {
+                id: 11,
+                question: "If the discriminant of the quadratic equation is zero, then the roots are:",
+                options: ["Real and distinct", "Real and equal", "Imaginary", "None of these"],
+                correctAnswer: "Real and equal"
+            },
+            {
+                id: 12,
+                question: "Which of the following equations has 2 as a root?",
+                options: ["x² - 4x + 5 = 0", "x² + 3x - 12 = 0", "2x² - 7x + 6 = 0", "3x² - 6x - 2 = 0"],
+                correctAnswer: "2x² - 7x + 6 = 0"
             }
         ],
         "Polynomials": [
@@ -210,6 +252,12 @@ export const quizData = {
                 question: "If A and B are symmetric matrices of the same order, then AB - BA is a:",
                 options: ["Skew-symmetric matrix", "Symmetric matrix", "Zero matrix", "Identity matrix"],
                 correctAnswer: "Skew-symmetric matrix"
+            },
+            {
+                id: 6,
+                question: "If A is a 3 × 3 invertible matrix, then what will be the value of k if det(A⁻¹) = (det A)^k:",
+                options: ["1", "-1", "0", "2"],
+                correctAnswer: "-1"
             }
         ],
         "Determinants": [
@@ -254,6 +302,24 @@ export const quizData = {
                 question: "Value of ∫(from -π/2 to π/2) sin⁷x dx is:",
                 options: ["0", "1", "-1", "π"],
                 correctAnswer: "0"
+            },
+            {
+                id: 4,
+                question: "∫ dx/(x² + 2x + 2) equals:",
+                options: ["x tan⁻¹(x + 1) + C", "tan⁻¹(x + 1) + C", "(x + 1) tan⁻¹x + C", "tan⁻¹x + C"],
+                correctAnswer: "tan⁻¹(x + 1) + C"
+            },
+            {
+                id: 5,
+                question: "∫ (from 0 to π) x sin x dx equals:",
+                options: ["π", "2π", "π/2", "0"],
+                correctAnswer: "π"
+            },
+            {
+                id: 6,
+                question: "∫ e^x (1 + x) / cos²(xe^x) dx equals:",
+                options: ["tan(xe^x) + C", "-cot(xe^x) + C", "tan(e^x) + C", "cot(e^x) + C"],
+                correctAnswer: "tan(xe^x) + C"
             }
         ],
         "Applications of Integrals": [
