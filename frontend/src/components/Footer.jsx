@@ -11,7 +11,7 @@ const Footer = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1' }}>
                             <div>
                                 <span style={{
-                                    color: '#1a237e',
+                                    color: '#ffffff',
                                     fontWeight: '800',
                                     fontSize: '24px'
                                 }}>Success</span>
@@ -80,7 +80,7 @@ const Footer = () => {
             </div>
             <div className="footer-bottom">
                 <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
-                    &copy; 2025 <span style={{ color: '#1a237e', fontWeight: 'bold' }}>Success</span> <span style={{ color: '#ffab00', fontWeight: 'bold' }}>मंत्रा</span> Institute. All Rights Reserved.
+                    &copy; 2025 <span style={{ color: '#ffffff', fontWeight: 'bold' }}>Success</span> <span style={{ color: '#ffab00', fontWeight: 'bold' }}>मंत्रा</span> Institute. All Rights Reserved.
                 </p>
             </div>
         </footer>
