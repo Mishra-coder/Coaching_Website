@@ -135,7 +135,7 @@ const Profile = () => {
                                     <i className="fas fa-graduation-cap me-3"></i> My Enrollments
                                 </button>
 
-                                <button style={sidebarLinkStyle(activeTab === 'schedule')} onClick={() => setActiveTab('schedule')}>
+                                <button style={{ ...sidebarLinkStyle(activeTab === 'schedule'), marginTop: '20px' }} onClick={() => setActiveTab('schedule')}>
                                     <i className="fas fa-calendar-alt me-3"></i> Test Schedule
                                 </button>
                             </div>
