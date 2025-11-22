@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // ============================================
 // HERO COMPONENT
@@ -66,12 +67,12 @@ const Hero = () => {
 
                     {/* CTA Buttons */}
                     <div className="hero-btns fade-in-up" style={{ animationDelay: '0.4s' }}>
-                        <a href="#contact" className="btn-primary">
+                        <Link to="/enroll" className="btn-primary">
                             Book a Free Demo <i className="fas fa-arrow-right ms-2"></i>
-                        </a>
-                        <a href="#programs" className="btn-secondary">
+                        </Link>
+                        <Link to="/courses" className="btn-secondary">
                             Explore Courses
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Statistics */}
