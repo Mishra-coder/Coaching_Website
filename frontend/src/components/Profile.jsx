@@ -253,7 +253,7 @@ const Profile = () => {
                                             <Link to="/enroll" className="btn-primary mt-3">Browse Courses</Link>
                                         </div>
                                     ) : (
-                                        <div className="row g-4">
+                                        <div className="row" style={{ gap: '30px 0' }}>
                                             {enrollments.map((enrollment) => (
                                                 <div className="col-md-6" key={enrollment._id}>
                                                     <div style={{
