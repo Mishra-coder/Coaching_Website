@@ -155,7 +155,27 @@ const Navbar = () => {
                             </button>
                         </>
                     ) : (
-                        <Link to="/login" className="btn-primary" onClick={closeMenu}>Login</Link>
+                        <>
+                            <Link
+                                to="/register"
+                                className="btn-secondary"
+                                onClick={closeMenu}
+                                style={{ marginRight: '10px' }}
+                            >
+                                Sign Up
+                            </Link>
+                            <Link
+                                to="/login"
+                                className="btn-primary"
+                                onClick={closeMenu}
+                                style={{
+                                    animation: 'pulse-glow 2s infinite',
+                                    boxShadow: '0 0 20px rgba(79, 70, 229, 0.5)'
+                                }}
+                            >
+                                Login
+                            </Link>
+                        </>
                     )}
                 </div>
                 <div className="hamburger" onClick={toggleMenu}>
