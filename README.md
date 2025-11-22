@@ -1,4 +1,4 @@
-# Success Mantra Institute - Full-Stack Coaching Platform
+# Success Mantra Institute - Full-Stack Coaching WebSite
 
 A modern, full-stack web application for Success Mantra coaching institute featuring student enrollment, quiz system, course management, and a beautiful responsive UI.
 
