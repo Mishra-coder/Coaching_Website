@@ -59,7 +59,7 @@ const Footer = () => {
                         <li style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
                             <i className="fas fa-map-marker-alt" style={{ color: '#ffab00', marginTop: '5px' }}></i>
                             <span style={{ color: 'rgba(255,255,255,0.8)' }}>
-                                123, Knowledge Park, Main Road,<br />City Center, [City Name] - 400001
+                                Adarsh Shiksha Niketan School,<br />GGIC Road, Ram Lila Tiraha,<br />Deeh - Raebareli
                             </span>
                         </li>
                         <li style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
