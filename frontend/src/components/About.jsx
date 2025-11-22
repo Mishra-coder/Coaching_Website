@@ -1,14 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 
-// ============================================
-// ABOUT COMPONENT
-// Why choose Success Mantra section
-// ============================================
+
 
 const About = () => {
     const featuresRef = useRef(null);
 
-    // ========== FEATURES DATA ==========
     const features = [
         {
             icon: 'fa-chalkboard-teacher',
@@ -36,36 +32,30 @@ const About = () => {
         }
     ];
 
-    // ========== SCROLL ANIMATION EFFECT ==========
     useEffect(() => {
         // Create intersection observer for scroll animations
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        // Fade in and slide up when visible
                         entry.target.style.opacity = '1';
                         entry.target.style.transform = 'translateY(0)';
                     }
                 });
             },
-            { threshold: 0.1 } // Trigger when 10% visible
+            { threshold: 0.1 }
         );
 
-        // Observe all feature cards
         const cards = featuresRef.current.querySelectorAll('.feature-card');
         cards.forEach((card) => observer.observe(card));
 
-        // Cleanup observer on unmount
         return () => observer.disconnect();
     }, []);
 
-    // ========== MAIN RENDER ==========
     return (
         <section className="about-page" style={{ paddingTop: '120px', paddingBottom: '60px', minHeight: '100vh' }} ref={featuresRef}>
             <div className="container">
 
-                {/* Section Header */}
                 <div className="section-header text-center" style={{ marginBottom: '60px' }}>
                     <h2>
                         About <span style={{ color: '#1a237e' }}>Success</span> <span className="highlight">Mantra</span>
@@ -76,7 +66,6 @@ const About = () => {
                     </p>
                 </div>
 
-                {/* Features Grid */}
                 <div className="feature-grid">
                     {features.map((feature, index) => (
                         <div
@@ -89,21 +78,17 @@ const About = () => {
                                 transitionDelay: feature.delay
                             }}
                         >
-                            {/* Icon */}
                             <div className="icon-box">
                                 <i className={`fas ${feature.icon}`}></i>
                             </div>
 
-                            {/* Title */}
                             <h3>{feature.title}</h3>
 
-                            {/* Description */}
                             <p>{feature.description}</p>
                         </div>
                     ))}
                 </div>
 
-                {/* Additional Content */}
                 <div className="row mt-5 align-items-center">
                     <div className="col-md-6">
                         <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '20px' }}>
@@ -124,8 +109,8 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 };
 

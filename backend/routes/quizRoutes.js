@@ -4,14 +4,10 @@ import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// @route   POST /api/quiz/submit
-// @desc    Save quiz result
-// @access  Private
 router.post('/submit', protect, async (req, res) => {
     try {
         const { className, chapter, score, totalQuestions, percentage } = req.body;
 
-        // Check if quiz result already exists for this user, class, and chapter
         let quizResult = await QuizResult.findOne({
             user: req.user.id,
             class: className,
@@ -19,17 +15,13 @@ router.post('/submit', protect, async (req, res) => {
         });
 
         if (quizResult) {
-            // If result exists, update only if new score is higher
             if (score > quizResult.score) {
                 quizResult.score = score;
                 quizResult.totalQuestions = totalQuestions;
                 quizResult.percentage = percentage;
                 await quizResult.save();
             }
-            // If new score is lower or equal, keep the old (higher) score
-            // We still return success so the frontend shows the result page
         } else {
-            // Create new result
             quizResult = await QuizResult.create({
                 user: req.user.id,
                 class: className,
@@ -53,9 +45,6 @@ router.post('/submit', protect, async (req, res) => {
     }
 });
 
-// @route   GET /api/quiz/history
-// @desc    Get quiz history for current user
-// @access  Private
 router.get('/history', protect, async (req, res) => {
     try {
         const history = await QuizResult.find({ user: req.user.id })

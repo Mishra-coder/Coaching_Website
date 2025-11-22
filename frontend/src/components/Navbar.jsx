@@ -29,7 +29,6 @@ const Navbar = () => {
             fetchXP();
         }
 
-        // Listen for quiz completion to update XP immediately
         window.addEventListener('quizCompleted', fetchXP);
         return () => window.removeEventListener('quizCompleted', fetchXP);
     }, [isAuthenticated, user, location.pathname]);
@@ -57,7 +56,6 @@ const Navbar = () => {
         closeMenu();
     };
 
-    // Hide Navbar on Login and Register pages
     if (location.pathname === '/login' || location.pathname === '/register') {
         return null;
     }

@@ -2,22 +2,14 @@
 
 :root {
     --primary: #4f46e5;
-    /* Vibrant Indigo */
     --primary-dark: #3730a3;
-    /* Deep Indigo */
     --primary-light: #818cf8;
-    /* Soft Indigo */
     --secondary: #f59e0b;
-    /* Amber/Gold */
     --accent: #06b6d4;
-    /* Cyan */
     --text-dark: #0f172a;
-    /* Slate 900 */
     --text-light: #64748b;
-    /* Slate 500 */
     --white: #ffffff;
     --bg-light: #f8fafc;
-    /* Slate 50 */
     --glass: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.5);
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -57,7 +49,6 @@ body {
     background-attachment: fixed;
 }
 
-/* Global Animations */
 @keyframes fade-in-up {
     from {
         opacity: 0;
@@ -86,7 +77,6 @@ body {
     animation: fade-in-up 0.8s ease-out forwards;
 }
 
-/* Utilities */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -175,7 +165,6 @@ body {
     width: 100%;
 }
 
-/* Navbar */
 .navbar {
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px);
@@ -222,14 +211,14 @@ body {
     gap: 30px;
 }
 
-.nav-links a:not(.btn-primary) {
+.nav-links a:not(.btn-primary):not(.btn-secondary) {
     text-decoration: none;
     color: var(--text-dark);
     font-weight: 500;
     transition: var(--transition);
 }
 
-.nav-links a:not(.btn-primary):hover,
+.nav-links a:not(.btn-primary):not(.btn-secondary):hover,
 .nav-links a.active {
     color: var(--primary);
 }
@@ -241,7 +230,6 @@ body {
     color: var(--primary);
 }
 
-/* Hero Section */
 .hero {
     padding: 140px 0 80px;
     background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
@@ -376,7 +364,6 @@ body {
     }
 }
 
-/* Features Section */
 .features {
     padding: 100px 0;
     background-color: var(--white);
@@ -450,7 +437,6 @@ body {
     font-size: 0.95rem;
 }
 
-/* Programs Section */
 .programs {
     padding: 100px 0;
     background-color: #f1f5f9;
@@ -556,7 +542,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* CTA Section */
 .cta-section {
     padding: 80px 0;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -575,7 +560,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* Contact Section */
 .contact {
     padding: 100px 0;
 }
@@ -682,7 +666,7 @@ body {
     border-radius: 10px;
     background-color: #f8fafc;
     font-size: 16px;
-    /* Prevent iOS zoom */
+    font-size: 16px;
     transition: var(--transition);
 }
 
@@ -695,7 +679,6 @@ body {
     box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
 }
 
-/* Footer */
 footer {
     background-color: var(--primary-dark);
     color: var(--white);
@@ -765,7 +748,6 @@ footer {
     opacity: 0.7;
 }
 
-/* Mobile Responsive */
 @media (max-width: 992px) {
     .hero-container {
         grid-template-columns: 1fr;

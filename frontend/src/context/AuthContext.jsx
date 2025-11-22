@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Load user from localStorage on mount
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
@@ -28,7 +27,6 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    // Register new user
     const register = async (userData) => {
         try {
             const response = await authAPI.register(userData);
@@ -36,11 +34,9 @@ export const AuthProvider = ({ children }) => {
             if (response.success) {
                 const { token, user } = response;
 
-                // Save to localStorage
                 localStorage.setItem('token', token);
                 localStorage.setItem('user', JSON.stringify(user));
 
-                // Update state
                 setToken(token);
                 setUser(user);
 
@@ -54,7 +50,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Login user
     const login = async (credentials) => {
         try {
             const response = await authAPI.login(credentials);
@@ -62,11 +57,9 @@ export const AuthProvider = ({ children }) => {
             if (response.success) {
                 const { token, user } = response;
 
-                // Save to localStorage
                 localStorage.setItem('token', token);
                 localStorage.setItem('user', JSON.stringify(user));
 
-                // Update state
                 setToken(token);
                 setUser(user);
 
@@ -80,18 +73,14 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    // Logout user
     const logout = () => {
-        // Clear localStorage
         localStorage.removeItem('token');
         localStorage.removeItem('user');
 
-        // Clear state
         setToken(null);
         setUser(null);
     };
 
-    // Check if user is authenticated
     const isAuthenticated = () => {
         return !!token && !!user;
     };

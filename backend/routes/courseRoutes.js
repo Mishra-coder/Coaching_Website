@@ -4,9 +4,6 @@ import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// @route   GET /api/courses
-// @desc    Get all active courses
-// @access  Public
 router.get('/', async (req, res) => {
     try {
         const { class: classLevel, medium } = req.query;
@@ -36,9 +33,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// @route   GET /api/courses/:id
-// @desc    Get single course
-// @access  Public
 router.get('/:id', async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);
@@ -62,9 +56,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// @route   POST /api/courses
-// @desc    Create a new course
-// @access  Private/Admin
 router.post('/', protect, authorize('admin'), async (req, res) => {
     try {
         const course = await Course.create(req.body);
@@ -82,9 +73,6 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
     }
 });
 
-// @route   PUT /api/courses/:id
-// @desc    Update a course
-// @access  Private/Admin
 router.put('/:id', protect, authorize('admin'), async (req, res) => {
     try {
         const course = await Course.findByIdAndUpdate(
@@ -113,9 +101,6 @@ router.put('/:id', protect, authorize('admin'), async (req, res) => {
     }
 });
 
-// @route   DELETE /api/courses/:id
-// @desc    Delete a course (soft delete)
-// @access  Private/Admin
 router.delete('/:id', protect, authorize('admin'), async (req, res) => {
     try {
         const course = await Course.findByIdAndUpdate(

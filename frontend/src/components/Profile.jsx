@@ -63,7 +63,6 @@ const Profile = () => {
         </div>
     );
 
-    // Styles
     const cardStyle = {
         background: '#fff',
         borderRadius: '20px',
@@ -92,7 +91,6 @@ const Profile = () => {
         <div className="profile-page" style={{ background: '#f8fafc', minHeight: '100vh', paddingTop: '120px', paddingBottom: '60px' }}>
             <div className="container">
                 <div className="row g-4">
-                    {/* Sidebar */}
                     <div className="col-lg-3">
                         <div style={cardStyle}>
                             <div style={{ padding: '40px 20px', textAlign: 'center', background: 'linear-gradient(180deg, rgba(26, 35, 126, 0.05) 0%, rgba(255,255,255,0) 100%)' }}>
@@ -142,10 +140,8 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* Main Content */}
                     <div className="col-lg-9">
                         <div style={{ ...cardStyle, padding: '40px', minHeight: '600px' }}>
-                            {/* Profile Tab */}
                             {activeTab === 'profile' && (
                                 <div className="fade-in">
                                     <div className="d-flex justify-content-between align-items-center mb-5">
@@ -251,7 +247,6 @@ const Profile = () => {
                                 </div>
                             )}
 
-                            {/* Enrollments Tab */}
                             {activeTab === 'enrollments' && (
                                 <div className="fade-in">
                                     <h2 style={{ color: '#1a237e', fontWeight: '700', marginBottom: '10px' }}>My Enrollments</h2>
@@ -302,7 +297,6 @@ const Profile = () => {
 
 
 
-                            {/* Test Schedule Tab */}
                             {activeTab === 'schedule' && (
                                 <div className="fade-in">
                                     <h2 style={{ color: '#1a237e', fontWeight: '700', marginBottom: '10px' }}>Weekly Test Schedule</h2>

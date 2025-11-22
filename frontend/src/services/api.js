@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// Create axios instance
 const api = axios.create({
     baseURL: 'https://coaching-website-nine.vercel.app/api',
     headers: {
@@ -8,7 +7,6 @@ const api = axios.create({
     }
 });
 
-// Add token to requests if available
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
@@ -22,12 +20,10 @@ api.interceptors.request.use(
     }
 );
 
-// Handle response errors
 api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            // Token expired or invalid
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/login';
@@ -35,10 +31,6 @@ api.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
-// ============================================
-// AUTHENTICATION API
-// ============================================
 
 export const authAPI = {
     register: async (userData) => {
@@ -62,10 +54,6 @@ export const authAPI = {
     }
 };
 
-// ============================================
-// QUIZ API
-// ============================================
-
 export const quizAPI = {
     submit: async (resultData) => {
         const response = await api.post('/quiz/submit', resultData);
@@ -77,10 +65,6 @@ export const quizAPI = {
         return response.data;
     }
 };
-
-// ============================================
-// COURSES API
-// ============================================
 
 export const coursesAPI = {
     getAll: async (filters = {}) => {
@@ -108,10 +92,6 @@ export const coursesAPI = {
         return response.data;
     }
 };
-
-// ============================================
-// ENROLLMENTS API
-// ============================================
 
 export const enrollmentsAPI = {
     create: async (enrollmentData) => {

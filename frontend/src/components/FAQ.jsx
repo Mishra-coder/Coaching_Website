@@ -65,7 +65,6 @@ const FAQ = () => {
                                     >
                                         <span style={{
                                             fontWeight: '700',
-                                            color: activeIndex === index ? '#1a237e' : '#1e293b',
                                             fontSize: '1.1rem',
                                             color: activeIndex === index ? '#4f46e5' : '#1e293b'
                                         }}>
@@ -94,7 +93,7 @@ const FAQ = () => {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 };
 

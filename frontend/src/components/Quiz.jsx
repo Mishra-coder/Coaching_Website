@@ -3,12 +3,12 @@ import { quizData } from '../data/quizData';
 import { quizAPI } from '../services/api';
 
 const Quiz = () => {
-    const [view, setView] = useState('class-select'); // Views: class-select, chapter-select, quiz, result
+    const [view, setView] = useState('class-select');
     const [selectedClass, setSelectedClass] = useState(null);
     const [selectedChapter, setSelectedChapter] = useState(null);
     const [userAnswers, setUserAnswers] = useState({});
     const [showWarning, setShowWarning] = useState(false);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // For pagination
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
     const handleClassSelect = (cls) => {
         setSelectedClass(cls);
@@ -18,7 +18,7 @@ const Quiz = () => {
     const handleChapterSelect = (chapter) => {
         setSelectedChapter(chapter);
         setUserAnswers({});
-        setCurrentQuestionIndex(0); // Reset to first question
+        setCurrentQuestionIndex(0);
         setShowWarning(false);
         setView('quiz');
     };

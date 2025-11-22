@@ -1,15 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// ============================================
-// COURSES COMPONENT
-// Displays competitive exams and school classes
-// ============================================
+
 
 const Courses = () => {
-    // ========== STYLE CONSTANTS ==========
-    // Extracted for better readability
-
     const sectionTitleStyle = {
         textAlign: 'center',
         marginBottom: '30px',
@@ -67,7 +61,6 @@ const Courses = () => {
         transition: 'transform 0.3s ease'
     };
 
-    // ========== HOVER HANDLERS ==========
     const handleCardHover = (e) => {
         e.currentTarget.style.transform = 'translateY(-5px)';
         e.currentTarget.style.boxShadow = '0 15px 50px rgba(0,0,0,0.12)';
@@ -78,7 +71,6 @@ const Courses = () => {
         e.currentTarget.style.boxShadow = '0 10px 40px rgba(0,0,0,0.08)';
     };
 
-    // ========== CATEGORY CARD DATA ==========
     const competitiveExams = [
         {
             title: 'Govt Job Exams',
@@ -103,7 +95,6 @@ const Courses = () => {
         }
     ];
 
-    // ========== SCHOOL CLASSES DATA ==========
     const schoolClasses = [
         {
             title: 'Junior Wing',
@@ -128,7 +119,6 @@ const Courses = () => {
         }
     ];
 
-    // ========== RENDER CATEGORY CARD ==========
     const renderCategoryCard = (category) => {
         const illustrationStyle = {
             position: 'absolute',
@@ -153,7 +143,6 @@ const Courses = () => {
                     onMouseEnter={handleCardHover}
                     onMouseLeave={handleCardLeave}
                 >
-                    {/* Card Content */}
                     <div style={{ zIndex: 1 }}>
                         <h3 style={{ fontSize: '1.6rem', fontWeight: '800', color: '#000', marginBottom: '15px' }}>
                             {category.title}
@@ -165,7 +154,6 @@ const Courses = () => {
                         </div>
                     </div>
 
-                    {/* Enroll Button */}
                     <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', zIndex: 1 }}>
                         <span style={enrollButtonStyle}>Enroll Now</span>
                         <div style={arrowCircleStyle}>
@@ -173,7 +161,6 @@ const Courses = () => {
                         </div>
                     </div>
 
-                    {/* Background Illustration */}
                     <div style={illustrationStyle}>
                         <i
                             className={`fas ${category.icon}`}
@@ -189,7 +176,6 @@ const Courses = () => {
         );
     };
 
-    // ========== RENDER SCHOOL CLASS CARD ==========
     const renderSchoolCard = (classInfo) => {
         const enrollNowButtonStyle = {
             backgroundColor: '#ffab00',
@@ -210,16 +196,13 @@ const Courses = () => {
                 className={`program-card ${classInfo.featured ? 'featured' : ''}`}
                 style={{ textDecoration: 'none', color: 'inherit' }}
             >
-                {/* Popular Tag for Featured Card */}
                 {classInfo.featured && <div className="popular-tag">Board Focus</div>}
 
-                {/* Card Header with Gradient */}
                 <div className="card-header" style={{ background: classInfo.gradient, color: '#fff', padding: '30px' }}>
                     <h3>{classInfo.title}</h3>
                     <span className="grade">{classInfo.grade}</span>
                 </div>
 
-                {/* Card Body with Features */}
                 <div className="card-body">
                     <ul>
                         {classInfo.features.map((feature, i) => (
@@ -234,23 +217,19 @@ const Courses = () => {
         );
     };
 
-    // ========== MAIN RENDER ==========
     return (
         <section id="programs" className="programs" style={{ paddingTop: '120px', minHeight: '100vh' }}>
             <div className="container">
-                {/* Section Header */}
                 <div className="section-header">
                     <h2>Our <span className="highlight">Courses</span></h2>
                     <p>Comprehensive coaching for School and Competitive Exams.</p>
                 </div>
 
-                {/* Competitive Exams Section */}
                 <h3 style={sectionTitleStyle}>Competitive Exams</h3>
                 <div className="program-grid" style={gridContainerStyle}>
                     {competitiveExams.map(renderCategoryCard)}
                 </div>
 
-                {/* School Classes Section */}
                 <h3 style={sectionTitleStyle}>School Classes</h3>
                 <div className="program-grid">
                     {schoolClasses.map(renderSchoolCard)}
