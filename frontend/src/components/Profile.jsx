@@ -211,26 +211,38 @@ const Profile = () => {
                                     ) : (
                                         <div className="row g-4">
                                             <div className="col-md-6">
-                                                <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '15px' }}>
-                                                    <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '5px', display: 'block' }}>Full Name</label>
+                                                <div style={{ padding: '25px', background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)', borderRadius: '15px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                                                        <i className="fas fa-user" style={{ color: '#1a237e', fontSize: '1.2rem', marginRight: '10px' }}></i>
+                                                        <label style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, fontWeight: '500' }}>Full Name</label>
+                                                    </div>
                                                     <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#1e293b', margin: 0 }}>{user?.name}</p>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
-                                                <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '15px' }}>
-                                                    <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '5px', display: 'block' }}>Email Address</label>
-                                                    <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#1e293b', margin: 0 }}>{user?.email}</p>
+                                                <div style={{ padding: '25px', background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)', borderRadius: '15px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                                                        <i className="fas fa-envelope" style={{ color: '#1a237e', fontSize: '1.2rem', marginRight: '10px' }}></i>
+                                                        <label style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, fontWeight: '500' }}>Email Address</label>
+                                                    </div>
+                                                    <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#1e293b', margin: 0, wordBreak: 'break-word' }}>{user?.email}</p>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
-                                                <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '15px' }}>
-                                                    <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '5px', display: 'block' }}>Phone Number</label>
+                                                <div style={{ padding: '25px', background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)', borderRadius: '15px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                                                        <i className="fas fa-phone" style={{ color: '#1a237e', fontSize: '1.2rem', marginRight: '10px' }}></i>
+                                                        <label style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, fontWeight: '500' }}>Phone Number</label>
+                                                    </div>
                                                     <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#1e293b', margin: 0 }}>{user?.phone || 'Not set'}</p>
                                                 </div>
                                             </div>
-                                            <div className="col-md-12">
-                                                <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '15px' }}>
-                                                    <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '5px', display: 'block' }}>Address</label>
+                                            <div className="col-md-6">
+                                                <div style={{ padding: '25px', background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)', borderRadius: '15px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                                                        <i className="fas fa-map-marker-alt" style={{ color: '#1a237e', fontSize: '1.2rem', marginRight: '10px' }}></i>
+                                                        <label style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, fontWeight: '500' }}>Address</label>
+                                                    </div>
                                                     <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#1e293b', margin: 0 }}>{user?.address || 'Not set'}</p>
                                                 </div>
                                             </div>
