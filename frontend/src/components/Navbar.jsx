@@ -103,52 +103,50 @@ const Navbar = () => {
 
                     {isAuthenticated() ? (
                         <>
-                            {/* XP Badge */}
                             <div style={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 background: '#fff7ed',
                                 border: '1px solid #ffedd5',
                                 borderRadius: '50px',
-                                padding: '5px 15px 5px 5px',
-                                marginRight: '15px'
+                                padding: '4px 12px 4px 4px',
+                                marginRight: '10px'
                             }}>
                                 <div style={{
-                                    width: '32px',
-                                    height: '32px',
+                                    width: '28px',
+                                    height: '28px',
                                     borderRadius: '50%',
                                     background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    marginRight: '10px',
+                                    marginRight: '8px',
                                     boxShadow: '0 2px 4px rgba(245, 158, 11, 0.3)'
                                 }}>
-                                    <i className="fas fa-bolt" style={{ color: '#fff', fontSize: '0.9rem' }}></i>
+                                    <i className="fas fa-bolt" style={{ color: '#fff', fontSize: '0.8rem' }}></i>
                                 </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.2' }}>
-                                    <span style={{ fontSize: '0.7rem', color: '#9a3412', fontWeight: '600', textTransform: 'uppercase' }}>Total XP</span>
-                                    <span style={{ fontSize: '1rem', color: '#1e293b', fontWeight: '800' }}>{totalXP}</span>
+                                <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.1' }}>
+                                    <span style={{ fontSize: '0.65rem', color: '#9a3412', fontWeight: '600', textTransform: 'uppercase' }}>XP</span>
+                                    <span style={{ fontSize: '0.9rem', color: '#1e293b', fontWeight: '800' }}>{totalXP}</span>
                                 </div>
                             </div>
 
-                            <span style={{ color: '#1a237e', fontWeight: '600', padding: '8px 15px' }}>
-                                👋 {user?.name}
-                            </span>
-                            <Link to="/profile" className="btn-outline-primary" style={{ marginRight: '10px', border: '1px solid #1a237e', padding: '8px 15px', borderRadius: '20px', textDecoration: 'none', color: '#1a237e' }} onClick={closeMenu}>
+
+                            <Link to="/profile" className="btn-outline-primary" style={{ marginRight: '8px', border: '1px solid #1a237e', padding: '6px 12px', borderRadius: '20px', textDecoration: 'none', color: '#1a237e', fontSize: '0.9rem' }} onClick={closeMenu}>
                                 Profile
                             </Link>
-                            <Link to="/enroll" className="btn-primary" onClick={closeMenu}>Enroll Now</Link>
+                            <Link to="/enroll" className="btn-primary" style={{ padding: '6px 12px', fontSize: '0.9rem', marginRight: '8px' }} onClick={closeMenu}>Enroll</Link>
                             <button
                                 onClick={handleLogout}
                                 style={{
                                     background: '#dc3545',
                                     color: 'white',
                                     border: 'none',
-                                    padding: '10px 20px',
+                                    padding: '6px 16px',
                                     borderRadius: '25px',
                                     cursor: 'pointer',
-                                    fontWeight: '600'
+                                    fontWeight: '600',
+                                    fontSize: '0.9rem'
                                 }}
                             >
                                 Logout
