@@ -1,22 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-
-
 const Courses = () => {
     const sectionTitleStyle = {
         textAlign: 'center',
         marginBottom: '30px',
         color: '#1a237e'
     };
-
     const gridContainerStyle = {
         marginBottom: '60px',
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
         gap: '25px'
     };
-
     const categoryCardStyle = {
         background: '#fff',
         borderRadius: '24px',
@@ -32,7 +27,6 @@ const Courses = () => {
         cursor: 'pointer',
         transition: 'transform 0.3s ease, box-shadow 0.3s ease'
     };
-
     const tagStyle = {
         padding: '6px 16px',
         borderRadius: '50px',
@@ -42,14 +36,12 @@ const Courses = () => {
         fontWeight: '600',
         background: '#fff'
     };
-
     const enrollButtonStyle = {
         fontSize: '1rem',
         fontWeight: '700',
         color: '#1a237e',
         marginRight: '12px'
     };
-
     const arrowCircleStyle = {
         width: '35px',
         height: '35px',
@@ -60,17 +52,14 @@ const Courses = () => {
         justifyContent: 'center',
         transition: 'transform 0.3s ease'
     };
-
     const handleCardHover = (e) => {
         e.currentTarget.style.transform = 'translateY(-5px)';
         e.currentTarget.style.boxShadow = '0 15px 50px rgba(0,0,0,0.12)';
     };
-
     const handleCardLeave = (e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = '0 10px 40px rgba(0,0,0,0.08)';
     };
-
     const competitiveExams = [
         {
             title: 'Govt Job Exams',
@@ -94,7 +83,6 @@ const Courses = () => {
             iconColor: '#ef6c00'
         }
     ];
-
     const schoolClasses = [
         {
             title: 'Junior Wing',
@@ -118,7 +106,6 @@ const Courses = () => {
             featured: true
         }
     ];
-
     const renderCategoryCard = (category) => {
         const illustrationStyle = {
             position: 'absolute',
@@ -134,7 +121,6 @@ const Courses = () => {
             opacity: '0.6',
             zIndex: '0'
         };
-
         return (
             <Link key={category.title} to="/enroll" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div
@@ -153,14 +139,12 @@ const Courses = () => {
                             ))}
                         </div>
                     </div>
-
                     <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', zIndex: 1 }}>
                         <span style={enrollButtonStyle}>Enroll Now</span>
                         <div style={arrowCircleStyle}>
                             <i className="fas fa-arrow-right" style={{ color: '#333', fontSize: '0.9rem' }}></i>
                         </div>
                     </div>
-
                     <div style={illustrationStyle}>
                         <i
                             className={`fas ${category.icon}`}
@@ -175,7 +159,6 @@ const Courses = () => {
             </Link>
         );
     };
-
     const renderSchoolCard = (classInfo) => {
         const enrollNowButtonStyle = {
             backgroundColor: '#ffab00',
@@ -188,7 +171,6 @@ const Courses = () => {
             marginTop: '15px',
             textAlign: 'center'
         };
-
         return (
             <Link
                 key={classInfo.title}
@@ -197,12 +179,10 @@ const Courses = () => {
                 style={{ textDecoration: 'none', color: 'inherit' }}
             >
                 {classInfo.featured && <div className="popular-tag">Board Focus</div>}
-
                 <div className="card-header" style={{ background: classInfo.gradient, color: '#fff', padding: '30px' }}>
                     <h3>{classInfo.title}</h3>
                     <span className="grade">{classInfo.grade}</span>
                 </div>
-
                 <div className="card-body">
                     <ul>
                         {classInfo.features.map((feature, i) => (
@@ -216,7 +196,6 @@ const Courses = () => {
             </Link>
         );
     };
-
     return (
         <section id="programs" className="programs" style={{ paddingTop: '120px', minHeight: '100vh' }}>
             <div className="container">
@@ -224,12 +203,10 @@ const Courses = () => {
                     <h2>Our <span className="highlight">Courses</span></h2>
                     <p>Comprehensive coaching for School and Competitive Exams.</p>
                 </div>
-
                 <h3 style={sectionTitleStyle}>Competitive Exams</h3>
                 <div className="program-grid" style={gridContainerStyle}>
                     {competitiveExams.map(renderCategoryCard)}
                 </div>
-
                 <h3 style={sectionTitleStyle}>School Classes</h3>
                 <div className="program-grid">
                     {schoolClasses.map(renderSchoolCard)}
@@ -238,5 +215,4 @@ const Courses = () => {
         </section>
     );
 };
-
 export default Courses;

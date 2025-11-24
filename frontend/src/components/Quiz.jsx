@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { quizData } from '../data/quizData';
 import { quizAPI } from '../services/api';
-
 const Quiz = () => {
     const [view, setView] = useState('class-select');
     const [selectedClass, setSelectedClass] = useState(null);
@@ -9,12 +8,10 @@ const Quiz = () => {
     const [userAnswers, setUserAnswers] = useState({});
     const [showWarning, setShowWarning] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
     const handleClassSelect = (cls) => {
         setSelectedClass(cls);
         setView('chapter-select');
     };
-
     const handleChapterSelect = (chapter) => {
         setSelectedChapter(chapter);
         setUserAnswers({});
@@ -22,7 +19,6 @@ const Quiz = () => {
         setShowWarning(false);
         setView('quiz');
     };
-
     const handleAnswerSelect = (questionId, option) => {
         setUserAnswers(prev => ({
             ...prev,
@@ -30,7 +26,6 @@ const Quiz = () => {
         }));
         if (showWarning) setShowWarning(false);
     };
-
     const handleNextQuestion = () => {
         const questions = quizData[selectedClass][selectedChapter];
         if (!userAnswers[questions[currentQuestionIndex].id]) {
@@ -42,24 +37,19 @@ const Quiz = () => {
             setShowWarning(false);
         }
     };
-
     const handlePrevQuestion = () => {
         if (currentQuestionIndex > 0) {
             setCurrentQuestionIndex(currentQuestionIndex - 1);
             setShowWarning(false);
         }
     };
-
     const handleSubmit = async () => {
         const questions = quizData[selectedClass][selectedChapter];
-
         if (Object.keys(userAnswers).length < questions.length) {
             setShowWarning(true);
             return;
         }
-
         const { correct, total, percentage } = calculateScore();
-
         try {
             await quizAPI.submit({
                 className: selectedClass,
@@ -68,41 +58,33 @@ const Quiz = () => {
                 totalQuestions: total,
                 percentage
             });
-
             window.dispatchEvent(new Event('quizCompleted'));
-
         } catch (error) {
             console.error('Failed to save quiz result:', error);
         }
-
         setView('result');
         window.scrollTo(0, 0);
     };
-
     const calculateScore = () => {
         const questions = quizData[selectedClass][selectedChapter];
         let correct = 0;
-
         questions.forEach(q => {
             if (userAnswers[q.id] === q.correctAnswer) {
                 correct++;
             }
         });
-
         return {
             correct,
             total: questions.length,
             percentage: Math.round((correct / questions.length) * 100)
         };
     };
-
     const handleRestart = () => {
         setUserAnswers({});
         setShowWarning(false);
         setCurrentQuestionIndex(0);
         setView('quiz');
     };
-
     const handleGoHome = () => {
         setSelectedClass(null);
         setSelectedChapter(null);
@@ -111,7 +93,6 @@ const Quiz = () => {
         setCurrentQuestionIndex(0);
         setView('class-select');
     };
-
     const renderClassSelection = () => {
         const classCardStyle = {
             background: '#fff',
@@ -124,7 +105,6 @@ const Quiz = () => {
             border: '2px solid transparent',
             transition: 'all 0.3s ease'
         };
-
         return (
             <div className="class-selection" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
                 {['10', '12'].map(cls => (
@@ -154,10 +134,8 @@ const Quiz = () => {
             </div>
         );
     };
-
     const renderChapterSelection = () => {
         const chapters = Object.keys(quizData[selectedClass]);
-
         return (
             <div className="chapter-selection">
                 <button
@@ -192,10 +170,8 @@ const Quiz = () => {
             </div>
         );
     };
-
     const renderQuiz = () => {
         const questions = quizData[selectedClass][selectedChapter];
-
         if (questions.length === 0) {
             return (
                 <div style={{
@@ -216,10 +192,8 @@ const Quiz = () => {
                 </div>
             );
         }
-
         const currentQuestion = questions[currentQuestionIndex];
         const isLastQuestion = currentQuestionIndex === questions.length - 1;
-
         return (
             <div className="quiz-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
@@ -231,7 +205,6 @@ const Quiz = () => {
                         Question {currentQuestionIndex + 1} / {questions.length}
                     </div>
                 </div>
-
                 <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '10px', marginBottom: '40px' }}>
                     <div style={{
                         width: `${((currentQuestionIndex + 1) / questions.length) * 100}%`,
@@ -241,7 +214,6 @@ const Quiz = () => {
                         transition: 'width 0.3s ease'
                     }}></div>
                 </div>
-
                 <div style={{
                     background: '#fff',
                     padding: '40px',
@@ -252,7 +224,6 @@ const Quiz = () => {
                     <h4 style={{ marginBottom: '25px', color: '#333', fontSize: '1.25rem', lineHeight: '1.6' }}>
                         {currentQuestion.question}
                     </h4>
-
                     <div style={{ display: 'grid', gap: '15px' }}>
                         {currentQuestion.options.map(option => (
                             <div
@@ -290,7 +261,6 @@ const Quiz = () => {
                         ))}
                     </div>
                 </div>
-
                 {showWarning && (
                     <div className="alert alert-warning" style={{
                         color: '#d32f2f',
@@ -304,7 +274,6 @@ const Quiz = () => {
                         Please answer the question before proceeding.
                     </div>
                 )}
-
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px' }}>
                     <button
                         onClick={handlePrevQuestion}
@@ -323,7 +292,6 @@ const Quiz = () => {
                     >
                         Previous
                     </button>
-
                     {isLastQuestion ? (
                         <button
                             onClick={handleSubmit}
@@ -345,11 +313,9 @@ const Quiz = () => {
             </div>
         );
     };
-
     const renderResults = () => {
         const { correct, total, percentage } = calculateScore();
         const questions = quizData[selectedClass][selectedChapter];
-
         return (
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                 <div className="result-header" style={{
@@ -382,12 +348,10 @@ const Quiz = () => {
                         Take Another Quiz
                     </button>
                 </div>
-
                 <h3 style={{ marginBottom: '20px', color: '#1a237e' }}>Review Answers</h3>
                 {questions.map((q, index) => {
                     const userAnswer = userAnswers[q.id];
                     const isCorrect = userAnswer === q.correctAnswer;
-
                     return (
                         <div
                             key={q.id}
@@ -407,7 +371,6 @@ const Quiz = () => {
                                 </span>
                                 {q.question}
                             </h4>
-
                             <div style={{ display: 'grid', gap: '10px' }}>
                                 {q.options.map(option => {
                                     let optionStyle = {
@@ -416,7 +379,6 @@ const Quiz = () => {
                                         border: '1px solid #e2e8f0',
                                         background: '#fff'
                                     };
-
                                     if (option === q.correctAnswer) {
                                         optionStyle = {
                                             ...optionStyle,
@@ -434,7 +396,6 @@ const Quiz = () => {
                                             color: '#c62828'
                                         };
                                     }
-
                                     return (
                                         <div key={option} style={optionStyle}>
                                             {option}
@@ -450,7 +411,6 @@ const Quiz = () => {
             </div>
         );
     };
-
     return (
         <section className="quiz-section" style={{
             padding: '120px 0 60px',
@@ -478,7 +438,6 @@ const Quiz = () => {
                         Chapter-wise quizzes for Class 10th and 12th to boost your board exam preparation.
                     </p>
                 </div>
-
                 {view === 'class-select' && renderClassSelection()}
                 {view === 'chapter-select' && renderChapterSelection()}
                 {view === 'quiz' && renderQuiz()}
@@ -487,5 +446,4 @@ const Quiz = () => {
         </section>
     );
 };
-
 export default Quiz;

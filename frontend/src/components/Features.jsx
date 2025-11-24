@@ -1,14 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-
-// ============================================
-// FEATURES COMPONENT
-// Why choose Success Mantra section
-// ============================================
-
 const Features = () => {
     const featuresRef = useRef(null);
-
-    // ========== FEATURES DATA ==========
     const features = [
         {
             icon: 'fa-chalkboard-teacher',
@@ -35,37 +27,26 @@ const Features = () => {
             delay: '0.3s'
         }
     ];
-
-    // ========== SCROLL ANIMATION EFFECT ==========
     useEffect(() => {
-        // Create intersection observer for scroll animations
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        // Fade in and slide up when visible
                         entry.target.style.opacity = '1';
                         entry.target.style.transform = 'translateY(0)';
                     }
                 });
             },
-            { threshold: 0.1 } // Trigger when 10% visible
+            { threshold: 0.1 }  
         );
-
-        // Observe all feature cards
         const cards = featuresRef.current.querySelectorAll('.feature-card');
         cards.forEach((card) => observer.observe(card));
-
-        // Cleanup observer on unmount
         return () => observer.disconnect();
     }, []);
-
-    // ========== MAIN RENDER ==========
     return (
         <section id="about" className="features" ref={featuresRef}>
             <div className="container">
-
-                {/* Section Header */}
+                { }
                 <div className="section-header">
                     <h2>
                         Why Choose{' '}
@@ -77,8 +58,7 @@ const Features = () => {
                         our structured offline methodology.
                     </p>
                 </div>
-
-                {/* Features Grid */}
+                { }
                 <div className="feature-grid">
                     {features.map((feature, index) => (
                         <div
@@ -91,15 +71,13 @@ const Features = () => {
                                 transitionDelay: feature.delay
                             }}
                         >
-                            {/* Icon */}
+                            { }
                             <div className="icon-box">
                                 <i className={`fas ${feature.icon}`}></i>
                             </div>
-
-                            {/* Title */}
+                            { }
                             <h3>{feature.title}</h3>
-
-                            {/* Description */}
+                            { }
                             <p>{feature.description}</p>
                         </div>
                     ))}
@@ -108,5 +86,4 @@ const Features = () => {
         </section>
     );
 };
-
 export default Features;

@@ -1,25 +1,18 @@
 import express from 'express';
 import Course from '../models/Course.js';
 import { protect, authorize } from '../middleware/auth.js';
-
 const router = express.Router();
-
 router.get('/', async (req, res) => {
     try {
         const { class: classLevel, medium } = req.query;
-
         let query = { isActive: true };
-
         if (classLevel) {
             query.class = parseInt(classLevel);
         }
-
         if (medium) {
             query.medium = medium;
         }
-
         const courses = await Course.find(query).sort({ class: 1 });
-
         res.status(200).json({
             success: true,
             count: courses.length,
@@ -32,18 +25,15 @@ router.get('/', async (req, res) => {
         });
     }
 });
-
 router.get('/:id', async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);
-
         if (!course) {
             return res.status(404).json({
                 success: false,
                 message: 'Course not found'
             });
         }
-
         res.status(200).json({
             success: true,
             course
@@ -55,11 +45,9 @@ router.get('/:id', async (req, res) => {
         });
     }
 });
-
 router.post('/', protect, authorize('admin'), async (req, res) => {
     try {
         const course = await Course.create(req.body);
-
         res.status(201).json({
             success: true,
             message: 'Course created successfully',
@@ -72,7 +60,6 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
         });
     }
 });
-
 router.put('/:id', protect, authorize('admin'), async (req, res) => {
     try {
         const course = await Course.findByIdAndUpdate(
@@ -80,14 +67,12 @@ router.put('/:id', protect, authorize('admin'), async (req, res) => {
             req.body,
             { new: true, runValidators: true }
         );
-
         if (!course) {
             return res.status(404).json({
                 success: false,
                 message: 'Course not found'
             });
         }
-
         res.status(200).json({
             success: true,
             message: 'Course updated successfully',
@@ -100,7 +85,6 @@ router.put('/:id', protect, authorize('admin'), async (req, res) => {
         });
     }
 });
-
 router.delete('/:id', protect, authorize('admin'), async (req, res) => {
     try {
         const course = await Course.findByIdAndUpdate(
@@ -108,14 +92,12 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
             { isActive: false },
             { new: true }
         );
-
         if (!course) {
             return res.status(404).json({
                 success: false,
                 message: 'Course not found'
             });
         }
-
         res.status(200).json({
             success: true,
             message: 'Course deleted successfully'
@@ -127,5 +109,4 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
         });
     }
 });
-
 export default router;

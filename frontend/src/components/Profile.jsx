@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { authAPI, enrollmentsAPI } from '../services/api';
 import { Link } from 'react-router-dom';
-
 const Profile = () => {
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('profile');
@@ -14,7 +13,6 @@ const Profile = () => {
         phone: '',
         address: ''
     });
-
     useEffect(() => {
         if (user) {
             setFormData({
@@ -25,7 +23,6 @@ const Profile = () => {
             fetchData();
         }
     }, [user]);
-
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -37,7 +34,6 @@ const Profile = () => {
             setLoading(false);
         }
     };
-
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
         try {
@@ -48,13 +44,11 @@ const Profile = () => {
             alert('Failed to update profile');
         }
     };
-
     const getNextSunday = () => {
         const date = new Date();
         date.setDate(date.getDate() + (7 - date.getDay()) % 7);
         return date.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     };
-
     if (loading) return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div className="spinner-border text-primary" role="status">
@@ -62,7 +56,6 @@ const Profile = () => {
             </div>
         </div>
     );
-
     const cardStyle = {
         background: '#fff',
         borderRadius: '20px',
@@ -70,7 +63,6 @@ const Profile = () => {
         overflow: 'hidden',
         border: '1px solid rgba(0,0,0,0.05)'
     };
-
     const sidebarLinkStyle = (isActive) => ({
         display: 'flex',
         alignItems: 'center',
@@ -86,7 +78,6 @@ const Profile = () => {
         width: '100%',
         textAlign: 'left'
     });
-
     return (
         <div className="profile-page" style={{ background: '#f8fafc', minHeight: '100vh', paddingTop: '120px', paddingBottom: '60px' }}>
             <div className="container">
@@ -132,14 +123,12 @@ const Profile = () => {
                                 <button style={sidebarLinkStyle(activeTab === 'enrollments')} onClick={() => setActiveTab('enrollments')}>
                                     <i className="fas fa-graduation-cap me-3"></i> My Enrollments
                                 </button>
-
                                 <button style={{ ...sidebarLinkStyle(activeTab === 'schedule'), marginTop: '20px' }} onClick={() => setActiveTab('schedule')}>
                                     <i className="fas fa-calendar-alt me-3"></i> Test Schedule
                                 </button>
                             </div>
                         </div>
                     </div>
-
                     <div className="col-lg-9">
                         <div style={{ ...cardStyle, padding: '40px', minHeight: '600px' }}>
                             {activeTab === 'profile' && (
@@ -159,7 +148,6 @@ const Profile = () => {
                                             </button>
                                         )}
                                     </div>
-
                                     {editMode ? (
                                         <form onSubmit={handleUpdateProfile} style={{ maxWidth: '600px' }}>
                                             <div className="mb-4">
@@ -246,12 +234,10 @@ const Profile = () => {
                                     )}
                                 </div>
                             )}
-
                             {activeTab === 'enrollments' && (
                                 <div className="fade-in">
                                     <h2 style={{ color: '#1a237e', fontWeight: '700', marginBottom: '10px' }}>My Enrollments</h2>
                                     <p style={{ color: '#64748b', marginBottom: '30px' }}>Track your active courses and payment status</p>
-
                                     {enrollments.length === 0 ? (
                                         <div className="text-center p-5" style={{ background: '#f8fafc', borderRadius: '20px' }}>
                                             <i className="fas fa-book-open" style={{ fontSize: '3rem', color: '#cbd5e1', marginBottom: '20px' }}></i>
@@ -286,7 +272,6 @@ const Profile = () => {
                                                         <h5 style={{ fontWeight: '700', color: '#1e293b', marginBottom: '15px' }}>
                                                             {enrollment.course?.title}
                                                         </h5>
-
                                                     </div>
                                                 </div>
                                             ))}
@@ -294,14 +279,10 @@ const Profile = () => {
                                     )}
                                 </div>
                             )}
-
-
-
                             {activeTab === 'schedule' && (
                                 <div className="fade-in">
                                     <h2 style={{ color: '#1a237e', fontWeight: '700', marginBottom: '10px' }}>Weekly Test Schedule</h2>
                                     <p style={{ color: '#64748b', marginBottom: '30px' }}>Stay prepared for upcoming assessments</p>
-
                                     <div style={{
                                         background: 'linear-gradient(135deg, #1a237e 0%, #3949ab 100%)',
                                         borderRadius: '20px',
@@ -324,7 +305,6 @@ const Profile = () => {
                                             opacity: 0.1
                                         }}></i>
                                     </div>
-
                                     <h4 style={{ color: '#1e293b', marginBottom: '20px' }}>Upcoming Sessions</h4>
                                     <div className="list-group">
                                         {[
@@ -374,5 +354,4 @@ const Profile = () => {
         </div>
     );
 };
-
 export default Profile;

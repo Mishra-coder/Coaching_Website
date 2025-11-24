@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-
 const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState(null);
-
     const faqs = [
         {
             question: "How can I enroll in a course?",
@@ -21,11 +19,9 @@ const FAQ = () => {
             answer: "We maintain a small batch size of 30-40 students to ensure personal attention and effective doubt clearing for every student."
         }
     ];
-
     const toggleFAQ = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
-
     return (
         <section className="faq-section" style={{ padding: '80px 0', background: '#fff' }}>
             <div className="container">
@@ -36,7 +32,6 @@ const FAQ = () => {
                                 Frequently Asked <span style={{ color: '#1a237e' }}>Questions</span>
                             </h2>
                         </div>
-
                         <div className="accordion-list">
                             {faqs.map((faq, index) => (
                                 <div key={index} style={{
@@ -76,7 +71,6 @@ const FAQ = () => {
                                             color: '#64748b'
                                         }}></i>
                                     </button>
-
                                     <div style={{
                                         maxHeight: activeIndex === index ? '200px' : '0',
                                         overflow: 'hidden',
@@ -96,5 +90,4 @@ const FAQ = () => {
         </section >
     );
 };
-
 export default FAQ;

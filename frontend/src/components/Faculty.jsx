@@ -5,7 +5,6 @@ import sureshGuptaImg from '../assets/suresh_gupta.png';
 import priyaSinghImg from '../assets/priya_singh.png';
 import amitPatelImg from '../assets/amit_patel.png';
 import nehaAgarwalImg from '../assets/neha_agarwal.png';
-
 const Faculty = () => {
     const facultyData = [
         {
@@ -51,7 +50,6 @@ const Faculty = () => {
             image: nehaAgarwalImg
         }
     ];
-
     return (
         <section className="faculty-page" style={{ padding: '120px 0 60px' }}>
             <div className="container">
@@ -94,5 +92,4 @@ const Faculty = () => {
         </section>
     );
 };
-
 export default Faculty;

@@ -51,7 +51,7 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 ## 🚀 Features
 
 ### ✨ Core Features
-- 🔐 **User Authentication** - Secure JWT-based login/registration
+- 🔐 **User Authentication** - Secure JWT-based login/registration & Google OAuth
 - 📚 **Course Catalog** - Foundation, Board, and Competitive exam courses
 - 📝 **Online Enrollment** - Digital admission form with photo upload
 - 🎯 **Quiz System** - Chapter-wise practice questions for Class 10 & 12
@@ -172,6 +172,11 @@ JWT_EXPIRE=7d
 
 # Frontend URL (for CORS)
 FRONTEND_URL=http://localhost:5173
+
+# Google OAuth Credentials
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_CALLBACK_URL=http://localhost:5001/api/auth/google/callback
 ```
 
 ### 4. Setup Database

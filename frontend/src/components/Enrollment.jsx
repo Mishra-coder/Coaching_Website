@@ -1,6 +1,5 @@
 import React from 'react';
 import AdmissionForm from './AdmissionForm';
-
 const Enrollment = () => {
     return (
         <section className="enrollment-page" style={{ padding: '120px 0 60px', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
@@ -16,5 +15,4 @@ const Enrollment = () => {
         </section>
     );
 };
-
 export default Enrollment;

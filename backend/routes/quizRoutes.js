@@ -1,19 +1,15 @@
 import express from 'express';
 import QuizResult from '../models/QuizResult.js';
 import { protect } from '../middleware/auth.js';
-
 const router = express.Router();
-
 router.post('/submit', protect, async (req, res) => {
     try {
         const { className, chapter, score, totalQuestions, percentage } = req.body;
-
         let quizResult = await QuizResult.findOne({
             user: req.user.id,
             class: className,
             chapter
         });
-
         if (quizResult) {
             if (score > quizResult.score) {
                 quizResult.score = score;
@@ -31,7 +27,6 @@ router.post('/submit', protect, async (req, res) => {
                 percentage
             });
         }
-
         res.status(201).json({
             success: true,
             message: 'Quiz result saved successfully',
@@ -44,12 +39,10 @@ router.post('/submit', protect, async (req, res) => {
         });
     }
 });
-
 router.get('/history', protect, async (req, res) => {
     try {
         const history = await QuizResult.find({ user: req.user.id })
             .sort({ date: -1 });
-
         res.status(200).json({
             success: true,
             count: history.length,
@@ -62,5 +55,4 @@ router.get('/history', protect, async (req, res) => {
         });
     }
 });
-
 export default router;

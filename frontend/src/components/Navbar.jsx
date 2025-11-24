@@ -3,14 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { quizAPI } from '../services/api';
 import logo from '../assets/logo.png';
-
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [totalXP, setTotalXP] = useState(0);
     const location = useLocation();
     const { user, isAuthenticated, logout } = useAuth();
-
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 50) {
@@ -19,20 +17,16 @@ const Navbar = () => {
                 setScrolled(false);
             }
         };
-
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
     useEffect(() => {
         if (isAuthenticated() && user) {
             fetchXP();
         }
-
         window.addEventListener('quizCompleted', fetchXP);
         return () => window.removeEventListener('quizCompleted', fetchXP);
     }, [isAuthenticated, user, location.pathname]);
-
     const fetchXP = async () => {
         try {
             const data = await quizAPI.getHistory();
@@ -42,24 +36,19 @@ const Navbar = () => {
             console.error('Error fetching XP:', error);
         }
     };
-
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
-
     const closeMenu = () => {
         setIsOpen(false);
     };
-
     const handleLogout = () => {
         logout();
         closeMenu();
     };
-
     if (location.pathname === '/login' || location.pathname === '/register') {
         return null;
     }
-
     return (
         <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{
             backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)',
@@ -98,7 +87,6 @@ const Navbar = () => {
                     <Link to="/courses" className={location.pathname === '/courses' ? 'active' : ''} onClick={closeMenu}>Courses</Link>
                     <Link to="/faculty" className={location.pathname === '/faculty' ? 'active' : ''} onClick={closeMenu}>Faculty</Link>
                     <Link to="/quiz" className={location.pathname === '/quiz' ? 'active' : ''} onClick={closeMenu}>Quiz</Link>
-
                     {isAuthenticated() ? (
                         <>
                             <div style={{
@@ -128,8 +116,6 @@ const Navbar = () => {
                                     <span style={{ fontSize: '0.9rem', color: '#1e293b', fontWeight: '800' }}>{totalXP}</span>
                                 </div>
                             </div>
-
-
                             <Link to="/profile" className="btn-outline-primary" style={{ marginRight: '8px', border: '1px solid #1a237e', padding: '6px 12px', borderRadius: '20px', textDecoration: 'none', color: '#1a237e', fontSize: '0.9rem' }} onClick={closeMenu}>
                                 Profile
                             </Link>
@@ -181,5 +167,4 @@ const Navbar = () => {
         </nav>
     );
 };
-
 export default Navbar;

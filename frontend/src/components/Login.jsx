@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
+import GoogleSignInButton from './GoogleSignInButton';
 const Login = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
@@ -11,21 +11,17 @@ const Login = () => {
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
-
         const result = await login(formData);
-
         if (result.success) {
             navigate('/');
         } else {
@@ -33,7 +29,6 @@ const Login = () => {
         }
         setLoading(false);
     };
-
     return (
         <section className="enrollment-page" style={{ padding: '120px 0 60px', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
             <div className="container">
@@ -41,7 +36,6 @@ const Login = () => {
                     <h2 className="section-title">Student <span className="highlight">Login</span></h2>
                     <p className="section-subtitle">Access your account to continue</p>
                 </div>
-
                 <div style={{ maxWidth: '500px', margin: '0 auto', background: '#fff', padding: '40px', borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
                     <form onSubmit={handleSubmit}>
                         {error && (
@@ -56,7 +50,6 @@ const Login = () => {
                                 {error}
                             </div>
                         )}
-
                         <div className="form-group" style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Email</label>
                             <input
@@ -75,7 +68,6 @@ const Login = () => {
                                 }}
                             />
                         </div>
-
                         <div className="form-group" style={{ marginBottom: '25px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Password</label>
                             <input
@@ -94,7 +86,6 @@ const Login = () => {
                                 }}
                             />
                         </div>
-
                         <button
                             type="submit"
                             className="btn-primary"
@@ -110,7 +101,18 @@ const Login = () => {
                         >
                             {loading ? 'Logging in...' : 'Login'}
                         </button>
-
+                        <div style={{
+                            margin: '25px 0',
+                            textAlign: 'center',
+                            position: 'relative',
+                            display: 'flex',
+                            alignItems: 'center'
+                        }}>
+                            <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }}></div>
+                            <span style={{ padding: '0 15px', color: '#999', fontSize: '14px' }}>OR</span>
+                            <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }}></div>
+                        </div>
+                        <GoogleSignInButton mode="signin" />
                         <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '15px' }}>
                             Don't have an account?{' '}
                             <Link to="/register" style={{ color: '#ff6b35', fontWeight: '600', textDecoration: 'none' }}>
@@ -123,5 +125,4 @@ const Login = () => {
         </section>
     );
 };
-
 export default Login;

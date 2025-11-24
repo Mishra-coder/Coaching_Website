@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-
-
-
 const About = () => {
     const featuresRef = useRef(null);
-
     const features = [
         {
             icon: 'fa-chalkboard-teacher',
@@ -31,9 +27,7 @@ const About = () => {
             delay: '0.3s'
         }
     ];
-
     useEffect(() => {
-        // Create intersection observer for scroll animations
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -45,17 +39,13 @@ const About = () => {
             },
             { threshold: 0.1 }
         );
-
         const cards = featuresRef.current.querySelectorAll('.feature-card');
         cards.forEach((card) => observer.observe(card));
-
         return () => observer.disconnect();
     }, []);
-
     return (
         <section className="about-page" style={{ paddingTop: '120px', paddingBottom: '60px', minHeight: '100vh' }} ref={featuresRef}>
             <div className="container">
-
                 <div className="section-header text-center" style={{ marginBottom: '60px' }}>
                     <h2>
                         About <span style={{ color: '#1a237e' }}>Success</span> <span className="highlight">Mantra</span>
@@ -65,7 +55,6 @@ const About = () => {
                         Our mission is to empower students with knowledge and confidence.
                     </p>
                 </div>
-
                 <div className="feature-grid">
                     {features.map((feature, index) => (
                         <div
@@ -81,14 +70,11 @@ const About = () => {
                             <div className="icon-box">
                                 <i className={`fas ${feature.icon}`}></i>
                             </div>
-
                             <h3>{feature.title}</h3>
-
                             <p>{feature.description}</p>
                         </div>
                     ))}
                 </div>
-
                 <div className="row mt-5 align-items-center">
                     <div className="col-md-6">
                         <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '20px' }}>
@@ -113,5 +99,4 @@ const About = () => {
         </section >
     );
 };
-
 export default About;

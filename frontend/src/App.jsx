@@ -13,10 +13,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
-
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
-
 function App() {
     return (
         <Router>
@@ -29,7 +27,6 @@ function App() {
                         <Route path="/courses" element={<Courses />} />
                         <Route path="/faculty" element={<Faculty />} />
                         <Route path="/enroll" element={<Enrollment />} />
-
                         <Route path="/quiz" element={
                             <ProtectedRoute>
                                 <Quiz />
@@ -40,7 +37,6 @@ function App() {
                                 <Profile />
                             </ProtectedRoute>
                         } />
-
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                     </Routes>
@@ -50,5 +46,4 @@ function App() {
         </Router>
     );
 }
-
 export default App;

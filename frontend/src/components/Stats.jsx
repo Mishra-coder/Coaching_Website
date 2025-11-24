@@ -1,5 +1,4 @@
 import React from 'react';
-
 const Stats = () => {
     const stats = [
         { number: '5000+', label: 'Students Enrolled', icon: 'fa-user-graduate', color: '#3b82f6' },
@@ -7,7 +6,6 @@ const Stats = () => {
         { number: '15+', label: 'Years of Excellence', icon: 'fa-calendar-check', color: '#10b981' },
         { number: '50+', label: 'Expert Faculty', icon: 'fa-chalkboard-teacher', color: '#8b5cf6' }
     ];
-
     return (
         <section className="stats-section" style={{ padding: '60px 0', background: '#fff' }}>
             <div className="container">
@@ -60,5 +58,4 @@ const Stats = () => {
         </section>
     );
 };
-
 export default Stats;

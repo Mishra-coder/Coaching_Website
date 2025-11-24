@@ -2,18 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { enrollmentsAPI } from '../services/api';
 import { Link } from 'react-router-dom';
-
 const MyEnrollments = () => {
     const { user } = useAuth();
     const [enrollments, setEnrollments] = useState([]);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         if (user) {
             fetchEnrollments();
         }
     }, [user]);
-
     const fetchEnrollments = async () => {
         try {
             setLoading(true);
@@ -25,14 +22,11 @@ const MyEnrollments = () => {
             setLoading(false);
         }
     };
-
     if (loading) return <div>Loading...</div>;
-
     return (
         <div className="fade-in">
             <h2 style={{ color: '#1a237e', fontWeight: '700', marginBottom: '10px' }}>My Enrollments</h2>
             <p style={{ color: '#64748b', marginBottom: '30px' }}>Track your active courses</p>
-
             {enrollments.length === 0 ? (
                 <div className="text-center p-5" style={{ background: '#fff', borderRadius: '20px', border: '1px solid #eee' }}>
                     <i className="fas fa-book-open" style={{ fontSize: '3rem', color: '#cbd5e1', marginBottom: '20px' }}></i>
@@ -67,7 +61,6 @@ const MyEnrollments = () => {
                                 <h5 style={{ fontWeight: '700', color: '#1e293b', marginBottom: '15px' }}>
                                     {enrollment.course?.title}
                                 </h5>
-
                             </div>
                         </div>
                     ))}
@@ -76,5 +69,4 @@ const MyEnrollments = () => {
         </div>
     );
 };
-
 export default MyEnrollments;

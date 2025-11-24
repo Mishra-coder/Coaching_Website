@@ -3,9 +3,6 @@ import Hero from './Hero';
 import Stats from './Stats';
 import Testimonials from './Testimonials';
 import FAQ from './FAQ';
-
-
-
 const Home = () => {
     return (
         <>
@@ -13,7 +10,6 @@ const Home = () => {
             <Stats />
             <Testimonials />
             <FAQ />
-
             <section className="cta-section" style={{ background: 'linear-gradient(135deg, #1a237e 0%, #0d47a1 100%)', padding: '80px 0', textAlign: 'center', color: '#fff' }}>
                 <div className="container">
                     <div className="cta-content">
@@ -27,9 +23,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
         </>
     );
 };
-
 export default Home;

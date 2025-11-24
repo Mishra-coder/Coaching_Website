@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
+import GoogleSignInButton from './GoogleSignInButton';
 const Register = () => {
     const navigate = useNavigate();
     const { register } = useAuth();
@@ -14,35 +14,26 @@ const Register = () => {
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-
-        // Validate passwords match
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
             return;
         }
-
-        // Validate password length
         if (formData.password.length < 6) {
             setError('Password must be at least 6 characters');
             return;
         }
-
         setLoading(true);
-
         const { confirmPassword, ...userData } = formData;
         const result = await register(userData);
-
         if (result.success) {
             navigate('/');
         } else {
@@ -50,7 +41,6 @@ const Register = () => {
         }
         setLoading(false);
     };
-
     return (
         <section className="enrollment-page" style={{ padding: '120px 0 60px', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
             <div className="container">
@@ -58,7 +48,6 @@ const Register = () => {
                     <h2 className="section-title">Student <span className="highlight">Registration</span></h2>
                     <p className="section-subtitle">Create your account to get started</p>
                 </div>
-
                 <div style={{ maxWidth: '600px', margin: '0 auto', background: '#fff', padding: '40px', borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
                     <form onSubmit={handleSubmit}>
                         {error && (
@@ -73,7 +62,6 @@ const Register = () => {
                                 {error}
                             </div>
                         )}
-
                         <div className="form-group" style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Full Name</label>
                             <input
@@ -92,7 +80,6 @@ const Register = () => {
                                 }}
                             />
                         </div>
-
                         <div className="form-group" style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Email</label>
                             <input
@@ -111,7 +98,6 @@ const Register = () => {
                                 }}
                             />
                         </div>
-
                         <div className="form-group" style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Phone Number</label>
                             <input
@@ -131,7 +117,6 @@ const Register = () => {
                                 }}
                             />
                         </div>
-
                         <div className="form-group" style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Password</label>
                             <input
@@ -150,7 +135,6 @@ const Register = () => {
                                 }}
                             />
                         </div>
-
                         <div className="form-group" style={{ marginBottom: '25px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Confirm Password</label>
                             <input
@@ -169,7 +153,6 @@ const Register = () => {
                                 }}
                             />
                         </div>
-
                         <button
                             type="submit"
                             className="btn-primary"
@@ -185,7 +168,18 @@ const Register = () => {
                         >
                             {loading ? 'Creating Account...' : 'Register'}
                         </button>
-
+                        <div style={{
+                            margin: '25px 0',
+                            textAlign: 'center',
+                            position: 'relative',
+                            display: 'flex',
+                            alignItems: 'center'
+                        }}>
+                            <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }}></div>
+                            <span style={{ padding: '0 15px', color: '#999', fontSize: '14px' }}>OR</span>
+                            <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }}></div>
+                        </div>
+                        <GoogleSignInButton mode="signup" />
                         <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '15px' }}>
                             Already have an account?{' '}
                             <Link to="/login" style={{ color: '#ff6b35', fontWeight: '600', textDecoration: 'none' }}>
@@ -198,5 +192,4 @@ const Register = () => {
         </section>
     );
 };
-
 export default Register;

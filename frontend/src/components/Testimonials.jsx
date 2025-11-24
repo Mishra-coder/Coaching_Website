@@ -1,5 +1,4 @@
 import React from 'react';
-
 const Testimonials = () => {
     const testimonials = [
         {
@@ -24,7 +23,6 @@ const Testimonials = () => {
             image: 'https://randomuser.me/api/portraits/men/86.jpg'
         }
     ];
-
     return (
         <section className="testimonials-section" style={{ padding: '80px 0', background: '#f8fafc' }}>
             <div className="container">
@@ -36,7 +34,6 @@ const Testimonials = () => {
                         Hear from our students who have transformed their dreams into reality.
                     </p>
                 </div>
-
                 <div className="row g-4">
                     {testimonials.map((t, index) => (
                         <div key={index} className="col-md-4">
@@ -67,7 +64,6 @@ const Testimonials = () => {
                                     color: '#f1f5f9',
                                     zIndex: 0
                                 }}></i>
-
                                 <div className="d-flex align-items-center mb-4">
                                     <img
                                         src={t.image}
@@ -93,7 +89,6 @@ const Testimonials = () => {
                                         </span>
                                     </div>
                                 </div>
-
                                 <p style={{ color: '#475569', lineHeight: '1.6', fontStyle: 'italic' }}>
                                     "{t.quote}"
                                 </p>
@@ -105,5 +100,4 @@ const Testimonials = () => {
         </section>
     );
 };
-
 export default Testimonials;

@@ -1,6 +1,5 @@
 import React from 'react';
 import logo from '../assets/logo.png';
-
 const Footer = () => {
     return (
         <footer>
@@ -86,5 +85,4 @@ const Footer = () => {
         </footer>
     );
 };
-
 export default Footer;

@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 const quizResultSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -31,7 +30,5 @@ const quizResultSchema = new mongoose.Schema({
         default: Date.now
     }
 });
-
 const QuizResult = mongoose.model('QuizResult', quizResultSchema);
-
 export default QuizResult;

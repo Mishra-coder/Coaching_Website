@@ -1,15 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
 import { enrollmentsAPI } from '../services/api';
-
 const AdmissionForm = () => {
     const navigate = useNavigate();
     const { user, isAuthenticated } = useAuth();
     const fileInputRef = useRef(null);
-
-    // State
     const [photo, setPhoto] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -26,20 +22,14 @@ const AdmissionForm = () => {
         mobileNumber: '',
         admissionDate: new Date().toISOString().split('T')[0]
     });
-
-
-
-    // Redirect if not authenticated
     useEffect(() => {
         if (!isAuthenticated()) {
             navigate('/login');
         }
     }, [isAuthenticated, navigate]);
-
     const handlePhotoClick = () => {
         fileInputRef.current.click();
     };
-
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -50,23 +40,17 @@ const AdmissionForm = () => {
             reader.readAsDataURL(file);
         }
     };
-
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
-
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
-
         try {
-            // Create enrollment
             const enrollmentData = {
                 studentName: formData.studentName,
                 fatherName: formData.fatherName,
@@ -82,9 +66,7 @@ const AdmissionForm = () => {
                 mobileNumber: formData.mobileNumber,
                 photo: photo
             };
-
             const response = await enrollmentsAPI.create(enrollmentData);
-
             if (response.success) {
                 alert('Form submitted successfully!');
                 navigate('/');
@@ -95,18 +77,15 @@ const AdmissionForm = () => {
             setLoading(false);
         }
     };
-
     const classOptions = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'];
     const mediumOptions = ['English', 'Hindi'];
-
     return (
         <div className="contact-form-wrapper">
             <form className="contact-form admission-form" onSubmit={handleSubmit}>
-                {/* Form Header */}
+                { }
                 <div className="form-header">
                     <h3>Admission Form</h3>
-
-                    {/* Photo Upload */}
+                    { }
                     <div className="photo-upload" onClick={handlePhotoClick}>
                         {photo ? (
                             <img
@@ -134,8 +113,7 @@ const AdmissionForm = () => {
                         />
                     </div>
                 </div>
-
-                {/* Error Message */}
+                { }
                 {error && (
                     <div style={{
                         padding: '12px',
@@ -148,13 +126,9 @@ const AdmissionForm = () => {
                         {error}
                     </div>
                 )}
-
-
-
-                {/* Personal Information */}
+                { }
                 <div className="form-section">
                     <h5>Personal Information</h5>
-
                     <div className="form-group">
                         <label>Full Name</label>
                         <input
@@ -166,7 +140,6 @@ const AdmissionForm = () => {
                             required
                         />
                     </div>
-
                     <div className="form-row">
                         <div className="form-group">
                             <label>Father's Name</label>
@@ -191,7 +164,6 @@ const AdmissionForm = () => {
                             />
                         </div>
                     </div>
-
                     <div className="form-row">
                         <div className="form-group">
                             <label>Date of Birth</label>
@@ -228,7 +200,6 @@ const AdmissionForm = () => {
                                 />
                             </div>
                         </div>
-
                         <div className="form-group">
                             <label>Gender</label>
                             <div className="gender-options">
@@ -257,7 +228,6 @@ const AdmissionForm = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className="form-group">
                         <label>Address</label>
                         <textarea
@@ -269,7 +239,6 @@ const AdmissionForm = () => {
                             required
                         ></textarea>
                     </div>
-
                     <div className="form-row">
                         <div className="form-group">
                             <label>Aadhar No</label>
@@ -297,7 +266,6 @@ const AdmissionForm = () => {
                         </div>
                     </div>
                 </div>
-
                 {/* Declaration */}
                 <div className="declaration-box">
                     <h5>DECLARATION :</h5>
@@ -306,7 +274,6 @@ const AdmissionForm = () => {
                         कोचिंग के नियमो का उलघन करते है तो आपका नाम निरस्त कर दिया जायेगा |
                     </p>
                 </div>
-
                 {/* Submit Button */}
                 <button
                     type="submit"
@@ -320,5 +287,4 @@ const AdmissionForm = () => {
         </div>
     );
 };
-
 export default AdmissionForm;

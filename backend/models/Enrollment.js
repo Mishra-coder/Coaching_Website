@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 const enrollmentSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -56,7 +55,6 @@ const enrollmentSchema = new mongoose.Schema({
         enum: ['pending', 'active', 'completed', 'cancelled'],
         default: 'pending'
     },
-
     enrollmentDate: {
         type: Date,
         default: Date.now
@@ -66,7 +64,5 @@ const enrollmentSchema = new mongoose.Schema({
         default: Date.now
     }
 });
-
 const Enrollment = mongoose.model('Enrollment', enrollmentSchema);
-
 export default Enrollment;
