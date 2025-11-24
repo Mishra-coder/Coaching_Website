@@ -3,36 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 const GoogleSignInButton = ({ mode = 'signin' }) => {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { setAuth } = useAuth();
     const handleGoogleAuth = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             try {
-                const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-                });
-                const userInfo = await userInfoResponse.json();
                 const backendResponse = await fetch(
                     `${import.meta.env.MODE === 'development' ? 'http://localhost:5001' : 'https://coaching-website-nine.vercel.app'}/api/auth/google/token`,
                     {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(userInfo)
+                        body: JSON.stringify({ access_token: tokenResponse.access_token })
                     }
                 );
                 const data = await backendResponse.json();
                 if (data.success) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    login(data.user, data.token);
+                    setAuth(data.user, data.token);
                     navigate('/');
                 }
             } catch (error) {
-                console.error('Google authentication error:', error);
                 alert('Failed to authenticate with Google. Please try again.');
             }
         },
         onError: (error) => {
-            console.error('Google login error:', error);
             alert('Failed to login with Google. Please try again.');
         },
     });

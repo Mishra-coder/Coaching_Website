@@ -27,9 +27,6 @@ export const AuthProvider = ({ children }) => {
             if (response.success) {
                 const { token, user } = response;
                 localStorage.setItem('token', token);
-                localStorage.setItem('user', JSON.stringify(user));
-                setToken(token);
-                setUser(user);
                 return { success: true };
             }
         } catch (error) {
@@ -63,6 +60,13 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
         setUser(null);
     };
+
+    const setAuth = (user, token) => {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        setToken(token);
+        setUser(user);
+    };
     const isAuthenticated = () => {
         return !!token && !!user;
     };
@@ -73,6 +77,7 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
+        setAuth,
         isAuthenticated
     };
     return (

@@ -30,8 +30,29 @@ router.get('/google/callback',
 );
 router.post('/google/token', async (req, res) => {
     try {
-        const { sub: googleId, email, name, picture } = req.body;
+        const { access_token } = req.body;
+
+        if (!access_token) {
+            return res.status(400).json({
+                success: false,
+                message: 'No access token provided'
+            });
+        }
+
+        // Verify token with Google
+        const googleResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${access_token}` }
+        });
+
+        if (!googleResponse.ok) {
+            throw new Error('Failed to verify token with Google');
+        }
+
+        const profile = await googleResponse.json();
+        const { sub: googleId, email, name, picture } = profile;
+
         let user = await User.findOne({ googleId });
+
         if (!user) {
             const existingEmailUser = await User.findOne({ email });
             if (existingEmailUser) {
@@ -55,11 +76,13 @@ router.post('/google/token', async (req, res) => {
                 });
             }
         }
+
         const token = jwt.sign(
             { id: user._id },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRE || '7d' }
         );
+
         res.json({
             success: true,
             token,
@@ -72,7 +95,6 @@ router.post('/google/token', async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Google token verification error:', error);
         res.status(500).json({
             success: false,
             message: 'Failed to authenticate with Google'

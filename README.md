@@ -51,7 +51,7 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 ## 🚀 Features
 
 ### ✨ Core Features
-- 🔐 **User Authentication** - Secure JWT-based login/registration & Google OAuth
+- 🔐 **User Authentication** - Secure JWT-based login/registration & Google OAuth Integration
 - 📚 **Course Catalog** - Foundation, Board, and Competitive exam courses
 - 📝 **Online Enrollment** - Digital admission form with photo upload
 - 🎯 **Quiz System** - Chapter-wise practice questions for Class 10 & 12
@@ -177,6 +177,16 @@ FRONTEND_URL=http://localhost:5173
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_CALLBACK_URL=http://localhost:5001/api/auth/google/callback
+
+### 4. Setup Google Cloud Console
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project
+3. Enable "Google+ API" and "Google Identity Services"
+4. Configure OAuth Consent Screen
+5. Create OAuth 2.0 Client ID (Web Application)
+6. Add Authorized JavaScript Origins: `http://localhost:5173`
+7. Add Authorized Redirect URIs: `http://localhost:5001/api/auth/google/callback`
+8. Copy Client ID and Client Secret to `.env` files
 ```
 
 ### 4. Setup Database
