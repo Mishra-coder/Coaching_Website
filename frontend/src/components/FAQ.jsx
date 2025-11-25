@@ -54,8 +54,7 @@ const FAQ = () => {
                                             justifyContent: 'space-between',
                                             alignItems: 'center',
                                             cursor: 'pointer',
-                                            textAlign: 'left',
-                                            width: '100%'
+                                            textAlign: 'left'
                                         }}
                                     >
                                         <span style={{
