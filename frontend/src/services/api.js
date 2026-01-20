@@ -1,7 +1,7 @@
 import axios from 'axios';
 const api = axios.create({
-    baseURL: import.meta.env.MODE === 'development' 
-        ? 'http://localhost:5001/api' 
+    baseURL: import.meta.env.MODE === 'development'
+        ? 'http://localhost:5001/api'
         : 'https://coaching-website-nine.vercel.app/api',
     headers: {
         'Content-Type': 'application/json'
@@ -45,6 +45,10 @@ export const authAPI = {
     },
     updateProfile: async (userData) => {
         const response = await api.put('/auth/profile', userData);
+        return response.data;
+    },
+    googleLogin: async (accessToken) => {
+        const response = await api.post('/auth/google/token', { access_token: accessToken });
         return response.data;
     }
 };

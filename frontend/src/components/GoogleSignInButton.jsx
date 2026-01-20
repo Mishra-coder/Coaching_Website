@@ -1,21 +1,14 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { authAPI } from '../services/api';
 const GoogleSignInButton = ({ mode = 'signin' }) => {
     const navigate = useNavigate();
     const { setAuth } = useAuth();
     const handleGoogleAuth = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             try {
-                const backendResponse = await fetch(
-                    `${import.meta.env.MODE === 'development' ? 'http://localhost:5001' : 'https://coaching-website-nine.vercel.app'}/api/auth/google/token`,
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ access_token: tokenResponse.access_token })
-                    }
-                );
-                const data = await backendResponse.json();
+                const data = await authAPI.googleLogin(tokenResponse.access_token);
                 if (data.success) {
                     setAuth(data.user, data.token);
                     navigate('/');
