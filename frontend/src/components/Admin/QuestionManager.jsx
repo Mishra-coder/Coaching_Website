@@ -184,6 +184,59 @@ const QuestionManager = () => {
                 </div>
             </form>
 
+            <div style={{ background: '#fff', padding: '30px', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0' }}>
+                <h3 style={{ color: '#1a237e', marginBottom: '20px' }}>📋 All Questions</h3>
+                <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+                        <thead>
+                            <tr style={{ textAlign: 'left', borderBottom: '2px solid #f1f5f9' }}>
+                                <th style={{ padding: '15px', color: '#64748b' }}>Class</th>
+                                <th style={{ padding: '15px', color: '#64748b' }}>Chapter</th>
+                                <th style={{ padding: '15px', color: '#64748b' }}>Question</th>
+                                <th style={{ padding: '15px', color: '#64748b' }}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {questions.map((q) => (
+                                <tr key={q._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                    <td style={{ padding: '15px', fontWeight: '600' }}>Class {q.class}</td>
+                                    <td style={{ padding: '15px', color: '#1a237e' }}>{q.chapter}</td>
+                                    <td style={{ padding: '15px', maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{q.question}</td>
+                                    <td style={{ padding: '15px', display: 'flex', gap: '10px' }}>
+                                        <button
+                                            onClick={() => {
+                                                setIsEditing(true);
+                                                setCurrentQuestion(q);
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            }}
+                                            style={{ padding: '8px 15px', borderRadius: '8px', border: '1px solid #1a237e', background: 'none', color: '#1a237e', cursor: 'pointer', fontWeight: '600' }}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                if (window.confirm('Are you sure you want to delete this question?')) {
+                                                    try {
+                                                        await questionsAPI.delete(q._id);
+                                                        fetchQuestions();
+                                                        setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
+                                                        setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+                                                    } catch (error) {
+                                                        console.error('Delete error:', error);
+                                                    }
+                                                }
+                                            }}
+                                            style={{ padding: '8px 15px', borderRadius: '8px', border: '1px solid #ef4444', background: 'none', color: '#ef4444', cursor: 'pointer', fontWeight: '600' }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };
