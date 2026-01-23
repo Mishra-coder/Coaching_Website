@@ -25,14 +25,6 @@ router.post('/register', async (req, res) => {
             phone
         });
 
-        // Random otp generate
-        // Send this otp via email (nodemailer)
-        // Send response 
-        // res.json({
-        //     msg: "OTP send successfully"
-        // })
-
-
 
         const token = generateToken(user._id);
         res.status(201).json({
@@ -54,12 +46,6 @@ router.post('/register', async (req, res) => {
         });
     }
 });
-
-router.post("/otp/verify/:id", async (req, res) => {
-    // Body me se OTP
-    // 
-})
-
 
 
 router.post('/login', async (req, res) => {

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { questionsAPI, quizAPI } from '../services/api';
 
 const Quiz = () => {
