@@ -7,28 +7,28 @@ const Testimonials = () => {
             exam: 'SSC CGL 2023',
             rank: 'AIR 45',
             quote: "Success Mantra's structured approach and regular mock tests were the key to my success. The faculty is incredibly supportive.",
-            image: '/Users/devendramishra/.gemini/antigravity/brain/2c6c42c8-93c1-4a2c-942d-488b800742e5/student_success_1_1769208926932.png'
+            image: '/images/testimonials/student1.png'
         },
         {
             name: 'Priya Patel',
             exam: 'IBPS PO',
             rank: 'Selected',
             quote: "I was weak in Maths, but Vikas Sir's unique teaching style made it my strongest subject. Highly recommended!",
-            image: '/Users/devendramishra/.gemini/antigravity/brain/2c6c42c8-93c1-4a2c-942d-488b800742e5/student_success_2_1769208941256.png'
+            image: '/images/testimonials/student2.png'
         },
         {
             name: 'Amit Kumar',
             exam: 'NDA',
             rank: 'Recommended',
             quote: "The discipline and competitive environment at Success Mantra helped me crack NDA in my first attempt.",
-            image: '/Users/devendramishra/.gemini/antigravity/brain/2c6c42c8-93c1-4a2c-942d-488b800742e5/student_success_3_1769208955511.png'
+            image: '/images/testimonials/student3.png'
         },
         {
             name: 'Anjali Gupta',
             exam: 'UPPCS',
             rank: 'Deputy Collector',
             quote: "The personalized mentorship and detail-oriented study material at Success Mantra is truly world-class.",
-            image: '/Users/devendramishra/.gemini/antigravity/brain/2c6c42c8-93c1-4a2c-942d-488b800742e5/student_success_4_1769208971453.png'
+            image: '/images/testimonials/student4.png'
         }
     ];
 
