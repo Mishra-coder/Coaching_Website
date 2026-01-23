@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { authAPI, enrollmentsAPI } from '../services/api';
 import { Link } from 'react-router-dom';
 const Profile = () => {
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const [activeTab, setActiveTab] = useState('profile');
     const [enrollments, setEnrollments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -38,7 +38,10 @@ const Profile = () => {
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
         try {
-            await authAPI.updateProfile(formData);
+            const res = await authAPI.updateProfile(formData);
+            if (res.success) {
+                updateUser(res.user);
+            }
             setEditMode(false);
             alert('Profile updated successfully!');
         } catch (error) {
