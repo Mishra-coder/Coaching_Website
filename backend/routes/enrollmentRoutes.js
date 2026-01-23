@@ -42,8 +42,6 @@ router.post('/', protect, async (req, res) => {
             photo
         });
 
-        // Simulating automatic verification: 
-        // Changing status from 'pending' to 'active' automatically after 1 minute
         setTimeout(async () => {
             try {
                 await Enrollment.findByIdAndUpdate(enrollment._id, { status: 'active' });
@@ -51,7 +49,7 @@ router.post('/', protect, async (req, res) => {
             } catch (err) {
                 console.error('Auto-verification failed:', err);
             }
-        }, 60000); // 1 minute delay
+        }, 60000);
 
         await User.findByIdAndUpdate(
             req.user.id,

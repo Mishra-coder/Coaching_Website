@@ -259,8 +259,8 @@ const Profile = () => {
                                                     }}>
                                                         <div className="d-flex justify-content-between align-items-start mb-3">
                                                             <span className="badge" style={{
-                                                                background: enrollment.status === 'active' ? '#dcfce7' : '#fff7ed',
-                                                                color: enrollment.status === 'active' ? '#166534' : '#9a3412',
+                                                                background: (enrollment.status === 'active' || enrollment.status === 'completed') ? '#dcfce7' : '#fff7ed',
+                                                                color: (enrollment.status === 'active' || enrollment.status === 'completed') ? '#166534' : '#9a3412',
                                                                 padding: '8px 12px',
                                                                 borderRadius: '8px'
                                                             }}>

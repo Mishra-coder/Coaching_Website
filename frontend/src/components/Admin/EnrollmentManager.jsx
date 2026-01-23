@@ -62,8 +62,8 @@ const EnrollmentManager = () => {
                                                 padding: '5px 10px',
                                                 borderRadius: '20px',
                                                 fontSize: '0.8rem',
-                                                background: en.status === 'active' ? '#dcfce7' : en.status === 'pending' ? '#fef9c3' : '#fee2e2',
-                                                color: en.status === 'active' ? '#166534' : en.status === 'pending' ? '#854d0e' : '#991b1b'
+                                                background: (en.status === 'active' || en.status === 'completed') ? '#dcfce7' : en.status === 'pending' ? '#fef9c3' : '#fee2e2',
+                                                color: (en.status === 'active' || en.status === 'completed') ? '#166534' : en.status === 'pending' ? '#854d0e' : '#991b1b'
                                             }}>
                                                 {en.status.toUpperCase()}
                                             </span>
@@ -109,6 +109,7 @@ const EnrollmentManager = () => {
                                     >
                                         <option value="pending">Pending</option>
                                         <option value="active">Active (Approve)</option>
+                                        <option value="completed">Completed</option>
                                         <option value="cancelled">Cancel</option>
                                     </select>
                                 </div>
