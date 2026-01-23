@@ -1,4 +1,8 @@
 import React from 'react';
+import student1 from '../assets/testimonials/student1.png';
+import student2 from '../assets/testimonials/student2.png';
+import student3 from '../assets/testimonials/student3.png';
+import student4 from '../assets/testimonials/student4.png';
 
 const Testimonials = () => {
     const testimonials = [
@@ -7,28 +11,28 @@ const Testimonials = () => {
             exam: 'SSC CGL 2023',
             rank: 'AIR 45',
             quote: "Success Mantra's structured approach and regular mock tests were the key to my success. The faculty is incredibly supportive.",
-            image: '/images/testimonials/student1.png'
+            image: student1
         },
         {
             name: 'Priya Patel',
             exam: 'IBPS PO',
             rank: 'Selected',
             quote: "I was weak in Maths, but Vikas Sir's unique teaching style made it my strongest subject. Highly recommended!",
-            image: '/images/testimonials/student2.png'
+            image: student2
         },
         {
             name: 'Amit Kumar',
             exam: 'NDA',
             rank: 'Recommended',
             quote: "The discipline and competitive environment at Success Mantra helped me crack NDA in my first attempt.",
-            image: '/images/testimonials/student3.png'
+            image: student3
         },
         {
             name: 'Anjali Gupta',
             exam: 'UPPCS',
             rank: 'Deputy Collector',
             quote: "The personalized mentorship and detail-oriented study material at Success Mantra is truly world-class.",
-            image: '/images/testimonials/student4.png'
+            image: student4
         }
     ];
 
@@ -85,7 +89,7 @@ const Testimonials = () => {
                                         height: '90px',
                                         borderRadius: '24px',
                                         objectFit: 'cover',
-                                        border: '5px solid #fff',
+                                        border: '4px solid #fff',
                                         boxShadow: '0 15px 30px rgba(0,0,0,0.1)'
                                     }}
                                 />
