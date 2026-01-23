@@ -5,34 +5,34 @@ import student3 from '../assets/testimonials/student3.png';
 import student4 from '../assets/testimonials/student4.png';
 
 const Testimonials = () => {
-    const testimonials = [
+    const stories = [
         {
-            name: 'Rahul Sharma',
-            exam: 'SSC CGL 2023',
-            rank: 'AIR 45',
-            quote: "Success Mantra's structured approach and regular mock tests were the key to my success. The faculty is incredibly supportive.",
-            image: student1
+            user: 'Rahul Sharma',
+            target: 'SSC CGL 2023',
+            achievement: 'AIR 45',
+            feedback: "Success Mantra's structured approach and regular mock tests were the key to my success. The faculty is incredibly supportive.",
+            avatar: student1
         },
         {
-            name: 'Priya Patel',
-            exam: 'IBPS PO',
-            rank: 'Selected',
-            quote: "I was weak in Maths, but Vikas Sir's unique teaching style made it my strongest subject. Highly recommended!",
-            image: student2
+            user: 'Priya Patel',
+            target: 'IBPS PO',
+            achievement: 'Selected',
+            feedback: "I was weak in Maths, but Vikas Sir's unique teaching style made it my strongest subject. Highly recommended!",
+            avatar: student2
         },
         {
-            name: 'Amit Kumar',
-            exam: 'NDA',
-            rank: 'Recommended',
-            quote: "The discipline and competitive environment at Success Mantra helped me crack NDA in my first attempt.",
-            image: student3
+            user: 'Amit Kumar',
+            target: 'NDA',
+            achievement: 'Recommended',
+            feedback: "The discipline and competitive environment at Success Mantra helped me crack NDA in my first attempt.",
+            avatar: student3
         },
         {
-            name: 'Anjali Gupta',
-            exam: 'UPPCS',
-            rank: 'Deputy Collector',
-            quote: "The personalized mentorship and detail-oriented study material at Success Mantra is truly world-class.",
-            image: student4
+            user: 'Anjali Gupta',
+            target: 'UPPCS',
+            achievement: 'Deputy Collector',
+            feedback: "The personalized mentorship and detail-oriented study material at Success Mantra is truly world-class.",
+            avatar: student4
         }
     ];
 
@@ -53,7 +53,7 @@ const Testimonials = () => {
                     gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
                     gap: '30px'
                 }}>
-                    {testimonials.map((t, index) => (
+                    {stories.map((item, index) => (
                         <div key={index} style={{
                             background: '#f8fafc',
                             padding: '45px 35px',
@@ -82,8 +82,8 @@ const Testimonials = () => {
                         >
                             <div style={{ marginBottom: '30px', position: 'relative', width: '90px' }}>
                                 <img
-                                    src={t.image}
-                                    alt={t.name}
+                                    src={item.avatar}
+                                    alt={item.user}
                                     style={{
                                         width: '90px',
                                         height: '90px',
@@ -115,7 +115,7 @@ const Testimonials = () => {
                             </div>
 
                             <div style={{ flex: 1 }}>
-                                <h4 style={{ margin: '0 0 8px 0', fontSize: '1.4rem', fontWeight: '850', color: '#1e293b' }}>{t.name}</h4>
+                                <h4 style={{ margin: '0 0 8px 0', fontSize: '1.4rem', fontWeight: '850', color: '#1e293b' }}>{item.user}</h4>
                                 <div style={{ marginBottom: '25px' }}>
                                     <span style={{
                                         background: 'linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)',
@@ -128,7 +128,7 @@ const Testimonials = () => {
                                         letterSpacing: '0.8px',
                                         display: 'inline-block'
                                     }}>
-                                        {t.exam} • {t.rank}
+                                        {item.target} • {item.achievement}
                                     </span>
                                 </div>
                                 <div style={{ position: 'relative' }}>
@@ -150,7 +150,7 @@ const Testimonials = () => {
                                         position: 'relative',
                                         zIndex: 1
                                     }}>
-                                        "{t.quote}"
+                                        "{item.feedback}"
                                     </p>
                                 </div>
                             </div>

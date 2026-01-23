@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -12,7 +13,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         trim: true,
-        match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email']
+        match: [/^\S+@\S+\.\S+$/, 'Invalid email format']
     },
     password: {
         type: String,
@@ -27,7 +28,7 @@ const userSchema = new mongoose.Schema({
         required: function () {
             return this.authProvider === 'local';
         },
-        match: [/^[0-9]{10}$/, 'Please provide a valid 10-digit phone number']
+        match: [/^[0-9]{10}$/, 'Invalid 10-digit phone number']
     },
     googleId: {
         type: String,
@@ -57,6 +58,7 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password') || !this.password) {
         return next();
@@ -65,8 +67,10 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
-userSchema.methods.comparePassword = async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
+
+userSchema.methods.comparePassword = async function (attemptedPassword) {
+    return await bcrypt.compare(attemptedPassword, this.password);
 };
+
 const User = mongoose.model('User', userSchema);
 export default User;

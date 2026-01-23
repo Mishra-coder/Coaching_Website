@@ -1,32 +1,35 @@
 import React, { useEffect, useRef } from 'react';
+
 const About = () => {
-    const featuresRef = useRef(null);
-    const features = [
+    const listContainerRef = useRef(null);
+
+    const featureHighlights = [
         {
             icon: 'fa-chalkboard-teacher',
             title: 'Expert Faculty',
-            description: 'Learn from the best minds with years of experience in shaping toppers.',
+            text: 'Learn from the best minds with years of experience in shaping toppers.',
             delay: '0s'
         },
         {
             icon: 'fa-users',
             title: 'Small Batch Size',
-            description: 'Limited students per batch to ensure individual attention and doubt clearing.',
+            text: 'Limited students per batch to ensure individual attention and doubt clearing.',
             delay: '0.1s'
         },
         {
             icon: 'fa-book-reader',
             title: 'Comprehensive Material',
-            description: 'Curated study material designed to cover school curriculum and competitive exams.',
+            text: 'Curated study material designed to cover school curriculum and competitive exams.',
             delay: '0.2s'
         },
         {
             icon: 'fa-chart-line',
             title: 'Regular Testing',
-            description: 'Weekly tests and performance analysis to track progress and identify weak areas.',
+            text: 'Weekly tests and performance analysis to track progress and identify weak areas.',
             delay: '0.3s'
         }
     ];
+
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -39,12 +42,15 @@ const About = () => {
             },
             { threshold: 0.1 }
         );
-        const cards = featuresRef.current.querySelectorAll('.feature-card');
+
+        const cards = listContainerRef.current.querySelectorAll('.feature-card');
         cards.forEach((card) => observer.observe(card));
+
         return () => observer.disconnect();
     }, []);
+
     return (
-        <section className="about-page" style={{ paddingTop: '120px', paddingBottom: '60px', minHeight: '100vh' }} ref={featuresRef}>
+        <section className="about-page" style={{ paddingTop: '120px', paddingBottom: '60px', minHeight: '100vh' }} ref={listContainerRef}>
             <div className="container">
                 <div className="section-header text-center" style={{ marginBottom: '60px' }}>
                     <h2>
@@ -55,8 +61,9 @@ const About = () => {
                         Our mission is to empower students with knowledge and confidence.
                     </p>
                 </div>
+
                 <div className="feature-grid">
-                    {features.map((feature, index) => (
+                    {featureHighlights.map((item, index) => (
                         <div
                             key={index}
                             className="feature-card"
@@ -64,17 +71,18 @@ const About = () => {
                                 opacity: 0,
                                 transform: 'translateY(20px)',
                                 transition: 'all 0.5s ease',
-                                transitionDelay: feature.delay
+                                transitionDelay: item.delay
                             }}
                         >
                             <div className="icon-box">
-                                <i className={`fas ${feature.icon}`}></i>
+                                <i className={`fas ${item.icon}`}></i>
                             </div>
-                            <h3>{feature.title}</h3>
-                            <p>{feature.description}</p>
+                            <h3>{item.title}</h3>
+                            <p>{item.text}</p>
                         </div>
                     ))}
                 </div>
+
                 <div className="row mt-5 align-items-center">
                     <div className="col-md-6">
                         <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '20px' }}>
@@ -95,8 +103,9 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-            </div >
-        </section >
+            </div>
+        </section>
     );
 };
+
 export default About;

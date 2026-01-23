@@ -5,51 +5,53 @@ import sureshGuptaImg from '../assets/suresh_gupta.png';
 import priyaSinghImg from '../assets/priya_singh.png';
 import amitPatelImg from '../assets/amit_patel.png';
 import nehaAgarwalImg from '../assets/neha_agarwal.png';
+
 const Faculty = () => {
-    const facultyData = [
+    const teachingStaff = [
         {
             id: 1,
-            name: "Mr. Vikas Sir",
-            subject: "Mathematics",
-            qualification: "M.Sc. Mathematics, B.Ed (15+ Years Experience)",
-            image: vikasSirImg
+            fullName: "Mr. Vikas Sir",
+            specialization: "Mathematics",
+            details: "M.Sc. Mathematics, B.Ed (15+ Years Experience)",
+            photo: vikasSirImg
         },
         {
             id: 2,
-            name: "Mr. Himanshu Sir",
-            subject: "Physics",
-            qualification: "M.Sc. Physics, Gold Medalist (10+ Years Experience)",
-            image: himanshuSirImg
+            fullName: "Mr. Himanshu Sir",
+            specialization: "Physics",
+            details: "M.Sc. Physics, Gold Medalist (10+ Years Experience)",
+            photo: himanshuSirImg
         },
         {
             id: 3,
-            name: "Mr. Suresh Gupta",
-            subject: "Chemistry",
-            qualification: "M.Sc. Chemistry, NET Qualified (12+ Years Experience)",
-            image: sureshGuptaImg
+            fullName: "Mr. Suresh Gupta",
+            specialization: "Chemistry",
+            details: "M.Sc. Chemistry, NET Qualified (12+ Years Experience)",
+            photo: sureshGuptaImg
         },
         {
             id: 4,
-            name: "Mrs. Priya Singh",
-            subject: "Biology",
-            qualification: "M.Sc. Zoology, B.Ed (8+ Years Experience)",
-            image: priyaSinghImg
+            fullName: "Mrs. Priya Singh",
+            specialization: "Biology",
+            details: "M.Sc. Zoology, B.Ed (8+ Years Experience)",
+            photo: priyaSinghImg
         },
         {
             id: 5,
-            name: "Mr. Amit Patel",
-            subject: "English",
-            qualification: "M.A. English, M.Phil (20+ Years Experience)",
-            image: amitPatelImg
+            fullName: "Mr. Amit Patel",
+            specialization: "English",
+            details: "M.A. English, M.Phil (20+ Years Experience)",
+            photo: amitPatelImg
         },
         {
             id: 6,
-            name: "Ms. Neha Agarwal",
-            subject: "Computer Science",
-            qualification: "MCA, B.Tech CS (5+ Years Experience)",
-            image: nehaAgarwalImg
+            fullName: "Ms. Neha Agarwal",
+            specialization: "Computer Science",
+            details: "MCA, B.Tech CS (5+ Years Experience)",
+            photo: nehaAgarwalImg
         }
     ];
+
     return (
         <section className="faculty-page" style={{ padding: '120px 0 60px' }}>
             <div className="container">
@@ -57,13 +59,14 @@ const Faculty = () => {
                     <h2 className="section-title">Our Expert <span className="highlight">Faculty</span></h2>
                     <p className="section-subtitle">Meet the mentors who will guide you to success.</p>
                 </div>
+
                 <div className="faculty-grid" style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
                     gap: '30px',
                     marginTop: '40px'
                 }}>
-                    {facultyData.map((member) => (
+                    {teachingStaff.map((member) => (
                         <div key={member.id} className="faculty-card" style={{
                             background: '#fff',
                             borderRadius: '15px',
@@ -80,11 +83,11 @@ const Faculty = () => {
                                 overflow: 'hidden',
                                 border: '4px solid #f0f0f0'
                             }}>
-                                <img src={member.image} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={member.photo} alt={member.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </div>
-                            <h3 style={{ color: '#1a237e', marginBottom: '5px' }}>{member.name}</h3>
-                            <h4 style={{ color: '#ffab00', fontSize: '1.1rem', marginBottom: '15px' }}>{member.subject}</h4>
-                            <p style={{ color: '#666', fontSize: '0.95rem' }}>{member.qualification}</p>
+                            <h3 style={{ color: '#1a237e', marginBottom: '5px' }}>{member.fullName}</h3>
+                            <h4 style={{ color: '#ffab00', fontSize: '1.1rem', marginBottom: '15px' }}>{member.specialization}</h4>
+                            <p style={{ color: '#666', fontSize: '0.95rem' }}>{member.details}</p>
                         </div>
                     ))}
                 </div>
@@ -92,4 +95,5 @@ const Faculty = () => {
         </section>
     );
 };
+
 export default Faculty;

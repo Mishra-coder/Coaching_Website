@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 const enrollmentSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -12,15 +13,15 @@ const enrollmentSchema = new mongoose.Schema({
     },
     studentName: {
         type: String,
-        required: [true, 'Please provide student name']
+        required: [true, 'Student name is required']
     },
     fatherName: {
         type: String,
-        required: [true, 'Please provide father name']
+        required: [true, 'Father name is required']
     },
     motherName: {
         type: String,
-        required: [true, 'Please provide mother name']
+        required: [true, 'Mother name is required']
     },
     dateOfBirth: {
         day: { type: Number, required: true, min: 1, max: 31 },
@@ -34,17 +35,17 @@ const enrollmentSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: [true, 'Please provide address']
+        required: [true, 'Address is required']
     },
     aadharNumber: {
         type: String,
-        required: [true, 'Please provide Aadhar number'],
-        match: [/^[0-9]{12}$/, 'Please provide a valid 12-digit Aadhar number']
+        required: [true, 'Aadhar number is required'],
+        match: [/^[0-9]{12}$/, 'Invalid 12-digit Aadhar']
     },
     mobileNumber: {
         type: String,
-        required: [true, 'Please provide mobile number'],
-        match: [/^[0-9]{10}$/, 'Please provide a valid 10-digit mobile number']
+        required: [true, 'Mobile number is required'],
+        match: [/^[0-9]{10}$/, 'Invalid 10-digit mobile number']
     },
     photo: {
         type: String,
@@ -68,5 +69,6 @@ const enrollmentSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+
 const Enrollment = mongoose.model('Enrollment', enrollmentSchema);
 export default Enrollment;

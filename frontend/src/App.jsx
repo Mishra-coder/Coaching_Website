@@ -18,8 +18,10 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import QuestionManager from './components/Admin/QuestionManager';
 import StudentManager from './components/Admin/StudentManager';
 import EnrollmentManager from './components/Admin/EnrollmentManager';
+
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
+
 function App() {
     return (
         <Router>
@@ -32,38 +34,44 @@ function App() {
                         <Route path="/courses" element={<Courses />} />
                         <Route path="/faculty" element={<Faculty />} />
                         <Route path="/enroll" element={<Enrollment />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+
                         <Route path="/quiz" element={
                             <ProtectedRoute>
                                 <Quiz />
                             </ProtectedRoute>
                         } />
+
                         <Route path="/profile" element={
                             <ProtectedRoute>
                                 <Profile />
                             </ProtectedRoute>
                         } />
+
                         <Route path="/admin" element={
                             <AdminRoute>
                                 <AdminDashboard />
                             </AdminRoute>
                         } />
+
                         <Route path="/admin/questions" element={
                             <AdminRoute>
                                 <QuestionManager />
                             </AdminRoute>
                         } />
+
                         <Route path="/admin/students" element={
                             <AdminRoute>
                                 <StudentManager />
                             </AdminRoute>
                         } />
+
                         <Route path="/admin/enrollments" element={
                             <AdminRoute>
                                 <EnrollmentManager />
                             </AdminRoute>
                         } />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
                     </Routes>
                     <Footer />
                 </div>
@@ -71,4 +79,5 @@ function App() {
         </Router>
     );
 }
+
 export default App;

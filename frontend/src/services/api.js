@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const api = axios.create({
     baseURL: import.meta.env.MODE === 'development'
         ? 'http://localhost:5001/api'
@@ -7,6 +8,7 @@ const api = axios.create({
         'Content-Type': 'application/json'
     }
 });
+
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
@@ -15,10 +17,9 @@ api.interceptors.request.use(
         }
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
+
 api.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -30,106 +31,112 @@ api.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
 export const authAPI = {
     register: async (userData) => {
-        const response = await api.post('/auth/register', userData);
-        return response.data;
+        const res = await api.post('/auth/register', userData);
+        return res.data;
     },
     login: async (credentials) => {
-        const response = await api.post('/auth/login', credentials);
-        return response.data;
+        const res = await api.post('/auth/login', credentials);
+        return res.data;
     },
     getMe: async () => {
-        const response = await api.get('/auth/me');
-        return response.data;
+        const res = await api.get('/auth/me');
+        return res.data;
     },
     updateProfile: async (userData) => {
-        const response = await api.put('/auth/profile', userData);
-        return response.data;
+        const res = await api.put('/auth/profile', userData);
+        return res.data;
     },
     googleLogin: async (accessToken) => {
-        const response = await api.post('/auth/google/token', { access_token: accessToken });
-        return response.data;
+        const res = await api.post('/auth/google/token', { access_token: accessToken });
+        return res.data;
     },
     getAllStudents: async () => {
-        const response = await api.get('/auth/all-students');
-        return response.data;
+        const res = await api.get('/auth/all-students');
+        return res.data;
     }
 };
+
 export const quizAPI = {
     submit: async (resultData) => {
-        const response = await api.post('/quiz/submit', resultData);
-        return response.data;
+        const res = await api.post('/quiz/submit', resultData);
+        return res.data;
     },
     getHistory: async () => {
-        const response = await api.get('/quiz/history');
-        return response.data;
+        const res = await api.get('/quiz/history');
+        return res.data;
     }
 };
+
 export const questionsAPI = {
     getAll: async (filters = {}) => {
-        const response = await api.get('/questions', { params: filters });
-        return response.data;
+        const res = await api.get('/questions', { params: filters });
+        return res.data;
     },
-    create: async (questionData) => {
-        const response = await api.post('/questions', questionData);
-        return response.data;
+    create: async (data) => {
+        const res = await api.post('/questions', data);
+        return res.data;
     },
-    update: async (id, questionData) => {
-        const response = await api.put(`/questions/${id}`, questionData);
-        return response.data;
+    update: async (id, data) => {
+        const res = await api.put(`/questions/${id}`, data);
+        return res.data;
     },
     delete: async (id) => {
-        const response = await api.delete(`/questions/${id}`);
-        return response.data;
+        const res = await api.delete(`/questions/${id}`);
+        return res.data;
     }
 };
+
 export const coursesAPI = {
     getAll: async (filters = {}) => {
-        const response = await api.get('/courses', { params: filters });
-        return response.data;
+        const res = await api.get('/courses', { params: filters });
+        return res.data;
     },
     getById: async (id) => {
-        const response = await api.get(`/courses/${id}`);
-        return response.data;
+        const res = await api.get(`/courses/${id}`);
+        return res.data;
     },
-    create: async (courseData) => {
-        const response = await api.post('/courses', courseData);
-        return response.data;
+    create: async (data) => {
+        const res = await api.post('/courses', data);
+        return res.data;
     },
-    update: async (id, courseData) => {
-        const response = await api.put(`/courses/${id}`, courseData);
-        return response.data;
+    update: async (id, data) => {
+        const res = await api.put(`/courses/${id}`, data);
+        return res.data;
     },
     delete: async (id) => {
-        const response = await api.delete(`/courses/${id}`);
-        return response.data;
+        const res = await api.delete(`/courses/${id}`);
+        return res.data;
     }
 };
+
 export const enrollmentsAPI = {
-    create: async (enrollmentData) => {
-        const response = await api.post('/enrollments', enrollmentData);
-        return response.data;
+    create: async (data) => {
+        const res = await api.post('/enrollments', data);
+        return res.data;
     },
     getAll: async () => {
-        const response = await api.get('/enrollments');
-        return response.data;
+        const res = await api.get('/enrollments');
+        return res.data;
     },
     getUserEnrollments: async (userId) => {
-        const response = await api.get(`/enrollments/user/${userId}`);
-        return response.data;
+        const res = await api.get(`/enrollments/user/${userId}`);
+        return res.data;
     },
     getById: async (id) => {
-        const response = await api.get(`/enrollments/${id}`);
-        return response.data;
+        const res = await api.get(`/enrollments/${id}`);
+        return res.data;
     },
-    update: async (id, enrollmentData) => {
-        const response = await api.put(`/enrollments/${id}`, enrollmentData);
-        return response.data;
+    update: async (id, data) => {
+        const res = await api.put(`/enrollments/${id}`, data);
+        return res.data;
     },
     updateStatus: async (id, statusData) => {
-        const response = await api.put(`/enrollments/${id}/status`, statusData);
-        return response.data;
+        const res = await api.put(`/enrollments/${id}/status`, statusData);
+        return res.data;
     }
 };
+
 export default api;

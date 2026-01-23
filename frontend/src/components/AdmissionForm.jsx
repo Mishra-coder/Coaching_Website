@@ -2,341 +2,219 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { enrollmentsAPI } from '../services/api';
+
 const AdmissionForm = () => {
     const navigate = useNavigate();
     const { user, isAuthenticated } = useAuth();
-    const fileInputRef = useRef(null);
-    const [photo, setPhoto] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [formData, setFormData] = useState({
+    const fileInput = useRef(null);
+
+    const [studentPhoto, setStudentPhoto] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
+
+    const [details, setDetails] = useState({
         studentName: '',
         fatherName: '',
         motherName: '',
-        dobDay: '',
-        dobMonth: '',
-        dobYear: '',
+        birthDay: '',
+        birthMonth: '',
+        birthYear: '',
         gender: '',
         address: '',
-        aadharNumber: '',
-        mobileNumber: '',
-        admissionDate: new Date().toISOString().split('T')[0]
+        aadhar: '',
+        mobile: '',
+        dateJoined: new Date().toISOString().split('T')[0]
     });
+
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const editId = queryParams.get('edit');
-    const [isEditMode, setIsEditMode] = useState(!!editId);
+    const editId = new URLSearchParams(location.search).get('edit');
+    const isEditing = !!editId;
 
     useEffect(() => {
         if (!isAuthenticated()) {
             navigate('/login');
             return;
         }
+        if (editId) loadRecord();
+    }, [isAuthenticated, editId]);
 
-        if (editId) {
-            fetchEnrollmentData();
-        }
-    }, [isAuthenticated, navigate, editId]);
-
-    const fetchEnrollmentData = async () => {
+    const loadRecord = async () => {
         try {
-            setLoading(true);
-            const response = await enrollmentsAPI.getById(editId);
-            const en = response.enrollment;
-            setFormData({
-                studentName: en.studentName,
-                fatherName: en.fatherName,
-                motherName: en.motherName,
-                dobDay: en.dateOfBirth.day.toString(),
-                dobMonth: en.dateOfBirth.month.toString(),
-                dobYear: en.dateOfBirth.year.toString(),
-                gender: en.gender,
-                address: en.address,
-                aadharNumber: en.aadharNumber,
-                mobileNumber: en.mobileNumber,
-                admissionDate: new Date(en.createdAt).toISOString().split('T')[0]
+            setIsSubmitting(true);
+            const { enrollment } = await enrollmentsAPI.getById(editId);
+            setDetails({
+                studentName: enrollment.studentName,
+                fatherName: enrollment.fatherName,
+                motherName: enrollment.motherName,
+                birthDay: enrollment.dateOfBirth.day.toString(),
+                birthMonth: enrollment.dateOfBirth.month.toString(),
+                birthYear: enrollment.dateOfBirth.year.toString(),
+                gender: enrollment.gender,
+                address: enrollment.address,
+                aadhar: enrollment.aadharNumber,
+                mobile: enrollment.mobileNumber,
+                dateJoined: new Date(enrollment.createdAt).toISOString().split('T')[0]
             });
-            setPhoto(en.photo);
-        } catch (error) {
-            console.error('Error fetching enrollment:', error);
-            setError('Failed to load enrollment data');
+            setStudentPhoto(enrollment.photo);
+        } catch (err) {
+            setStatusMessage({ type: 'error', text: 'Failed to load existing record' });
         } finally {
-            setLoading(false);
+            setIsSubmitting(false);
         }
     };
-    const handlePhotoClick = () => {
-        fileInputRef.current.click();
-    };
-    const handleFileChange = (e) => {
+
+    const onFileSelect = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onloadend = () => {
-                setPhoto(reader.result);
-            };
+            reader.onloadend = () => setStudentPhoto(reader.result);
             reader.readAsDataURL(file);
         }
     };
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+
+    const updateField = (e) => {
+        setDetails({ ...details, [e.target.name]: e.target.value });
     };
-    const handleSubmit = async (e) => {
+
+    const onFormSubmit = async (e) => {
         e.preventDefault();
-        if (!photo) {
-            setError('Please upload a student photo');
-            setLoading(false);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        if (!studentPhoto) {
+            setStatusMessage({ type: 'error', text: 'Please upload the student photo' });
+            window.scrollTo(0, 0);
             return;
         }
-        setError('');
-        setLoading(true);
+
+        setIsSubmitting(true);
+        setStatusMessage({ type: '', text: '' });
+
         try {
-            const enrollmentData = {
-                studentName: formData.studentName,
-                fatherName: formData.fatherName,
-                motherName: formData.motherName,
+            const submission = {
+                studentName: details.studentName,
+                fatherName: details.fatherName,
+                motherName: details.motherName,
                 dateOfBirth: {
-                    day: parseInt(formData.dobDay),
-                    month: parseInt(formData.dobMonth),
-                    year: parseInt(formData.dobYear)
+                    day: parseInt(details.birthDay),
+                    month: parseInt(details.birthMonth),
+                    year: parseInt(details.birthYear)
                 },
-                gender: formData.gender,
-                address: formData.address,
-                aadharNumber: formData.aadharNumber,
-                mobileNumber: formData.mobileNumber,
-                photo: photo
+                gender: details.gender,
+                address: details.address,
+                aadharNumber: details.aadhar,
+                mobileNumber: details.mobile,
+                photo: studentPhoto
             };
 
-            let response;
-            if (isEditMode) {
-                response = await enrollmentsAPI.update(editId, enrollmentData);
-            } else {
-                response = await enrollmentsAPI.create(enrollmentData);
-            }
+            const response = isEditing
+                ? await enrollmentsAPI.update(editId, submission)
+                : await enrollmentsAPI.create(submission);
 
             if (response.success) {
-                alert(isEditMode ? 'Form updated and resubmitted successfully!' : 'Form submitted successfully!');
+                alert(isEditing ? 'Form updated successfully!' : 'Enrollment successful!');
                 navigate('/profile');
             }
-        } catch (error) {
-            setError(error.response?.data?.message || 'Failed to submit form');
+        } catch (err) {
+            setStatusMessage({ type: 'error', text: err.response?.data?.message || 'Submission failed' });
         } finally {
-            setLoading(false);
+            setIsSubmitting(false);
         }
     };
-    const classOptions = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'];
-    const mediumOptions = ['English', 'Hindi'];
+
     return (
         <div className="contact-form-wrapper">
-            <form className="contact-form admission-form" onSubmit={handleSubmit}>
-                { }
+            <form className="contact-form admission-form" onSubmit={onFormSubmit}>
                 <div className="form-header">
                     <h3>Admission Form</h3>
-                    { }
-                    <div className="photo-upload" onClick={handlePhotoClick}>
-                        {photo ? (
-                            <img
-                                src={photo}
-                                alt="Student"
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                    borderRadius: '8px'
-                                }}
-                            />
+
+                    <div className="photo-upload" onClick={() => fileInput.current.click()}>
+                        {studentPhoto ? (
+                            <img src={studentPhoto} alt="Student" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
                         ) : (
                             <div className="photo-placeholder">
-                                <i className="fas fa-camera"></i>
+                                <i className="fas fa-camera" />
                                 <span>Upload Photo</span>
                             </div>
                         )}
-                        <input
-                            type="file"
-                            accept="image/*"
-                            hidden
-                            ref={fileInputRef}
-                            onChange={handleFileChange}
-                        />
+                        <input type="file" accept="image/*" hidden ref={fileInput} onChange={onFileSelect} />
                     </div>
                 </div>
-                { }
-                {error && (
-                    <div style={{
-                        padding: '12px',
-                        marginBottom: '20px',
-                        backgroundColor: '#fee',
-                        color: '#c33',
-                        borderRadius: '8px',
-                        fontSize: '14px'
-                    }}>
-                        {error}
+
+                {statusMessage.text && (
+                    <div className={`status-alert ${statusMessage.type}`}>
+                        {statusMessage.text}
                     </div>
                 )}
-                { }
+
                 <div className="form-section">
                     <h5>Personal Information</h5>
+
                     <div className="form-group">
                         <label>Full Name</label>
-                        <input
-                            type="text"
-                            name="studentName"
-                            value={formData.studentName}
-                            onChange={handleChange}
-                            placeholder="Enter Student's Full Name"
-                            required
-                        />
+                        <input type="text" name="studentName" value={details.studentName} onChange={updateField} placeholder="Student's Name" required />
                     </div>
+
                     <div className="form-row">
                         <div className="form-group">
                             <label>Father's Name</label>
-                            <input
-                                type="text"
-                                name="fatherName"
-                                value={formData.fatherName}
-                                onChange={handleChange}
-                                placeholder="Enter Father's Name"
-                                required
-                            />
+                            <input type="text" name="fatherName" value={details.fatherName} onChange={updateField} placeholder="Father's Name" required />
                         </div>
                         <div className="form-group">
                             <label>Mother's Name</label>
-                            <input
-                                type="text"
-                                name="motherName"
-                                value={formData.motherName}
-                                onChange={handleChange}
-                                placeholder="Enter Mother's Name"
-                                required
-                            />
+                            <input type="text" name="motherName" value={details.motherName} onChange={updateField} placeholder="Mother's Name" required />
                         </div>
                     </div>
+
                     <div className="form-row">
                         <div className="form-group">
                             <label>Date of Birth</label>
                             <div className="dob-inputs">
-                                <input
-                                    type="number"
-                                    name="dobDay"
-                                    value={formData.dobDay}
-                                    onChange={handleChange}
-                                    placeholder="DD"
-                                    min="1"
-                                    max="31"
-                                    required
-                                />
-                                <input
-                                    type="number"
-                                    name="dobMonth"
-                                    value={formData.dobMonth}
-                                    onChange={handleChange}
-                                    placeholder="MM"
-                                    min="1"
-                                    max="12"
-                                    required
-                                />
-                                <input
-                                    type="number"
-                                    name="dobYear"
-                                    value={formData.dobYear}
-                                    onChange={handleChange}
-                                    placeholder="YYYY"
-                                    min="2000"
-                                    max="2025"
-                                    required
-                                />
+                                <input type="number" name="birthDay" value={details.birthDay} onChange={updateField} placeholder="DD" min="1" max="31" required />
+                                <input type="number" name="birthMonth" value={details.birthMonth} onChange={updateField} placeholder="MM" min="1" max="12" required />
+                                <input type="number" name="birthYear" value={details.birthYear} onChange={updateField} placeholder="YYYY" min="2000" max="2025" required />
                             </div>
                         </div>
                         <div className="form-group">
                             <label>Gender</label>
                             <div className="gender-options">
-                                <label className="radio-container">
-                                    Male
-                                    <input
-                                        type="radio"
-                                        name="gender"
-                                        value="male"
-                                        checked={formData.gender === 'male'}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                    <span className="checkmark"></span>
-                                </label>
-                                <label className="radio-container">
-                                    Female
-                                    <input
-                                        type="radio"
-                                        name="gender"
-                                        value="female"
-                                        checked={formData.gender === 'female'}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                    <span className="checkmark"></span>
-                                </label>
+                                {['male', 'female'].map(g => (
+                                    <label key={g} className="radio-container">
+                                        <span style={{ textTransform: 'capitalize' }}>{g}</span>
+                                        <input type="radio" name="gender" value={g} checked={details.gender === g} onChange={updateField} required />
+                                        <span className="checkmark" />
+                                    </label>
+                                ))}
                             </div>
                         </div>
                     </div>
+
                     <div className="form-group">
                         <label>Address</label>
-                        <textarea
-                            name="address"
-                            value={formData.address}
-                            onChange={handleChange}
-                            placeholder="Enter Full Address"
-                            rows="2"
-                            required
-                        ></textarea>
+                        <textarea name="address" value={details.address} onChange={updateField} placeholder="Full Home Address" rows="2" required />
                     </div>
+
                     <div className="form-row">
                         <div className="form-group">
                             <label>Aadhar No</label>
-                            <input
-                                type="text"
-                                name="aadharNumber"
-                                value={formData.aadharNumber}
-                                onChange={handleChange}
-                                placeholder="12-digit Aadhar Number"
-                                pattern="[0-9]{12}"
-                                required
-                            />
+                            <input type="text" name="aadhar" value={details.aadhar} onChange={updateField} placeholder="12-digit Number" pattern="[0-9]{12}" required />
                         </div>
                         <div className="form-group">
                             <label>Mobile No</label>
-                            <input
-                                type="tel"
-                                name="mobileNumber"
-                                value={formData.mobileNumber}
-                                onChange={handleChange}
-                                placeholder="10-digit Mobile Number"
-                                pattern="[0-9]{10}"
-                                required
-                            />
+                            <input type="tel" name="mobile" value={details.mobile} onChange={updateField} placeholder="10-digit Number" pattern="[0-9]{10}" required />
                         </div>
                     </div>
                 </div>
-                {/* Declaration */}
+
                 <div className="declaration-box">
                     <h5>DECLARATION :</h5>
-                    <p>
-                        कोचिंग के नियमो का पालन करना होगा एवं अनुशासन में रहना होगा यदि आप
-                        कोचिंग के नियमो का उलघन करते है तो आपका नाम निरस्त कर दिया जायेगा |
-                    </p>
+                    <p>कोचिंग के नियमो का पालन करना होगा एवं अनुशासन में रहना होगा यदि आप कोचिंग के नियमो का उलघन करते है तो आपका नाम निरस्त कर दिया जायेगा |</p>
                 </div>
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    className="btn-primary full-width"
-                    disabled={loading}
-                    style={{ opacity: loading ? 0.7 : 1 }}
-                >
-                    {loading ? 'Processing...' : 'Submit the Form'}
+
+                <button type="submit" className="btn-primary full-width" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
+                    {isSubmitting ? 'Processing...' : 'Submit Admission'}
                 </button>
             </form>
         </div>
     );
 };
+
 export default AdmissionForm;
