@@ -41,6 +41,18 @@ router.post('/', protect, async (req, res) => {
             mobileNumber,
             photo
         });
+
+        // Simulating automatic verification: 
+        // Changing status from 'pending' to 'active' automatically after 1 minute
+        setTimeout(async () => {
+            try {
+                await Enrollment.findByIdAndUpdate(enrollment._id, { status: 'active' });
+                console.log(`Enrollment ${enrollment._id} automatically verified and completed.`);
+            } catch (err) {
+                console.error('Auto-verification failed:', err);
+            }
+        }, 60000); // 1 minute delay
+
         await User.findByIdAndUpdate(
             req.user.id,
             { $push: { enrollments: enrollment._id } }
@@ -48,7 +60,7 @@ router.post('/', protect, async (req, res) => {
         await enrollment.populate('course');
         res.status(201).json({
             success: true,
-            message: 'Enrollment created successfully',
+            message: 'Enrollment submitted! Your application is now PENDING and will be automatically COMPLETED in 1 minute.',
             enrollment
         });
     } catch (error) {

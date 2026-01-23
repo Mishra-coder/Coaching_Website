@@ -48,6 +48,12 @@ const AdmissionForm = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!photo) {
+            setError('Please upload a student photo');
+            setLoading(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
         setError('');
         setLoading(true);
         try {
@@ -211,6 +217,7 @@ const AdmissionForm = () => {
                                         value="male"
                                         checked={formData.gender === 'male'}
                                         onChange={handleChange}
+                                        required
                                     />
                                     <span className="checkmark"></span>
                                 </label>
@@ -222,6 +229,7 @@ const AdmissionForm = () => {
                                         value="female"
                                         checked={formData.gender === 'female'}
                                         onChange={handleChange}
+                                        required
                                     />
                                     <span className="checkmark"></span>
                                 </label>
