@@ -17,8 +17,8 @@ const Quiz = () => {
         setLoading(true);
         try {
             const res = await questionsAPI.getAll({ class: cls });
-            // Extract unique chapters
-            const uniqueChapters = [...new Set(res.questions.map(q => q.chapter))];
+            // Extract unique chapters with normalization (trimming whitespace)
+            const uniqueChapters = [...new Set(res.questions.map(q => q.chapter.trim()))];
             setChapters(uniqueChapters);
             setView('chapter-select');
         } catch (error) {
