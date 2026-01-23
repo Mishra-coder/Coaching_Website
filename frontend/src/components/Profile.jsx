@@ -264,7 +264,7 @@ const Profile = () => {
                                                                 padding: '8px 12px',
                                                                 borderRadius: '8px'
                                                             }}>
-                                                                {enrollment.status.toUpperCase()}
+                                                                {enrollment.status === 'completed' ? 'ADMISSION COMPLETED' : enrollment.status.toUpperCase()}
                                                             </span>
                                                             <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
                                                                 {new Date(enrollment.createdAt).toLocaleDateString()}

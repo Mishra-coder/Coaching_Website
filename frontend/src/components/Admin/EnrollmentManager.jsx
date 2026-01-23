@@ -65,7 +65,7 @@ const EnrollmentManager = () => {
                                                 background: (en.status === 'active' || en.status === 'completed') ? '#dcfce7' : en.status === 'pending' ? '#fef9c3' : '#fee2e2',
                                                 color: (en.status === 'active' || en.status === 'completed') ? '#166534' : en.status === 'pending' ? '#854d0e' : '#991b1b'
                                             }}>
-                                                {en.status.toUpperCase()}
+                                                {en.status === 'completed' ? 'ADMISSION COMPLETED' : en.status.toUpperCase()}
                                             </span>
                                         </td>
                                         <td style={{ padding: '15px' }}>
