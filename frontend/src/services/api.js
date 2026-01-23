@@ -123,8 +123,12 @@ export const enrollmentsAPI = {
         const response = await api.get(`/enrollments/${id}`);
         return response.data;
     },
-    updateStatus: async (id, status) => {
-        const response = await api.put(`/enrollments/${id}/status`, { status });
+    update: async (id, enrollmentData) => {
+        const response = await api.put(`/enrollments/${id}`, enrollmentData);
+        return response.data;
+    },
+    updateStatus: async (id, statusData) => {
+        const response = await api.put(`/enrollments/${id}/status`, statusData);
         return response.data;
     }
 };

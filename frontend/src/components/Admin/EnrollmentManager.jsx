@@ -22,10 +22,11 @@ const EnrollmentManager = () => {
         }
     };
 
-    const handleStatusUpdate = async (id, newStatus) => {
+    const handleStatusUpdate = async (id, newStatus, remarks = '') => {
         try {
-            await enrollmentsAPI.updateStatus(id, newStatus);
+            await enrollmentsAPI.updateStatus(id, { status: newStatus, adminRemarks: remarks });
             fetchEnrollments();
+            setSelectedEnrollment(prev => ({ ...prev, status: newStatus, adminRemarks: remarks }));
             alert('Status updated successfully!');
         } catch (error) {
             console.error('Error updating status:', error);
@@ -101,17 +102,33 @@ const EnrollmentManager = () => {
                             <div>
                                 <h4 style={{ margin: '0 0 10px 0', fontWeight: '800' }}>{selectedEnrollment.studentName}</h4>
                                 <p style={{ color: '#64748b', marginBottom: '15px' }}>Application ID: <br /><small>{selectedEnrollment._id}</small></p>
-                                <div style={{ display: 'flex', gap: '10px' }}>
-                                    <select
-                                        value={selectedEnrollment.status}
-                                        onChange={(e) => handleStatusUpdate(selectedEnrollment._id, e.target.value)}
-                                        style={{ padding: '10px 15px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none' }}
-                                    >
-                                        <option value="pending">Pending</option>
-                                        <option value="active">Active (Approve)</option>
-                                        <option value="completed">Completed</option>
-                                        <option value="cancelled">Cancel</option>
-                                    </select>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                        <select
+                                            value={selectedEnrollment.status}
+                                            onChange={(e) => handleStatusUpdate(selectedEnrollment._id, e.target.value, selectedEnrollment.adminRemarks)}
+                                            style={{ padding: '10px 15px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', flex: 1 }}
+                                        >
+                                            <option value="pending">Pending</option>
+                                            <option value="active">Active (Approve)</option>
+                                            <option value="cancelled">Cancel (Reject)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700', display: 'block', marginBottom: '8px' }}>Admin Remarks / Reason</label>
+                                        <textarea
+                                            value={selectedEnrollment.adminRemarks || ''}
+                                            onChange={(e) => setSelectedEnrollment({ ...selectedEnrollment, adminRemarks: e.target.value })}
+                                            placeholder="e.g. Please upload a clearer photo or fix Aadhar number"
+                                            style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.9rem', minHeight: '80px' }}
+                                        />
+                                        <button
+                                            onClick={() => handleStatusUpdate(selectedEnrollment._id, selectedEnrollment.status, selectedEnrollment.adminRemarks)}
+                                            style={{ marginTop: '10px', padding: '10px 20px', borderRadius: '8px', background: '#1a237e', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 'bold', width: '100%' }}
+                                        >
+                                            Update Status & Remarks
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

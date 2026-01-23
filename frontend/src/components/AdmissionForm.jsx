@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { enrollmentsAPI } from '../services/api';
 const AdmissionForm = () => {
@@ -22,11 +22,48 @@ const AdmissionForm = () => {
         mobileNumber: '',
         admissionDate: new Date().toISOString().split('T')[0]
     });
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const editId = queryParams.get('edit');
+    const [isEditMode, setIsEditMode] = useState(!!editId);
+
     useEffect(() => {
         if (!isAuthenticated()) {
             navigate('/login');
+            return;
         }
-    }, [isAuthenticated, navigate]);
+
+        if (editId) {
+            fetchEnrollmentData();
+        }
+    }, [isAuthenticated, navigate, editId]);
+
+    const fetchEnrollmentData = async () => {
+        try {
+            setLoading(true);
+            const response = await enrollmentsAPI.getById(editId);
+            const en = response.enrollment;
+            setFormData({
+                studentName: en.studentName,
+                fatherName: en.fatherName,
+                motherName: en.motherName,
+                dobDay: en.dateOfBirth.day.toString(),
+                dobMonth: en.dateOfBirth.month.toString(),
+                dobYear: en.dateOfBirth.year.toString(),
+                gender: en.gender,
+                address: en.address,
+                aadharNumber: en.aadharNumber,
+                mobileNumber: en.mobileNumber,
+                admissionDate: new Date(en.createdAt).toISOString().split('T')[0]
+            });
+            setPhoto(en.photo);
+        } catch (error) {
+            console.error('Error fetching enrollment:', error);
+            setError('Failed to load enrollment data');
+        } finally {
+            setLoading(false);
+        }
+    };
     const handlePhotoClick = () => {
         fileInputRef.current.click();
     };
@@ -72,10 +109,17 @@ const AdmissionForm = () => {
                 mobileNumber: formData.mobileNumber,
                 photo: photo
             };
-            const response = await enrollmentsAPI.create(enrollmentData);
+
+            let response;
+            if (isEditMode) {
+                response = await enrollmentsAPI.update(editId, enrollmentData);
+            } else {
+                response = await enrollmentsAPI.create(enrollmentData);
+            }
+
             if (response.success) {
-                alert('Form submitted successfully!');
-                navigate('/');
+                alert(isEditMode ? 'Form updated and resubmitted successfully!' : 'Form submitted successfully!');
+                navigate('/profile');
             }
         } catch (error) {
             setError(error.response?.data?.message || 'Failed to submit form');

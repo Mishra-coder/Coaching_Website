@@ -42,15 +42,6 @@ router.post('/', protect, async (req, res) => {
             photo
         });
 
-        setTimeout(async () => {
-            try {
-                await Enrollment.findByIdAndUpdate(enrollment._id, { status: 'active' });
-                console.log(`Enrollment ${enrollment._id} automatically verified and completed.`);
-            } catch (err) {
-                console.error('Auto-verification failed:', err);
-            }
-        }, 60000);
-
         await User.findByIdAndUpdate(
             req.user.id,
             { $push: { enrollments: enrollment._id } }
@@ -58,7 +49,7 @@ router.post('/', protect, async (req, res) => {
         await enrollment.populate('course');
         res.status(201).json({
             success: true,
-            message: 'Enrollment submitted! Your application is now PENDING and will be automatically COMPLETED in 1 minute.',
+            message: 'Enrollment submitted successfully! It is now pending review.',
             enrollment
         });
     } catch (error) {
@@ -66,6 +57,37 @@ router.post('/', protect, async (req, res) => {
             success: false,
             message: error.message
         });
+    }
+});
+
+// @desc    Update enrollment (Student edit & resubmit)
+// @route   PUT /api/enrollments/:id
+router.put('/:id', protect, async (req, res) => {
+    try {
+        let enrollment = await Enrollment.findById(req.params.id);
+        if (!enrollment) {
+            return res.status(404).json({ success: false, message: 'Enrollment not found' });
+        }
+        if (enrollment.user.toString() !== req.user.id) {
+            return res.status(401).json({ success: false, message: 'Not authorized' });
+        }
+
+        // Reset status to pending when student edits
+        req.body.status = 'pending';
+        req.body.adminRemarks = '';
+
+        enrollment = await Enrollment.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Enrollment updated and resubmitted successfully!',
+            enrollment
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 router.get('/', protect, async (req, res) => {
@@ -139,7 +161,7 @@ router.get('/:id', protect, async (req, res) => {
 });
 router.put('/:id/status', protect, async (req, res) => {
     try {
-        const { status } = req.body;
+        const { status, adminRemarks } = req.body;
         const enrollment = await Enrollment.findById(req.params.id);
         if (!enrollment) {
             return res.status(404).json({
@@ -148,6 +170,9 @@ router.put('/:id/status', protect, async (req, res) => {
             });
         }
         enrollment.status = status;
+        if (adminRemarks !== undefined) {
+            enrollment.adminRemarks = adminRemarks;
+        }
         await enrollment.save();
         res.status(200).json({
             success: true,

@@ -259,12 +259,12 @@ const Profile = () => {
                                                     }}>
                                                         <div className="d-flex justify-content-between align-items-start mb-3">
                                                             <span className="badge" style={{
-                                                                background: (enrollment.status === 'active' || enrollment.status === 'completed') ? '#dcfce7' : '#fff7ed',
-                                                                color: (enrollment.status === 'active' || enrollment.status === 'completed') ? '#166534' : '#9a3412',
+                                                                background: enrollment.status === 'active' ? '#dcfce7' : '#fff7ed',
+                                                                color: enrollment.status === 'active' ? '#166534' : '#9a3412',
                                                                 padding: '8px 12px',
                                                                 borderRadius: '8px'
                                                             }}>
-                                                                {enrollment.status === 'completed' ? 'ADMISSION COMPLETED' : enrollment.status.toUpperCase()}
+                                                                {enrollment.status.toUpperCase()}
                                                             </span>
                                                             <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
                                                                 {new Date(enrollment.createdAt).toLocaleDateString()}
@@ -362,6 +362,18 @@ const Profile = () => {
                                                 </div>
 
                                                 <div className="row g-4">
+                                                    {selectedEnrollmentDetail.adminRemarks && (
+                                                        <div className="col-12">
+                                                            <div style={{ padding: '20px', background: '#fff7ed', border: '1px solid #ffedd5', borderRadius: '12px', color: '#9a3412' }}>
+                                                                <h6 style={{ fontWeight: '700', marginBottom: '8px' }}>
+                                                                    <i className="fas fa-exclamation-circle me-2"></i>
+                                                                    Admin Feedback / Rejection Reason:
+                                                                </h6>
+                                                                <p style={{ margin: 0, fontSize: '0.95rem' }}>{selectedEnrollmentDetail.adminRemarks}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
                                                     <div className="col-md-6">
                                                         <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Father's Name</label>
                                                         <p style={{ fontWeight: '600', color: '#1e293b', margin: 0 }}>{selectedEnrollmentDetail.fatherName}</p>
@@ -386,6 +398,18 @@ const Profile = () => {
                                                         <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Full Address</label>
                                                         <p style={{ fontWeight: '600', color: '#1e293b', lineHeight: '1.6', margin: 0 }}>{selectedEnrollmentDetail.address}</p>
                                                     </div>
+
+                                                    {selectedEnrollmentDetail.status === 'cancelled' && (
+                                                        <div className="col-12 mt-4">
+                                                            <Link
+                                                                to={`/enroll?edit=${selectedEnrollmentDetail._id}`}
+                                                                className="btn-primary"
+                                                                style={{ width: '100%', padding: '15px', borderRadius: '12px', textAlign: 'center', display: 'block', textDecoration: 'none' }}
+                                                            >
+                                                                <i className="fas fa-edit me-2"></i> Fix Mistakes & Resubmit Form
+                                                            </Link>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
