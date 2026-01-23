@@ -43,10 +43,10 @@ const QuestionManager = () => {
         try {
             if (isEditing) {
                 await questionsAPI.update(currentQuestion._id, currentQuestion);
-                setStatusMessage({ text: 'Question updated successfully! ✨', type: 'success' });
+                setStatusMessage({ text: 'Question updated successfully!', type: 'success' });
             } else {
                 await questionsAPI.create(currentQuestion);
-                setStatusMessage({ text: 'Question added successfully! ✨', type: 'success' });
+                setStatusMessage({ text: 'Question added successfully!', type: 'success' });
             }
 
             setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
@@ -85,7 +85,7 @@ const QuestionManager = () => {
                     gap: '10px',
                     animation: 'slideIn 0.3s ease-out'
                 }}>
-                    {statusMessage.type === 'success' ? '✅' : '❌'} {statusMessage.text}
+                    {statusMessage.text}
                 </div>
             )}
 
