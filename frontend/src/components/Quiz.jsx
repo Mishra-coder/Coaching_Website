@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { quizData } from '../data/quizData';
-import { quizAPI } from '../services/api';
+import { questionsAPI, quizAPI } from '../services/api';
+
 const Quiz = () => {
     const [view, setView] = useState('class-select');
     const [selectedClass, setSelectedClass] = useState(null);
@@ -8,17 +7,43 @@ const Quiz = () => {
     const [userAnswers, setUserAnswers] = useState({});
     const [showWarning, setShowWarning] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const handleClassSelect = (cls) => {
+    const [questions, setQuestions] = useState([]);
+    const [chapters, setChapters] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const handleClassSelect = async (cls) => {
         setSelectedClass(cls);
-        setView('chapter-select');
+        setLoading(true);
+        try {
+            const res = await questionsAPI.getAll({ class: cls });
+            // Extract unique chapters
+            const uniqueChapters = [...new Set(res.questions.map(q => q.chapter))];
+            setChapters(uniqueChapters);
+            setView('chapter-select');
+        } catch (error) {
+            console.error('Error fetching chapters:', error);
+        } finally {
+            setLoading(false);
+        }
     };
-    const handleChapterSelect = (chapter) => {
+
+    const handleChapterSelect = async (chapter) => {
         setSelectedChapter(chapter);
-        setUserAnswers({});
-        setCurrentQuestionIndex(0);
-        setShowWarning(false);
-        setView('quiz');
+        setLoading(true);
+        try {
+            const res = await questionsAPI.getAll({ class: selectedClass, chapter });
+            setQuestions(res.questions);
+            setUserAnswers({});
+            setCurrentQuestionIndex(0);
+            setShowWarning(false);
+            setView('quiz');
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+        } finally {
+            setLoading(false);
+        }
     };
+
     const handleAnswerSelect = (questionId, option) => {
         setUserAnswers(prev => ({
             ...prev,
@@ -26,29 +51,32 @@ const Quiz = () => {
         }));
         if (showWarning) setShowWarning(false);
     };
+
     const handleNextQuestion = () => {
-        const questions = quizData[selectedClass][selectedChapter];
-        if (!userAnswers[questions[currentQuestionIndex].id]) {
+        if (!userAnswers[questions[currentQuestionIndex]._id]) {
             setShowWarning(true);
             return;
         }
+
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             setShowWarning(false);
         }
     };
+
     const handlePrevQuestion = () => {
         if (currentQuestionIndex > 0) {
             setCurrentQuestionIndex(currentQuestionIndex - 1);
             setShowWarning(false);
         }
     };
+
     const handleSubmit = async () => {
-        const questions = quizData[selectedClass][selectedChapter];
         if (Object.keys(userAnswers).length < questions.length) {
             setShowWarning(true);
             return;
         }
+
         const { correct, total, percentage } = calculateScore();
         try {
             await quizAPI.submit({
@@ -65,11 +93,11 @@ const Quiz = () => {
         setView('result');
         window.scrollTo(0, 0);
     };
+
     const calculateScore = () => {
-        const questions = quizData[selectedClass][selectedChapter];
         let correct = 0;
         questions.forEach(q => {
-            if (userAnswers[q.id] === q.correctAnswer) {
+            if (userAnswers[q._id] === q.correctAnswer) {
                 correct++;
             }
         });
@@ -79,15 +107,18 @@ const Quiz = () => {
             percentage: Math.round((correct / questions.length) * 100)
         };
     };
+
     const handleRestart = () => {
         setUserAnswers({});
         setShowWarning(false);
         setCurrentQuestionIndex(0);
         setView('quiz');
     };
+
     const handleGoHome = () => {
         setSelectedClass(null);
         setSelectedChapter(null);
+        setQuestions([]);
         setUserAnswers({});
         setShowWarning(false);
         setCurrentQuestionIndex(0);
@@ -135,7 +166,8 @@ const Quiz = () => {
         );
     };
     const renderChapterSelection = () => {
-        const chapters = Object.keys(quizData[selectedClass]);
+        if (loading) return <div style={{ textAlign: 'center', padding: '50px' }}>Loading chapters...</div>;
+
         return (
             <div className="chapter-selection">
                 <button
@@ -163,7 +195,6 @@ const Quiz = () => {
                             onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}
                         >
                             <h5 style={{ margin: 0, color: '#1e293b' }}>{chapter}</h5>
-                            <small style={{ color: '#64748b' }}>{quizData[selectedClass][chapter].length} Questions</small>
                         </div>
                     ))}
                 </div>
@@ -171,8 +202,7 @@ const Quiz = () => {
         );
     };
     const renderQuiz = () => {
-        const questions = quizData[selectedClass][selectedChapter];
-        if (questions.length === 0) {
+        if (!questions || questions.length === 0) {
             return (
                 <div style={{
                     textAlign: 'center',
@@ -228,12 +258,12 @@ const Quiz = () => {
                         {currentQuestion.options.map(option => (
                             <div
                                 key={option}
-                                onClick={() => handleAnswerSelect(currentQuestion.id, option)}
+                                onClick={() => handleAnswerSelect(currentQuestion._id, option)}
                                 style={{
                                     padding: '15px 20px',
                                     borderRadius: '12px',
-                                    border: `2px solid ${userAnswers[currentQuestion.id] === option ? '#1a237e' : '#e2e8f0'}`,
-                                    background: userAnswers[currentQuestion.id] === option ? '#e8eaf6' : '#fff',
+                                    border: `2px solid ${userAnswers[currentQuestion._id] === option ? '#1a237e' : '#e2e8f0'}`,
+                                    background: userAnswers[currentQuestion._id] === option ? '#e8eaf6' : '#fff',
                                     cursor: 'pointer',
                                     transition: 'all 0.2s ease',
                                     display: 'flex',
@@ -244,17 +274,17 @@ const Quiz = () => {
                                     width: '24px',
                                     height: '24px',
                                     borderRadius: '50%',
-                                    border: `2px solid ${userAnswers[currentQuestion.id] === option ? '#1a237e' : '#cbd5e1'}`,
+                                    border: `2px solid ${userAnswers[currentQuestion._id] === option ? '#1a237e' : '#cbd5e1'}`,
                                     marginRight: '15px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    {userAnswers[currentQuestion.id] === option && (
+                                    {userAnswers[currentQuestion._id] === option && (
                                         <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#1a237e' }}></div>
                                     )}
                                 </div>
-                                <span style={{ color: userAnswers[currentQuestion.id] === option ? '#1a237e' : '#475569', fontWeight: '500' }}>
+                                <span style={{ color: userAnswers[currentQuestion._id] === option ? '#1a237e' : '#475569', fontWeight: '500' }}>
                                     {option}
                                 </span>
                             </div>
@@ -315,7 +345,6 @@ const Quiz = () => {
     };
     const renderResults = () => {
         const { correct, total, percentage } = calculateScore();
-        const questions = quizData[selectedClass][selectedChapter];
         return (
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                 <div className="result-header" style={{
@@ -350,11 +379,11 @@ const Quiz = () => {
                 </div>
                 <h3 style={{ marginBottom: '20px', color: '#1a237e' }}>Review Answers</h3>
                 {questions.map((q, index) => {
-                    const userAnswer = userAnswers[q.id];
+                    const userAnswer = userAnswers[q._id];
                     const isCorrect = userAnswer === q.correctAnswer;
                     return (
                         <div
-                            key={q.id}
+                            key={q._id}
                             className="review-card"
                             style={{
                                 background: '#fff',

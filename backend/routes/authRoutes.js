@@ -143,4 +143,27 @@ router.put('/profile', protect, async (req, res) => {
         });
     }
 });
+
+// @desc    Get all students (Admin only)
+// @route   GET /api/auth/all-students
+import { authorize } from '../middleware/auth.js';
+router.get('/all-students', protect, authorize('admin'), async (req, res) => {
+    try {
+        const students = await User.find({ role: 'student' })
+            .select('-password')
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            count: students.length,
+            students
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
 export default router;

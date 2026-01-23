@@ -87,6 +87,9 @@ const Navbar = () => {
                     <Link to="/courses" className={location.pathname === '/courses' ? 'active' : ''} onClick={closeMenu}>Courses</Link>
                     <Link to="/faculty" className={location.pathname === '/faculty' ? 'active' : ''} onClick={closeMenu}>Faculty</Link>
                     <Link to="/quiz" className={location.pathname === '/quiz' ? 'active' : ''} onClick={closeMenu}>Quiz</Link>
+                    {isAuthenticated() && user && user.role === 'admin' && (
+                        <Link to="/admin" className={location.pathname.startsWith('/admin') ? 'active' : ''} onClick={closeMenu}>Admin Panel</Link>
+                    )}
                     {isAuthenticated() ? (
                         <>
                             <div style={{

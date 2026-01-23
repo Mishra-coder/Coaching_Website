@@ -13,6 +13,10 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
+import AdminDashboard from './components/Admin/AdminDashboard';
+import QuestionManager from './components/Admin/QuestionManager';
+import StudentManager from './components/Admin/StudentManager';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
 function App() {
@@ -36,6 +40,21 @@ function App() {
                             <ProtectedRoute>
                                 <Profile />
                             </ProtectedRoute>
+                        } />
+                        <Route path="/admin" element={
+                            <AdminRoute>
+                                <AdminDashboard />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/questions" element={
+                            <AdminRoute>
+                                <QuestionManager />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/students" element={
+                            <AdminRoute>
+                                <StudentManager />
+                            </AdminRoute>
                         } />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />

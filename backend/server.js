@@ -9,9 +9,16 @@ import courseRoutes from './routes/courseRoutes.js';
 import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import quizRoutes from './routes/quizRoutes.js';
 import googleAuthRoutes from './routes/google.js';
+import questionRoutes from './routes/questionRoutes.js';
 dotenv.config();
 const app = express();
 connectDB();
+
+app.use((req, res, next) => {
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+    next();
+});
+
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     credentials: true
@@ -31,6 +38,7 @@ app.use('/api/auth', googleAuthRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/quiz', quizRoutes);
+app.use('/api/questions', questionRoutes);
 app.get('/api/health', (req, res) => {
     res.status(200).json({
         success: true,

@@ -50,6 +50,10 @@ export const authAPI = {
     googleLogin: async (accessToken) => {
         const response = await api.post('/auth/google/token', { access_token: accessToken });
         return response.data;
+    },
+    getAllStudents: async () => {
+        const response = await api.get('/auth/all-students');
+        return response.data;
     }
 };
 export const quizAPI = {
@@ -59,6 +63,24 @@ export const quizAPI = {
     },
     getHistory: async () => {
         const response = await api.get('/quiz/history');
+        return response.data;
+    }
+};
+export const questionsAPI = {
+    getAll: async (filters = {}) => {
+        const response = await api.get('/questions', { params: filters });
+        return response.data;
+    },
+    create: async (questionData) => {
+        const response = await api.post('/questions', questionData);
+        return response.data;
+    },
+    update: async (id, questionData) => {
+        const response = await api.put(`/questions/${id}`, questionData);
+        return response.data;
+    },
+    delete: async (id) => {
+        const response = await api.delete(`/questions/${id}`);
         return response.data;
     }
 };
