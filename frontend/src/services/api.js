@@ -111,6 +111,10 @@ export const enrollmentsAPI = {
         const response = await api.post('/enrollments', enrollmentData);
         return response.data;
     },
+    getAll: async () => {
+        const response = await api.get('/enrollments');
+        return response.data;
+    },
     getUserEnrollments: async (userId) => {
         const response = await api.get(`/enrollments/user/${userId}`);
         return response.data;

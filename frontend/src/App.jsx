@@ -17,6 +17,7 @@ import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import QuestionManager from './components/Admin/QuestionManager';
 import StudentManager from './components/Admin/StudentManager';
+import EnrollmentManager from './components/Admin/EnrollmentManager';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
 function App() {
@@ -54,6 +55,11 @@ function App() {
                         <Route path="/admin/students" element={
                             <AdminRoute>
                                 <StudentManager />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/enrollments" element={
+                            <AdminRoute>
+                                <EnrollmentManager />
                             </AdminRoute>
                         } />
                         <Route path="/login" element={<Login />} />

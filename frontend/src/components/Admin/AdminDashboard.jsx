@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { questionsAPI, coursesAPI } from '../../services/api';
+import { questionsAPI, coursesAPI, enrollmentsAPI } from '../../services/api';
 import '../../index.css';
 
 const AdminDashboard = () => {
@@ -15,10 +15,11 @@ const AdminDashboard = () => {
             try {
                 const questions = await questionsAPI.getAll();
                 const courses = await coursesAPI.getAll();
+                const enrollments = await enrollmentsAPI.getAll();
                 setStats({
                     totalQuestions: questions.count || 0,
                     totalCourses: courses.count || 0,
-                    totalEnrolled: 150 // Mocked for now
+                    totalEnrolled: enrollments.count || 0
                 });
             } catch (error) {
                 console.error('Error fetching stats:', error);
@@ -58,8 +59,8 @@ const AdminDashboard = () => {
                 <div style={cardStyle}>
                     <h1 style={{ fontSize: '3rem', color: '#4caf50', marginBottom: '10px' }}>{stats.totalEnrolled}</h1>
                     <p style={{ color: '#666', marginBottom: '20px' }}>Student Enrollments</p>
-                    <Link to="/admin/students" className="btn-primary" style={{ display: 'inline-block', padding: '10px 20px', textDecoration: 'none', borderRadius: '8px', fontSize: '0.9rem' }}>
-                        Manage Students
+                    <Link to="/admin/enrollments" className="btn-primary" style={{ display: 'inline-block', padding: '10px 20px', textDecoration: 'none', borderRadius: '8px', fontSize: '0.9rem' }}>
+                        Manage Enrollments
                     </Link>
                 </div>
             </div>

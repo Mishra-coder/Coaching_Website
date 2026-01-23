@@ -8,6 +8,7 @@ const Profile = () => {
     const [enrollments, setEnrollments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editMode, setEditMode] = useState(false);
+    const [selectedEnrollmentDetail, setSelectedEnrollmentDetail] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -270,11 +271,123 @@ const Profile = () => {
                                                             </span>
                                                         </div>
                                                         <h5 style={{ fontWeight: '700', color: '#1e293b', marginBottom: '15px' }}>
-                                                            {enrollment.course?.title}
+                                                            {enrollment.course?.title || 'Admission Form'}
                                                         </h5>
+                                                        <button
+                                                            onClick={() => setSelectedEnrollmentDetail(enrollment)}
+                                                            className="btn-primary"
+                                                            style={{ padding: '8px 15px', fontSize: '0.85rem', borderRadius: '8px', width: '100%' }}
+                                                        >
+                                                            View Form Details
+                                                        </button>
                                                     </div>
                                                 </div>
                                             ))}
+                                        </div>
+                                    )}
+
+                                    {/* Enrollment Detail Modal */}
+                                    {selectedEnrollmentDetail && (
+                                        <div style={{
+                                            position: 'fixed',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            background: 'rgba(0,0,0,0.5)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            zIndex: 1000,
+                                            padding: '20px'
+                                        }}>
+                                            <div style={{
+                                                background: '#fff',
+                                                width: '100%',
+                                                maxWidth: '700px',
+                                                maxHeight: '90vh',
+                                                borderRadius: '20px',
+                                                overflowY: 'auto',
+                                                position: 'relative',
+                                                padding: '40px'
+                                            }}>
+                                                <button
+                                                    onClick={() => setSelectedEnrollmentDetail(null)}
+                                                    style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', fontSize: '1.5rem', color: '#94a3b8', cursor: 'pointer' }}
+                                                >
+                                                    ×
+                                                </button>
+
+                                                <div className="d-flex justify-content-between align-items-center mb-4">
+                                                    <h3 style={{ color: '#1a237e', fontWeight: '700', margin: 0 }}>My Admission Form</h3>
+                                                    <button
+                                                        onClick={() => window.print()}
+                                                        className="btn-outline"
+                                                        style={{ padding: '5px 15px', borderRadius: '8px', fontSize: '0.8rem' }}
+                                                    >
+                                                        <i className="fas fa-print me-2"></i> Print
+                                                    </button>
+                                                </div>
+
+                                                <div style={{ display: 'flex', gap: '30px', marginBottom: '30px', flexWrap: 'wrap' }}>
+                                                    <div style={{ width: '150px', height: '180px', borderRadius: '15px', background: '#f8fafc', overflow: 'hidden', border: '1px solid #e2e8f0' }}>
+                                                        {selectedEnrollmentDetail.photo ? (
+                                                            <img src={selectedEnrollmentDetail.photo} alt="Student" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        ) : (
+                                                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1' }}>
+                                                                <i className="fas fa-user-circle fa-4x"></i>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div style={{ flex: 1 }}>
+                                                        <div className="mb-3">
+                                                            <label style={{ fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>Student Name</label>
+                                                            <h4 style={{ color: '#1a237e', fontWeight: '700', margin: 0 }}>{selectedEnrollmentDetail.studentName}</h4>
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-6 mb-3">
+                                                                <label style={{ fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>Status</label>
+                                                                <div>
+                                                                    <span className="badge" style={{ background: selectedEnrollmentDetail.status === 'active' ? '#dcfce7' : '#fff7ed', color: selectedEnrollmentDetail.status === 'active' ? '#166534' : '#9a3412', borderRadius: '8px' }}>
+                                                                        {selectedEnrollmentDetail.status.toUpperCase()}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-6 mb-3">
+                                                                <label style={{ fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>Enrollment Date</label>
+                                                                <p style={{ fontWeight: '600', margin: 0 }}>{new Date(selectedEnrollmentDetail.createdAt).toLocaleDateString()}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row g-4">
+                                                    <div className="col-md-6">
+                                                        <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Father's Name</label>
+                                                        <p style={{ fontWeight: '600', color: '#1e293b', margin: 0 }}>{selectedEnrollmentDetail.fatherName}</p>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Mother's Name</label>
+                                                        <p style={{ fontWeight: '600', color: '#1e293b', margin: 0 }}>{selectedEnrollmentDetail.motherName}</p>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Date of Birth</label>
+                                                        <p style={{ fontWeight: '600', color: '#1e293b', margin: 0 }}>{selectedEnrollmentDetail.dateOfBirth.day}/{selectedEnrollmentDetail.dateOfBirth.month}/{selectedEnrollmentDetail.dateOfBirth.year}</p>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Gender</label>
+                                                        <p style={{ fontWeight: '600', color: '#1e293b', textTransform: 'capitalize', margin: 0 }}>{selectedEnrollmentDetail.gender}</p>
+                                                    </div>
+                                                    <div className="col-md-12">
+                                                        <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Aadhar Number</label>
+                                                        <p style={{ fontWeight: '600', color: '#1e293b', letterSpacing: '2px', margin: 0 }}>{selectedEnrollmentDetail.aadharNumber}</p>
+                                                    </div>
+                                                    <div className="col-md-12">
+                                                        <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Full Address</label>
+                                                        <p style={{ fontWeight: '600', color: '#1e293b', lineHeight: '1.6', margin: 0 }}>{selectedEnrollmentDetail.address}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
