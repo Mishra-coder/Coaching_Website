@@ -185,7 +185,7 @@ const QuestionManager = () => {
             </form>
 
             <div style={{ background: '#fff', padding: '30px', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0' }}>
-                <h3 style={{ color: '#1a237e', marginBottom: '20px' }}>📋 All Questions</h3>
+                <h3 style={{ color: '#1a237e', marginBottom: '20px' }}>All Questions</h3>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
                         <thead>

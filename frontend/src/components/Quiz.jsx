@@ -17,9 +17,19 @@ const Quiz = () => {
         setLoading(true);
         try {
             const res = await questionsAPI.getAll({ class: cls });
-            // Extract unique chapters with normalization (trimming whitespace)
-            const uniqueChapters = [...new Set(res.questions.map(q => q.chapter.trim()))];
-            setChapters(uniqueChapters);
+            // Extract unique chapters with normalized names and counts
+            const chapterCounts = res.questions.reduce((acc, q) => {
+                const name = q.chapter.trim();
+                acc[name] = (acc[name] || 0) + 1;
+                return acc;
+            }, {});
+
+            const chaptersWithCounts = Object.entries(chapterCounts).map(([name, count]) => ({
+                name,
+                count
+            }));
+
+            setChapters(chaptersWithCounts);
             setView('chapter-select');
         } catch (error) {
             console.error('Error fetching chapters:', error);
@@ -181,21 +191,35 @@ const Quiz = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
                     {chapters.map(chapter => (
                         <div
-                            key={chapter}
-                            onClick={() => handleChapterSelect(chapter)}
+                            key={chapter.name}
+                            onClick={() => handleChapterSelect(chapter.name)}
                             style={{
                                 background: '#fff',
-                                padding: '20px',
-                                borderRadius: '12px',
+                                padding: '25px',
+                                borderRadius: '15px',
                                 boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
                                 cursor: 'pointer',
                                 transition: 'all 0.2s ease',
-                                border: '1px solid #e2e8f0'
+                                border: '1px solid #e2e8f0',
+                                position: 'relative',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
                             }}
                             onMouseEnter={(e) => e.currentTarget.style.borderColor = '#1a237e'}
                             onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e2e8f0'}
                         >
-                            <h5 style={{ margin: 0, color: '#1e293b' }}>{chapter}</h5>
+                            <h5 style={{ margin: 0, color: '#1e293b', fontSize: '1.1rem' }}>{chapter.name}</h5>
+                            <span style={{
+                                background: '#e0e7ff',
+                                color: '#4338ca',
+                                padding: '4px 10px',
+                                borderRadius: '12px',
+                                fontSize: '0.85rem',
+                                fontWeight: '700'
+                            }}>
+                                {chapter.count} Qs
+                            </span>
                         </div>
                     ))}
                 </div>
