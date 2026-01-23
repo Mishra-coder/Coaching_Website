@@ -11,15 +11,13 @@ const Profile = () => {
     const [selectedEnrollmentDetail, setSelectedEnrollmentDetail] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
-        phone: '',
-        address: ''
+        phone: ''
     });
     useEffect(() => {
         if (user) {
             setFormData({
                 name: user.name || '',
-                phone: user.phone || '',
-                address: user.address || ''
+                phone: user.phone || ''
             });
             fetchData();
         }
@@ -174,16 +172,7 @@ const Profile = () => {
                                                     style={{ padding: '12px', borderRadius: '10px', border: '1px solid #e2e8f0' }}
                                                 />
                                             </div>
-                                            <div className="mb-4">
-                                                <label className="form-label" style={{ fontWeight: '600', color: '#1e293b' }}>Address</label>
-                                                <textarea
-                                                    className="form-control"
-                                                    rows="3"
-                                                    value={formData.address}
-                                                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                                                    style={{ padding: '12px', borderRadius: '10px', border: '1px solid #e2e8f0' }}
-                                                ></textarea>
-                                            </div>
+
                                             <div className="d-flex gap-3">
                                                 <button type="submit" className="btn-primary">Save Changes</button>
                                                 <button
@@ -225,15 +214,7 @@ const Profile = () => {
                                                     <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#1e293b', margin: 0 }}>{user?.phone || 'Not set'}</p>
                                                 </div>
                                             </div>
-                                            <div className="col-md-6">
-                                                <div style={{ padding: '25px', background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)', borderRadius: '15px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
-                                                        <i className="fas fa-map-marker-alt" style={{ color: '#1a237e', fontSize: '1.2rem', marginRight: '10px' }}></i>
-                                                        <label style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, fontWeight: '500' }}>Address</label>
-                                                    </div>
-                                                    <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#1e293b', margin: 0 }}>{user?.address || 'Not set'}</p>
-                                                </div>
-                                            </div>
+
                                         </div>
                                     )}
                                 </div>
