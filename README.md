@@ -7,7 +7,7 @@ A modern, full-stack web application for Success Mantra coaching institute featu
 ![Node.js](https://img.shields.io/badge/Node.js-Express-green)
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
 
-## � About The Project
+## About The Project
 
 Success Mantra Institute is a comprehensive coaching platform designed for Class 10th and 12th students. The platform provides:
 - **Interactive Quiz System** with board-level mathematics questions
@@ -16,7 +16,7 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 - **User Authentication** with JWT-based security
 - **Responsive Design** optimized for all devices (mobile, tablet, desktop)
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 | Technology | Version | Purpose |
@@ -48,18 +48,18 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 - **Smooth animations** and transitions
 - **Google Fonts** (Outfit family)
 
-## 🚀 Features
+## Features
 
-### ✨ Core Features
-- 🔐 **User Authentication** - Secure JWT-based login/registration & Google OAuth Integration
-- 📚 **Course Catalog** - Foundation, Board, and Competitive exam courses
-- 📝 **Online Enrollment** - Digital admission form with photo upload
-- 🎯 **Quiz System** - Chapter-wise practice questions for Class 10 & 12
-- 📊 **XP System** - Gamified learning with experience points
-- 👤 **User Profile** - Personal dashboard with enrollment history
-- 📱 **Fully Responsive** - Works seamlessly on all devices
+### Core Features
+- **User Authentication** - Secure JWT-based login/registration & Google OAuth Integration
+- **Course Catalog** - Foundation, Board, and Competitive exam courses
+- **Online Enrollment** - Digital admission form with photo upload
+- **Quiz System** - Chapter-wise practice questions for Class 10 & 12
+- **XP System** - Gamified learning with experience points
+- **User Profile** - Personal dashboard with enrollment history
+- **Fully Responsive** - Works seamlessly on all devices
 
-### 🎨 UI/UX Features
+### UI/UX Features
 - Modern vibrant color scheme (Indigo & Amber)
 - Smooth page transitions and animations
 - Touch-optimized for mobile devices
@@ -67,7 +67,7 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 - Interactive hover effects
 - Mobile-first responsive design
 
-### 🧮 Quiz Features
+### Quiz Features
 - Class 10 & 12 Mathematics questions
 - Chapter-wise organization
 - Real-time score calculation
@@ -75,7 +75,7 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 - XP rewards for completion
 - Progress tracking
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 success-mantra-react/
@@ -127,7 +127,7 @@ success-mantra-react/
 └── README.md
 ```
 
-## 🔧 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Node.js (v16 or higher)
@@ -212,7 +212,7 @@ cd backend
 npm run seed
 ```
 
-## 🚀 Running the Application
+## Running the Application
 
 ### Using Startup Scripts (Recommended)
 
@@ -242,7 +242,7 @@ cd frontend
 npm run dev
 ```
 
-## 🔑 API Endpoints
+## API Endpoints
 
 ### Authentication (`/api/auth`)
 | Method | Endpoint | Description | Auth Required |
@@ -271,7 +271,7 @@ npm run dev
 | POST | `/submit` | Submit quiz result | Yes |
 | GET | `/history` | Get quiz history | Yes |
 
-## 📱 Key Components
+## Key Components
 
 ### Frontend Components
 - **Navbar** - Navigation with XP display
@@ -290,7 +290,7 @@ npm run dev
 - **Enrollment** - Student enrollments
 - **QuizResult** - Quiz scores & history
 
-## 🎯 Usage Guide
+## Usage Guide
 
 ### For Students
 1. **Register** - Create an account
@@ -304,7 +304,7 @@ npm run dev
 - View all student enrollments
 - Monitor quiz performance
 
-## 🔒 Security Features
+## Security Features
 - Password hashing with bcrypt
 - JWT token-based authentication
 - Protected routes and API endpoints
@@ -312,7 +312,7 @@ npm run dev
 - Input validation
 - Secure file upload handling
 
-## 📊 Database Schema
+## Database Schema
 
 ### User Collection
 ```javascript
@@ -346,7 +346,7 @@ npm run dev
 }
 ```
 
-## 🎨 Design System
+## Design System
 
 ### Colors
 - **Primary**: Vibrant Indigo (#4f46e5)
@@ -358,17 +358,17 @@ npm run dev
 - **Font Family**: Outfit (Google Fonts)
 - **Weights**: 300, 400, 500, 600, 700, 800
 
-## 🤝 Contributing
+## Contributing
 This is an educational project. Feel free to fork and modify for learning purposes.
 
-## 📝 License
+## License
 Educational purposes only.
 
-## 👨‍💻 Developer
+## Developer
 Developed as a full-stack coaching platform project.
 
 ---
 
-**Made with ❤️ for Success Mantra Institute**
+**Made with for Success Mantra Institute**
 
-**Happy Learning! 📚✨**
+**Happy Learning! **
