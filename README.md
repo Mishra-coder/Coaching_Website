@@ -50,31 +50,42 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 
 ## Features
 
-### ✨ Core Features
-- 🔐 **Unified Authentication** - Consistently use "SignUp" instead of "Register"; integrated Student and Admin auth into single pages.
-- 🔑 **Admin Security** - Protected Admin registration and login with a Secret Key (`admin123`).
-- 📚 **Course Catalog** - Foundation, Board, and Competitive exam courses
-- 📝 **Online Enrollment** - Digital admission form with photo upload
-- 🎯 **Quiz System** - Chapter-wise practice questions for Class 10 & 12
-- 📊 **XP System** - Gamified learning with experience points
-- 👤 **User Profile** - Personal dashboard with enrollment history
-- 📱 **Fully Responsive** - Works seamlessly on all devices
+### Core Features
+- **Unified Authentication** - Single login/signup pages for both Students and Admins with role selection
+- **Admin Security** - Protected Admin registration and login with Secret Key (`admin123`)
+- **Course Catalog** - Foundation, Board, and Competitive exam courses with detailed information
+- **Online Enrollment** - Digital admission form with photo upload capability
+- **Interactive Quiz System** - Dynamic chapter-wise practice questions for Class 10 & 12
+- **Admin Panel** - Comprehensive dashboard for managing enrollments, students, courses, and quizzes
+- **User Profile** - Personal dashboard with enrollment history and quiz performance
+- **Fully Responsive** - Seamless experience across all devices (mobile, tablet, desktop)
 
 ### UI/UX Features
 - Modern vibrant color scheme (Indigo & Amber)
-- Smooth page transitions and animations
+- Smooth page transitions and micro-animations
 - Touch-optimized for mobile devices
-- Glassmorphism card designs
-- Interactive hover effects
-- Mobile-first responsive design
+- Glassmorphism card designs with depth
+- Interactive hover effects and visual feedback
+- Mobile-first responsive design approach
+- Accessibility-focused interface
 
 ### Quiz Features
-- Class 10 & 12 Mathematics questions
-- Chapter-wise organization
-- Real-time score calculation
-- Answer review with explanations
-- XP rewards for completion
-- Progress tracking
+- **Dynamic Question Management** - Admin can add, edit, and delete questions
+- Class 10 & 12 Mathematics questions organized by chapters
+- Real-time score calculation and instant feedback
+- Answer review with correct answer highlighting
+- XP rewards system for gamified learning
+- Progress tracking and quiz history
+- Chapter-wise question count display
+
+### Admin Panel Features
+- **Student Management** - View all registered students with detailed information
+- **Enrollment Management** - Review and manage student enrollments
+- **Course Management** - Add, edit, and manage course offerings
+- **Question Bank** - Create and manage quiz questions by class and chapter
+- **Dashboard Analytics** - Overview of platform statistics
+- Role-based access control with secure authentication
+
 
 ## Project Structure
 
@@ -128,7 +139,33 @@ success-mantra-react/
 └── README.md
 ```
 
+## Recent Updates & Bug Fixes
+
+### Version 2.1.0 (January 2026)
+**Fixed Admin Login Issue**
+- Resolved authentication bug where login button would get stuck on "Logging in..."
+- Fixed `AuthContext.jsx` to properly return user object after successful login
+- Admin role verification now works correctly
+
+**Code Cleanup**
+- Removed unused files (`quizData.js`, test scripts)
+- Cleaned up unused imports (removed `quizAPI` from `StudentManager.jsx`)
+- Improved code organization and maintainability
+
+**Authentication Improvements**
+- Fixed admin account creation to support local password authentication
+- Ensured signup and login work with same credentials
+- Added proper error handling for authentication failures
+
+### Version 2.0.0 (December 2025)
+- Unified authentication pages for students and admins
+- Added admin secret key security layer
+- Implemented dynamic quiz question management
+- Enhanced admin panel with comprehensive management features
+- Improved responsive design across all pages
+
 ## Installation & Setup
+
 
 ### Prerequisites
 - Node.js (v16 or higher)

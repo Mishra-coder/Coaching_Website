@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
             if (response.success) {
                 const { token, user } = response;
                 saveAuthData(user, token);
-                return { success: true };
+                return { success: true, user };
             }
         } catch (error) {
             return {
@@ -58,6 +58,7 @@ export const AuthProvider = ({ children }) => {
             };
         }
     };
+
 
     const logout = () => {
         localStorage.removeItem('token');

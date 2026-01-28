@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { authAPI, quizAPI } from '../../services/api';
+import { authAPI } from '../../services/api';
+
 
 const StudentManager = () => {
     const [students, setStudents] = useState([]);
