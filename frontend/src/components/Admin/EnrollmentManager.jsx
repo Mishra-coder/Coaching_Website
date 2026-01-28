@@ -34,45 +34,39 @@ const EnrollmentManager = () => {
         }
     };
 
-    if (loading) return <div style={{ padding: '40px' }}>Loading enrollments...</div>;
+    if (loading) return <div className="admin-container">Loading enrollments...</div>;
 
     return (
-        <div style={{ padding: '40px' }}>
-            <h2 style={{ marginBottom: '30px', color: '#1a237e' }}>Enrollment Manager</h2>
+        <div className="admin-container">
+            <h2 className="admin-header-title">Enrollment Manager</h2>
 
-            <div style={{ display: 'grid', gridTemplateColumns: selectedEnrollment ? '1fr 1.2fr' : '1fr', gap: '30px', alignItems: 'start' }}>
-                <div style={{ background: '#fff', padding: '25px', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0' }}>
+            <div className="admin-manager-layout" style={{ gridTemplateColumns: selectedEnrollment ? '1fr 1.2fr' : '1fr' }}>
+                <div className="admin-card">
                     <h4 style={{ marginBottom: '20px' }}>All Submissions</h4>
-                    <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <div className="admin-table-wrapper">
+                        <table className="admin-table">
                             <thead>
-                                <tr style={{ textAlign: 'left', borderBottom: '2px solid #f1f5f9' }}>
-                                    <th style={{ padding: '15px', color: '#64748b' }}>Date</th>
-                                    <th style={{ padding: '15px', color: '#64748b' }}>Student Name</th>
-                                    <th style={{ padding: '15px', color: '#64748b' }}>Status</th>
-                                    <th style={{ padding: '15px', color: '#64748b' }}>Action</th>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Student Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {enrollments.map((en) => (
-                                    <tr key={en._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                        <td style={{ padding: '15px', fontSize: '0.9rem' }}>{new Date(en.createdAt).toLocaleDateString()}</td>
-                                        <td style={{ padding: '15px', fontWeight: '600' }}>{en.studentName}</td>
-                                        <td style={{ padding: '15px' }}>
-                                            <span style={{
-                                                padding: '5px 10px',
-                                                borderRadius: '20px',
-                                                fontSize: '0.8rem',
-                                                background: (en.status === 'active' || en.status === 'completed') ? '#dcfce7' : en.status === 'pending' ? '#fef9c3' : '#fee2e2',
-                                                color: (en.status === 'active' || en.status === 'completed') ? '#166534' : en.status === 'pending' ? '#854d0e' : '#991b1b'
-                                            }}>
+                                    <tr key={en._id}>
+                                        <td>{new Date(en.createdAt).toLocaleDateString()}</td>
+                                        <td style={{ fontWeight: '600' }}>{en.studentName}</td>
+                                        <td>
+                                            <span className={`status-badge ${en.status}`}>
                                                 {en.status === 'completed' ? 'ADMISSION COMPLETED' : en.status.toUpperCase()}
                                             </span>
                                         </td>
-                                        <td style={{ padding: '15px' }}>
+                                        <td>
                                             <button
                                                 onClick={() => setSelectedEnrollment(en)}
-                                                style={{ padding: '8px 15px', borderRadius: '8px', border: '1px solid #1a237e', background: 'none', color: '#1a237e', cursor: 'pointer', fontWeight: '600' }}
+                                                className="btn-action btn-view"
                                             >
                                                 View Details
                                             </button>
@@ -85,46 +79,47 @@ const EnrollmentManager = () => {
                 </div>
 
                 {selectedEnrollment && (
-                    <div className="fade-in" style={{ background: '#fff', padding: '35px', borderRadius: '25px', boxShadow: '0 15px 40px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0', sticky: 'top' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+                    <div className="admin-card fade-in" style={{ position: 'sticky', top: '20px' }}>
+                        <div className="details-panel-header">
                             <h3 style={{ margin: 0, color: '#1a237e' }}>Admission Details</h3>
-                            <button onClick={() => setSelectedEnrollment(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '1.5rem' }}>×</button>
+                            <button onClick={() => setSelectedEnrollment(null)} className="close-btn">&times;</button>
                         </div>
 
                         <div style={{ display: 'flex', gap: '25px', marginBottom: '30px' }}>
                             {selectedEnrollment.photo ? (
-                                <img src={selectedEnrollment.photo} alt="Student" style={{ width: '120px', height: '150px', objectFit: 'cover', borderRadius: '15px', border: '3px solid #f1f5f9' }} />
+                                <img src={selectedEnrollment.photo} alt="Student" className="student-photo-preview-large" />
                             ) : (
-                                <div style={{ width: '120px', height: '150px', background: '#f8fafc', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px dashed #cbd5e1' }}>
+                                <div className="student-photo-preview-large" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
                                     <i className="fas fa-user-circle" style={{ fontSize: '3rem', color: '#cbd5e1' }}></i>
                                 </div>
                             )}
-                            <div>
+                            <div style={{ flex: 1 }}>
                                 <h4 style={{ margin: '0 0 10px 0', fontWeight: '800' }}>{selectedEnrollment.studentName}</h4>
                                 <p style={{ color: '#64748b', marginBottom: '15px' }}>Application ID: <br /><small>{selectedEnrollment._id}</small></p>
+
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                                    <div style={{ display: 'flex', gap: '10px' }}>
-                                        <select
-                                            value={selectedEnrollment.status}
-                                            onChange={(e) => handleStatusUpdate(selectedEnrollment._id, e.target.value, selectedEnrollment.adminRemarks)}
-                                            style={{ padding: '10px 15px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', flex: 1 }}
-                                        >
-                                            <option value="pending">Pending</option>
-                                            <option value="active">Active (Approve)</option>
-                                            <option value="cancelled">Cancel (Reject)</option>
-                                        </select>
-                                    </div>
+                                    <select
+                                        value={selectedEnrollment.status}
+                                        onChange={(e) => handleStatusUpdate(selectedEnrollment._id, e.target.value, selectedEnrollment.adminRemarks)}
+                                        className="form-input"
+                                    >
+                                        <option value="pending">Pending</option>
+                                        <option value="active">Active (Approve)</option>
+                                        <option value="cancelled">Cancel (Reject)</option>
+                                    </select>
+
                                     <div>
-                                        <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700', display: 'block', marginBottom: '8px' }}>Admin Remarks / Reason</label>
+                                        <label className="detail-label">Admin Remarks / Reason</label>
                                         <textarea
                                             value={selectedEnrollment.adminRemarks || ''}
                                             onChange={(e) => setSelectedEnrollment({ ...selectedEnrollment, adminRemarks: e.target.value })}
                                             placeholder="e.g. Please upload a clearer photo or fix Aadhar number"
-                                            style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.9rem', minHeight: '80px' }}
+                                            className="form-input"
+                                            style={{ minHeight: '80px' }}
                                         />
                                         <button
                                             onClick={() => handleStatusUpdate(selectedEnrollment._id, selectedEnrollment.status, selectedEnrollment.adminRemarks)}
-                                            style={{ marginTop: '10px', padding: '10px 20px', borderRadius: '8px', background: '#1a237e', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 'bold', width: '100%' }}
+                                            className="btn-primary w-100 mt-2"
                                         >
                                             Update Status & Remarks
                                         </button>
@@ -133,34 +128,34 @@ const EnrollmentManager = () => {
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '25px' }}>
+                        <div className="details-grid">
                             <div>
-                                <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Father's Name</label>
-                                <p style={{ fontWeight: '600', color: '#1e293b' }}>{selectedEnrollment.fatherName}</p>
+                                <label className="detail-label">Father's Name</label>
+                                <p className="info-value">{selectedEnrollment.fatherName}</p>
                             </div>
                             <div>
-                                <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Mother's Name</label>
-                                <p style={{ fontWeight: '600', color: '#1e293b' }}>{selectedEnrollment.motherName}</p>
+                                <label className="detail-label">Mother's Name</label>
+                                <p className="info-value">{selectedEnrollment.motherName}</p>
                             </div>
                             <div>
-                                <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Date of Birth</label>
-                                <p style={{ fontWeight: '600', color: '#1e293b' }}>{selectedEnrollment.dateOfBirth.day}/{selectedEnrollment.dateOfBirth.month}/{selectedEnrollment.dateOfBirth.year}</p>
+                                <label className="detail-label">Date of Birth</label>
+                                <p className="info-value">{selectedEnrollment.dateOfBirth.day}/{selectedEnrollment.dateOfBirth.month}/{selectedEnrollment.dateOfBirth.year}</p>
                             </div>
                             <div>
-                                <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Gender</label>
-                                <p style={{ fontWeight: '600', color: '#1e293b', textTransform: 'capitalize' }}>{selectedEnrollment.gender}</p>
+                                <label className="detail-label">Gender</label>
+                                <p className="info-value" style={{ textTransform: 'capitalize' }}>{selectedEnrollment.gender}</p>
                             </div>
                             <div style={{ gridColumn: 'span 2' }}>
-                                <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Aadhar Number</label>
-                                <p style={{ fontWeight: '600', color: '#1e293b', letterSpacing: '2px' }}>{selectedEnrollment.aadharNumber}</p>
+                                <label className="detail-label">Aadhar Number</label>
+                                <p className="info-value" style={{ letterSpacing: '1px' }}>{selectedEnrollment.aadharNumber}</p>
                             </div>
                             <div>
-                                <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Mobile Number</label>
-                                <p style={{ fontWeight: '600', color: '#1e293b' }}>{selectedEnrollment.mobileNumber}</p>
+                                <label className="detail-label">Mobile Number</label>
+                                <p className="info-value">{selectedEnrollment.mobileNumber}</p>
                             </div>
                             <div style={{ gridColumn: 'span 2' }}>
-                                <label style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Address</label>
-                                <p style={{ fontWeight: '600', color: '#1e293b', lineHeight: '1.6' }}>{selectedEnrollment.address}</p>
+                                <label className="detail-label">Address</label>
+                                <p className="info-value">{selectedEnrollment.address}</p>
                             </div>
                         </div>
                     </div>

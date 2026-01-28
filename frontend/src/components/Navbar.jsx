@@ -50,19 +50,16 @@ const Navbar = () => {
     if (isAuthPage) return null;
 
     return (
-        <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`} style={{
-            backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)',
-            boxShadow: isScrolled ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
-        }}>
+        <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
             <div className="container nav-container">
-                <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center' }} onClick={closeNav}>
-                    <img src={logo} alt="Logo" style={{ height: '45px', marginRight: '10px' }} />
-                    <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1' }}>
+                <Link to="/" className="nav-logo-link" onClick={closeNav}>
+                    <img src={logo} alt="Logo" className="footer-logo-img" />
+                    <div className="footer-logo-text">
                         <div>
-                            <span style={{ color: '#1a237e', fontWeight: '800', fontSize: '24px' }}>Success</span>
-                            <span style={{ color: '#ffab00', fontWeight: '800', fontSize: '24px', marginLeft: '5px', textShadow: '1px 1px 0 #000' }}>मंत्रा</span>
+                            <span className="nav-brand-main">Success</span>
+                            <span className="nav-brand-sub">मंत्रा</span>
                         </div>
-                        <span style={{ color: '#1a237e', fontSize: '14px', fontWeight: '600', letterSpacing: '1px', marginTop: '2px' }}>INSTITUTE</span>
+                        <span className="nav-brand-tag">INSTITUTE</span>
                     </div>
                 </Link>
 
@@ -79,30 +76,30 @@ const Navbar = () => {
 
                     {isAuthenticated() ? (
                         <>
-                            <div style={{ display: 'flex', alignItems: 'center', background: '#fff7ed', border: '1px solid #ffedd5', borderRadius: '50px', padding: '4px 12px 4px 4px', marginRight: '10px' }}>
-                                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '8px', boxShadow: '0 2px 4px rgba(245, 158, 11, 0.3)' }}>
+                            <div className="nav-xp-container">
+                                <div className="nav-xp-icon">
                                     <i className="fas fa-bolt" style={{ color: '#fff', fontSize: '0.8rem' }}></i>
                                 </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.1' }}>
-                                    <span style={{ fontSize: '0.65rem', color: '#9a3412', fontWeight: '600', textTransform: 'uppercase' }}>XP</span>
-                                    <span style={{ fontSize: '0.9rem', color: '#1e293b', fontWeight: '800' }}>{xpBalance}</span>
+                                <div className="nav-xp-details">
+                                    <span className="xp-label">XP</span>
+                                    <span className="xp-value">{xpBalance}</span>
                                 </div>
                             </div>
 
-                            <Link to="/profile" className="btn-outline-primary" style={{ marginRight: '8px', border: '1px solid #1a237e', padding: '6px 12px', borderRadius: '20px', textDecoration: 'none', color: '#1a237e', fontSize: '0.9rem' }} onClick={closeNav}>
+                            <Link to="/profile" className="btn-profile-outline" onClick={closeNav}>
                                 Profile
                             </Link>
 
-                            <Link to="/enroll" className="btn-primary" style={{ padding: '6px 12px', fontSize: '0.9rem', marginRight: '8px' }} onClick={closeNav}>Enroll</Link>
+                            <Link to="/enroll" className="btn-primary btn-nav-action" onClick={closeNav}>Enroll</Link>
 
-                            <button onClick={onLogout} style={{ background: '#dc3545', color: 'white', border: 'none', padding: '6px 16px', borderRadius: '25px', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}>
+                            <button onClick={onLogout} className="btn-logout">
                                 Logout
                             </button>
                         </>
                     ) : (
                         <>
-                            <Link to="/register" className="btn-secondary" onClick={closeNav} style={{ marginRight: '10px' }}>SignUp</Link>
-                            <Link to="/login" className="btn-primary" onClick={closeNav} style={{ animation: 'pulse-glow 2s infinite', boxShadow: '0 0 20px rgba(79, 70, 229, 0.5)' }}>Login</Link>
+                            <Link to="/register" className="btn-secondary btn-signup" onClick={closeNav}>SignUp</Link>
+                            <Link to="/login" className="btn-primary btn-login-pulse" onClick={closeNav}>Login</Link>
                         </>
                     )}
                 </div>

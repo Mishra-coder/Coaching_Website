@@ -1,33 +1,34 @@
 import mongoose from 'mongoose';
+
 const courseSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'Please provide a course title'],
+        required: [true, 'Course title is required'],
         trim: true
     },
     description: {
         type: String,
-        required: [true, 'Please provide a course description']
+        required: [true, 'Course description is required']
     },
     class: {
         type: Number,
-        required: [true, 'Please specify the class'],
+        required: [true, 'Class is required'],
         min: 1,
         max: 12
     },
     medium: {
         type: String,
         enum: ['English', 'Hindi', 'Both'],
-        required: [true, 'Please specify the medium']
+        required: [true, 'Medium is required']
     },
     price: {
         type: Number,
-        required: [true, 'Please provide a price'],
+        required: [true, 'Price is required'],
         min: 0
     },
     duration: {
         type: String,
-        required: [true, 'Please provide duration'],
+        required: [true, 'Duration is required'],
         default: '1 Year'
     },
     features: [{
@@ -45,5 +46,6 @@ const courseSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+
 const Course = mongoose.model('Course', courseSchema);
 export default Course;

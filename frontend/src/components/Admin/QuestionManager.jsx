@@ -68,70 +68,56 @@ const QuestionManager = () => {
     };
 
     return (
-        <div style={{ padding: '40px' }}>
-            <h2 style={{ marginBottom: '30px', color: '#1a237e' }}>Question Manager</h2>
+        <div className="admin-container">
+            <h2 className="admin-header-title">Question Manager</h2>
 
             {statusMessage.text && (
-                <div style={{
-                    padding: '15px 25px',
-                    borderRadius: '12px',
-                    marginBottom: '20px',
-                    backgroundColor: statusMessage.type === 'success' ? '#ecfdf5' : '#fef2f2',
-                    color: statusMessage.type === 'success' ? '#059669' : '#dc2626',
-                    border: `1px solid ${statusMessage.type === 'success' ? '#10b981' : '#f87171'}`,
-                    fontWeight: '600',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    animation: 'slideIn 0.3s ease-out'
-                }}>
+                <div className={`status-message ${statusMessage.type === 'success' ? 'status-success' : 'status-error'}`}>
                     {statusMessage.text}
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} style={{ background: '#fff', padding: '30px', borderRadius: '20px', marginBottom: '40px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0' }}>
+            <form onSubmit={handleSubmit} className="admin-card" style={{ marginBottom: '40px' }}>
                 <h3 style={{ color: '#1a237e', marginBottom: '20px' }}>{isEditing ? '📝 Edit Question' : '➕ Add New Question'}</h3>
-                <div style={{ display: 'grid', gap: '20px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontWeight: '600', color: '#475569' }}>Question Text</label>
+
+                <div className="question-form-grid">
+                    <div className="form-group">
+                        <label className="form-label">Question Text</label>
                         <textarea
                             name="question"
                             value={currentQuestion.question}
                             onChange={handleInputChange}
                             placeholder="Type your question here..."
                             required
-                            style={{ padding: '15px', borderRadius: '12px', border: '2px solid #e2e8f0', minHeight: '100px', outline: 'none', transition: 'border-color 0.2s' }}
-                            onFocus={(e) => e.target.style.borderColor = '#1a237e'}
-                            onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+                            className="form-input"
+                            style={{ minHeight: '100px' }}
                         />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
+                    <div className="options-grid-form">
                         {currentQuestion.options.map((opt, i) => (
-                            <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <label style={{ fontWeight: '600', color: '#475569' }}>Option {i + 1}</label>
+                            <div key={i} className="form-group">
+                                <label className="form-label">Option {i + 1}</label>
                                 <input
                                     value={opt}
                                     onChange={(e) => handleOptionChange(i, e.target.value)}
                                     placeholder={`Enter option ${i + 1}`}
                                     required
-                                    style={{ padding: '12px', borderRadius: '10px', border: '2px solid #e2e8f0', outline: 'none' }}
-                                    onFocus={(e) => e.target.style.borderColor = '#1a237e'}
-                                    onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+                                    className="form-input"
                                 />
                             </div>
                         ))}
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            <label style={{ fontWeight: '600', color: '#475569' }}>Correct Answer</label>
+                    <div className="select-filters-grid">
+                        <div className="form-group">
+                            <label className="form-label">Correct Answer</label>
                             <select
                                 name="correctAnswer"
                                 value={currentQuestion.correctAnswer}
                                 onChange={handleInputChange}
                                 required
-                                style={{ padding: '12px', borderRadius: '10px', border: '2px solid #e2e8f0', backgroundColor: '#fff', outline: 'none' }}
+                                className="form-input"
                             >
                                 <option value="">Select the correct option</option>
                                 {currentQuestion.options.filter(opt => opt.trim() !== '').map((opt, i) => (
@@ -139,33 +125,33 @@ const QuestionManager = () => {
                                 ))}
                             </select>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            <label style={{ fontWeight: '600', color: '#475569' }}>Class</label>
+                        <div className="form-group">
+                            <label className="form-label">Class</label>
                             <select
                                 name="class"
                                 value={currentQuestion.class}
                                 onChange={handleInputChange}
-                                style={{ padding: '12px', borderRadius: '10px', border: '2px solid #e2e8f0', outline: 'none' }}
+                                className="form-input"
                             >
                                 <option value="10">Class 10</option>
                                 <option value="12">Class 12</option>
                             </select>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            <label style={{ fontWeight: '600', color: '#475569' }}>Chapter Name</label>
+                        <div className="form-group">
+                            <label className="form-label">Chapter Name</label>
                             <input
                                 name="chapter"
                                 value={currentQuestion.chapter}
                                 onChange={handleInputChange}
                                 placeholder="e.g. Real Numbers"
                                 required
-                                style={{ padding: '12px', borderRadius: '10px', border: '2px solid #e2e8f0', outline: 'none' }}
+                                className="form-input"
                             />
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
-                        <button type="submit" className="btn-primary" style={{ flex: 2, padding: '15px' }}>
+                    <div style={{ display: 'flex', gap: '15px' }}>
+                        <button type="submit" className="btn-primary" style={{ flex: 2 }}>
                             {isEditing ? 'Update Question' : 'Save Question'}
                         </button>
                         {isEditing && (
@@ -175,7 +161,8 @@ const QuestionManager = () => {
                                     setIsEditing(false);
                                     setCurrentQuestion({ question: '', options: ['', '', '', ''], correctAnswer: '', class: '10', chapter: '' });
                                 }}
-                                style={{ flex: 1, background: '#f1f5f9', color: '#475569', padding: '15px', borderRadius: '12px', border: 'none', fontWeight: '600', cursor: 'pointer' }}
+                                className="btn-secondary"
+                                style={{ flex: 1 }}
                             >
                                 Cancel
                             </button>
@@ -184,52 +171,54 @@ const QuestionManager = () => {
                 </div>
             </form>
 
-            <div style={{ background: '#fff', padding: '30px', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0' }}>
+            <div className="admin-card">
                 <h3 style={{ color: '#1a237e', marginBottom: '20px' }}>All Questions</h3>
-                <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+                <div className="admin-table-wrapper">
+                    <table className="admin-table">
                         <thead>
-                            <tr style={{ textAlign: 'left', borderBottom: '2px solid #f1f5f9' }}>
-                                <th style={{ padding: '15px', color: '#64748b' }}>Class</th>
-                                <th style={{ padding: '15px', color: '#64748b' }}>Chapter</th>
-                                <th style={{ padding: '15px', color: '#64748b' }}>Question</th>
-                                <th style={{ padding: '15px', color: '#64748b' }}>Actions</th>
+                            <tr>
+                                <th>Class</th>
+                                <th>Chapter</th>
+                                <th>Question</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {questions.map((q) => (
-                                <tr key={q._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                                    <td style={{ padding: '15px', fontWeight: '600' }}>Class {q.class}</td>
-                                    <td style={{ padding: '15px', color: '#1a237e' }}>{q.chapter}</td>
-                                    <td style={{ padding: '15px', maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{q.question}</td>
-                                    <td style={{ padding: '15px', display: 'flex', gap: '10px' }}>
-                                        <button
-                                            onClick={() => {
-                                                setIsEditing(true);
-                                                setCurrentQuestion(q);
-                                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                                            }}
-                                            style={{ padding: '8px 15px', borderRadius: '8px', border: '1px solid #1a237e', background: 'none', color: '#1a237e', cursor: 'pointer', fontWeight: '600' }}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={async () => {
-                                                if (window.confirm('Are you sure you want to delete this question?')) {
-                                                    try {
-                                                        await questionsAPI.delete(q._id);
-                                                        fetchQuestions();
-                                                        setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
-                                                        setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
-                                                    } catch (error) {
-                                                        console.error('Delete error:', error);
+                                <tr key={q._id}>
+                                    <td style={{ fontWeight: '600' }}>Class {q.class}</td>
+                                    <td style={{ color: '#1a237e' }}>{q.chapter}</td>
+                                    <td style={{ maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{q.question}</td>
+                                    <td>
+                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                            <button
+                                                onClick={() => {
+                                                    setIsEditing(true);
+                                                    setCurrentQuestion(q);
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                }}
+                                                className="btn-action btn-view"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={async () => {
+                                                    if (window.confirm('Are you sure you want to delete this question?')) {
+                                                        try {
+                                                            await questionsAPI.delete(q._id);
+                                                            fetchQuestions();
+                                                            setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
+                                                            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+                                                        } catch (error) {
+                                                            console.error('Delete error:', error);
+                                                        }
                                                     }
-                                                }
-                                            }}
-                                            style={{ padding: '8px 15px', borderRadius: '8px', border: '1px solid #ef4444', background: 'none', color: '#ef4444', cursor: 'pointer', fontWeight: '600' }}
-                                        >
-                                            Delete
-                                        </button>
+                                                }}
+                                                className="btn-action btn-delete"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

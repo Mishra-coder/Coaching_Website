@@ -27,68 +27,38 @@ const FAQ = () => {
     };
 
     return (
-        <section className="faq-section" style={{ padding: '80px 0', background: '#fff' }}>
+        <section className="faq-section">
             <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-lg-8">
-                        <div className="text-center mb-5">
-                            <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e293b' }}>
-                                Frequently Asked <span style={{ color: '#1a237e' }}>Questions</span>
-                            </h2>
-                        </div>
+                <div className="faq-wrapper">
+                    <div className="section-header text-center" style={{ marginBottom: '40px' }}>
+                        <h2 className="section-title">
+                            Frequently Asked <span className="highlight">Questions</span>
+                        </h2>
+                    </div>
 
-                        <div className="accordion-list">
-                            {questionsList.map((item, index) => (
-                                <div key={index} style={{
-                                    marginBottom: '20px',
-                                    border: '1px solid rgba(0,0,0,0.05)',
-                                    borderRadius: '16px',
-                                    overflow: 'hidden',
-                                    boxShadow: selectedId === index ? '0 10px 25px -5px rgba(0, 0, 0, 0.1)' : '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
-                                    transition: 'all 0.3s ease',
-                                    background: '#fff'
-                                }}>
-                                    <button
-                                        onClick={() => toggleAccordion(index)}
-                                        style={{
-                                            width: '100%',
-                                            padding: '25px',
-                                            background: '#fff',
-                                            border: 'none',
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            cursor: 'pointer',
-                                            textAlign: 'left'
-                                        }}
-                                    >
-                                        <span style={{
-                                            fontWeight: '700',
-                                            fontSize: '1.1rem',
-                                            color: selectedId === index ? '#4f46e5' : '#1e293b'
-                                        }}>
-                                            {item.title}
-                                        </span>
-                                        <i className={`fas fa-chevron-down`} style={{
-                                            transform: selectedId === index ? 'rotate(180deg)' : 'rotate(0deg)',
-                                            transition: 'transform 0.3s ease',
-                                            color: '#64748b'
-                                        }}></i>
-                                    </button>
+                    <div className="faq-list">
+                        {questionsList.map((item, index) => (
+                            <div
+                                key={index}
+                                className={`faq-item ${selectedId === index ? 'active' : ''}`}
+                            >
+                                <button
+                                    onClick={() => toggleAccordion(index)}
+                                    className="faq-button"
+                                >
+                                    <span className="faq-question">
+                                        {item.title}
+                                    </span>
+                                    <i className="fas fa-chevron-down faq-toggle-icon"></i>
+                                </button>
 
-                                    <div style={{
-                                        maxHeight: selectedId === index ? '200px' : '0',
-                                        overflow: 'hidden',
-                                        transition: 'max-height 0.3s ease-out',
-                                        background: '#fff'
-                                    }}>
-                                        <div style={{ padding: '0 20px 20px', color: '#64748b', lineHeight: '1.6' }}>
-                                            {item.content}
-                                        </div>
+                                {selectedId === index && (
+                                    <div className="faq-body">
+                                        {item.content}
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

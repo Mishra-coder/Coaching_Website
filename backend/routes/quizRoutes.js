@@ -16,9 +16,7 @@ router.post('/submit', protect, async (req, res) => {
 
         if (record) {
             if (score > record.score) {
-                record.score = score;
-                record.totalQuestions = totalQuestions;
-                record.percentage = percentage;
+                Object.assign(record, { score, totalQuestions, percentage });
                 await record.save();
             }
         } else {
@@ -32,11 +30,7 @@ router.post('/submit', protect, async (req, res) => {
             });
         }
 
-        res.status(201).json({
-            success: true,
-            message: 'Result saved',
-            quizResult: record
-        });
+        res.status(201).json({ success: true, message: 'Result saved', quizResult: record });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }

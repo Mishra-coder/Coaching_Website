@@ -35,8 +35,7 @@ const About = () => {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.classList.add('scroll-visible');
                     }
                 });
             },
@@ -50,9 +49,9 @@ const About = () => {
     }, []);
 
     return (
-        <section className="about-page" style={{ paddingTop: '120px', paddingBottom: '60px', minHeight: '100vh' }} ref={listContainerRef}>
+        <section className="about-page" ref={listContainerRef}>
             <div className="container">
-                <div className="section-header text-center" style={{ marginBottom: '60px' }}>
+                <div className="section-header text-center">
                     <h2>
                         About <span style={{ color: '#1a237e' }}>Success</span> <span className="highlight">Mantra</span>
                     </h2>
@@ -66,13 +65,8 @@ const About = () => {
                     {featureHighlights.map((item, index) => (
                         <div
                             key={index}
-                            className="feature-card"
-                            style={{
-                                opacity: 0,
-                                transform: 'translateY(20px)',
-                                transition: 'all 0.5s ease',
-                                transitionDelay: item.delay
-                            }}
+                            className="feature-card scroll-hidden"
+                            style={{ transitionDelay: item.delay }}
                         >
                             <div className="icon-box">
                                 <i className={`fas ${item.icon}`}></i>
@@ -83,20 +77,20 @@ const About = () => {
                     ))}
                 </div>
 
-                <div className="row mt-5 align-items-center">
-                    <div className="col-md-6">
-                        <div style={{ padding: '20px', background: '#f8fafc', borderRadius: '20px' }}>
-                            <h3 style={{ color: '#1a237e', marginBottom: '20px' }}>Our Vision</h3>
-                            <p style={{ color: '#64748b', lineHeight: '1.8' }}>
+                <div className="row vision-mission-row">
+                    <div className="col-md-6 mb-4">
+                        <div className="vision-card">
+                            <h3 className="vision-title">Our Vision</h3>
+                            <p className="card-text">
                                 To be the leading institute in providing quality education that is accessible and affordable.
                                 We aim to create a learning environment that fosters critical thinking and holistic development.
                             </p>
                         </div>
                     </div>
-                    <div className="col-md-6">
-                        <div style={{ padding: '20px', background: '#fff7ed', borderRadius: '20px' }}>
-                            <h3 style={{ color: '#9a3412', marginBottom: '20px' }}>Our Mission</h3>
-                            <p style={{ color: '#64748b', lineHeight: '1.8' }}>
+                    <div className="col-md-6 mb-4">
+                        <div className="mission-card">
+                            <h3 className="mission-title">Our Mission</h3>
+                            <p className="card-text">
                                 To guide students towards academic excellence through personalized mentoring and innovative teaching methods.
                                 We are committed to helping every student realize their full potential.
                             </p>

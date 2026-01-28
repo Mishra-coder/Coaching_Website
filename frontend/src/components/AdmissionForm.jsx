@@ -5,7 +5,7 @@ import { enrollmentsAPI } from '../services/api';
 
 const AdmissionForm = () => {
     const navigate = useNavigate();
-    const { user, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
     const fileInput = useRef(null);
 
     const [studentPhoto, setStudentPhoto] = useState(null);
@@ -121,99 +121,156 @@ const AdmissionForm = () => {
     };
 
     return (
-        <div className="contact-form-wrapper">
-            <form className="contact-form admission-form" onSubmit={onFormSubmit}>
-                <div className="form-header">
-                    <h3>Admission Form</h3>
+        <section className="admission-page">
+            <div className="container">
+                <div className="admission-form-wrapper">
+                    <form className="contact-form" onSubmit={onFormSubmit}>
+                        <div className="form-header-row">
+                            <h3 className="form-title">Admission Form</h3>
 
-                    <div className="photo-upload" onClick={() => fileInput.current.click()}>
-                        {studentPhoto ? (
-                            <img src={studentPhoto} alt="Student" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
-                        ) : (
-                            <div className="photo-placeholder">
-                                <i className="fas fa-camera" />
-                                <span>Upload Photo</span>
+                            <div className="photo-upload-area" onClick={() => fileInput.current.click()}>
+                                {studentPhoto ? (
+                                    <img src={studentPhoto} alt="Student" className="photo-preview" />
+                                ) : (
+                                    <div className="photo-placeholder-content">
+                                        <i className="fas fa-camera photo-icon" />
+                                        <span className="photo-text">Upload Photo</span>
+                                    </div>
+                                )}
+                                <input type="file" accept="image/*" hidden ref={fileInput} onChange={onFileSelect} />
+                            </div>
+                        </div>
+
+                        {statusMessage.text && (
+                            <div className={`form-alert ${statusMessage.type === 'error' ? 'form-input-error' : ''}`} style={{ backgroundColor: statusMessage.type === 'error' ? '#fee' : '#ecfdf5', color: statusMessage.type === 'error' ? '#c33' : '#047857' }}>
+                                {statusMessage.text}
                             </div>
                         )}
-                        <input type="file" accept="image/*" hidden ref={fileInput} onChange={onFileSelect} />
-                    </div>
-                </div>
 
-                {statusMessage.text && (
-                    <div className={`status-alert ${statusMessage.type}`}>
-                        {statusMessage.text}
-                    </div>
-                )}
+                        <div className="form-section">
+                            <h5 className="form-section-label">Personal Information</h5>
 
-                <div className="form-section">
-                    <h5>Personal Information</h5>
+                            <div className="form-group">
+                                <label className="form-label">Full Name</label>
+                                <input
+                                    type="text"
+                                    name="studentName"
+                                    value={details.studentName}
+                                    onChange={updateField}
+                                    placeholder="Student's Name"
+                                    required
+                                    className="form-input"
+                                />
+                            </div>
 
-                    <div className="form-group">
-                        <label>Full Name</label>
-                        <input type="text" name="studentName" value={details.studentName} onChange={updateField} placeholder="Student's Name" required />
-                    </div>
+                            <div className="row">
+                                <div className="col-md-6 form-group">
+                                    <label className="form-label">Father's Name</label>
+                                    <input
+                                        type="text"
+                                        name="fatherName"
+                                        value={details.fatherName}
+                                        onChange={updateField}
+                                        placeholder="Father's Name"
+                                        required
+                                        className="form-input"
+                                    />
+                                </div>
+                                <div className="col-md-6 form-group">
+                                    <label className="form-label">Mother's Name</label>
+                                    <input
+                                        type="text"
+                                        name="motherName"
+                                        value={details.motherName}
+                                        onChange={updateField}
+                                        placeholder="Mother's Name"
+                                        required
+                                        className="form-input"
+                                    />
+                                </div>
+                            </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Father's Name</label>
-                            <input type="text" name="fatherName" value={details.fatherName} onChange={updateField} placeholder="Father's Name" required />
-                        </div>
-                        <div className="form-group">
-                            <label>Mother's Name</label>
-                            <input type="text" name="motherName" value={details.motherName} onChange={updateField} placeholder="Mother's Name" required />
-                        </div>
-                    </div>
+                            <div className="row">
+                                <div className="col-md-6 form-group">
+                                    <label className="form-label">Date of Birth</label>
+                                    <div className="dob-grid">
+                                        <input type="number" name="birthDay" value={details.birthDay} onChange={updateField} placeholder="DD" min="1" max="31" required className="form-input" />
+                                        <input type="number" name="birthMonth" value={details.birthMonth} onChange={updateField} placeholder="MM" min="1" max="12" required className="form-input" />
+                                        <input type="number" name="birthYear" value={details.birthYear} onChange={updateField} placeholder="YYYY" min="2000" max="2025" required className="form-input" />
+                                    </div>
+                                </div>
+                                <div className="col-md-6 form-group">
+                                    <label className="form-label">Gender</label>
+                                    <div className="gender-select-group">
+                                        {['male', 'female'].map(g => (
+                                            <label key={g} className="radio-label">
+                                                <span className="radio-text">{g}</span>
+                                                <input type="radio" name="gender" value={g} checked={details.gender === g} onChange={updateField} required className="radio-input" />
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Date of Birth</label>
-                            <div className="dob-inputs">
-                                <input type="number" name="birthDay" value={details.birthDay} onChange={updateField} placeholder="DD" min="1" max="31" required />
-                                <input type="number" name="birthMonth" value={details.birthMonth} onChange={updateField} placeholder="MM" min="1" max="12" required />
-                                <input type="number" name="birthYear" value={details.birthYear} onChange={updateField} placeholder="YYYY" min="2000" max="2025" required />
+                            <div className="form-group">
+                                <label className="form-label">Address</label>
+                                <textarea
+                                    name="address"
+                                    value={details.address}
+                                    onChange={updateField}
+                                    placeholder="Full Home Address"
+                                    rows="2"
+                                    required
+                                    className="form-input"
+                                />
+                            </div>
+
+                            <div className="row">
+                                <div className="col-md-6 form-group">
+                                    <label className="form-label">Aadhar No</label>
+                                    <input
+                                        type="text"
+                                        name="aadhar"
+                                        value={details.aadhar}
+                                        onChange={updateField}
+                                        placeholder="12-digit Number"
+                                        pattern="[0-9]{12}"
+                                        required
+                                        className="form-input"
+                                    />
+                                </div>
+                                <div className="col-md-6 form-group">
+                                    <label className="form-label">Mobile No</label>
+                                    <input
+                                        type="tel"
+                                        name="mobile"
+                                        value={details.mobile}
+                                        onChange={updateField}
+                                        placeholder="10-digit Number"
+                                        pattern="[0-9]{10}"
+                                        required
+                                        className="form-input"
+                                    />
+                                </div>
                             </div>
                         </div>
-                        <div className="form-group">
-                            <label>Gender</label>
-                            <div className="gender-options">
-                                {['male', 'female'].map(g => (
-                                    <label key={g} className="radio-container">
-                                        <span style={{ textTransform: 'capitalize' }}>{g}</span>
-                                        <input type="radio" name="gender" value={g} checked={details.gender === g} onChange={updateField} required />
-                                        <span className="checkmark" />
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className="form-group">
-                        <label>Address</label>
-                        <textarea name="address" value={details.address} onChange={updateField} placeholder="Full Home Address" rows="2" required />
-                    </div>
+                        <div className="declaration-container">
+                            <h5 className="declaration-title">DECLARATION :</h5>
+                            <p className="declaration-text">कोचिंग के नियमो का पालन करना होगा एवं अनुशासन में रहना होगा यदि आप कोचिंग के नियमो का उलघन करते है तो आपका नाम निरस्त कर दिया जायेगा |</p>
+                        </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Aadhar No</label>
-                            <input type="text" name="aadhar" value={details.aadhar} onChange={updateField} placeholder="12-digit Number" pattern="[0-9]{12}" required />
-                        </div>
-                        <div className="form-group">
-                            <label>Mobile No</label>
-                            <input type="tel" name="mobile" value={details.mobile} onChange={updateField} placeholder="10-digit Number" pattern="[0-9]{10}" required />
-                        </div>
-                    </div>
+                        <button
+                            type="submit"
+                            className={`btn-primary btn-block ${isSubmitting ? 'btn-loading' : ''}`}
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Processing...' : 'Submit Admission'}
+                        </button>
+                    </form>
                 </div>
-
-                <div className="declaration-box">
-                    <h5>DECLARATION :</h5>
-                    <p>कोचिंग के नियमो का पालन करना होगा एवं अनुशासन में रहना होगा यदि आप कोचिंग के नियमो का उलघन करते है तो आपका नाम निरस्त कर दिया जायेगा |</p>
-                </div>
-
-                <button type="submit" className="btn-primary full-width" disabled={isSubmitting} style={{ opacity: isSubmitting ? 0.7 : 1 }}>
-                    {isSubmitting ? 'Processing...' : 'Submit Admission'}
-                </button>
-            </form>
-        </div>
+            </div>
+        </section>
     );
 };
 

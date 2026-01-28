@@ -2,9 +2,11 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
+
 const GoogleSignInButton = ({ mode = 'signin' }) => {
     const navigate = useNavigate();
     const { setAuth } = useAuth();
+
     const handleGoogleAuth = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             try {
@@ -21,6 +23,7 @@ const GoogleSignInButton = ({ mode = 'signin' }) => {
             alert('Failed to login with Google. Please try again.');
         },
     });
+
     return (
         <button
             onClick={handleGoogleAuth}
@@ -37,4 +40,5 @@ const GoogleSignInButton = ({ mode = 'signin' }) => {
         </button>
     );
 };
+
 export default GoogleSignInButton;
