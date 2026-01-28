@@ -50,14 +50,15 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 
 ## Features
 
-### Core Features
-- **User Authentication** - Secure JWT-based login/registration & Google OAuth Integration
-- **Course Catalog** - Foundation, Board, and Competitive exam courses
-- **Online Enrollment** - Digital admission form with photo upload
-- **Quiz System** - Chapter-wise practice questions for Class 10 & 12
-- **XP System** - Gamified learning with experience points
-- **User Profile** - Personal dashboard with enrollment history
-- **Fully Responsive** - Works seamlessly on all devices
+### ✨ Core Features
+- 🔐 **Unified Authentication** - Consistently use "SignUp" instead of "Register"; integrated Student and Admin auth into single pages.
+- 🔑 **Admin Security** - Protected Admin registration and login with a Secret Key (`admin123`).
+- 📚 **Course Catalog** - Foundation, Board, and Competitive exam courses
+- 📝 **Online Enrollment** - Digital admission form with photo upload
+- 🎯 **Quiz System** - Chapter-wise practice questions for Class 10 & 12
+- 📊 **XP System** - Gamified learning with experience points
+- 👤 **User Profile** - Personal dashboard with enrollment history
+- 📱 **Fully Responsive** - Works seamlessly on all devices
 
 ### UI/UX Features
 - Modern vibrant color scheme (Indigo & Amber)
@@ -247,10 +248,15 @@ npm run dev
 ### Authentication (`/api/auth`)
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
-| POST | `/register` | Register new user | No |
-| POST | `/login` | Login user | No |
+| POST | `/register` | SignUp new student | No |
+| POST | `/admin-register`| SignUp new admin (requires Secret Key) | No |
+| POST | `/login` | Login user (Admins require Secret Key) | No |
 | GET | `/me` | Get current user | Yes |
 | PUT | `/profile` | Update profile | Yes |
+
+> [!IMPORTANT]
+> **Admin Secret Key:** `admin123`
+> This key is required for both Admin SignUp and Admin Login.
 
 ### Courses (`/api/courses`)
 | Method | Endpoint | Description | Auth Required |

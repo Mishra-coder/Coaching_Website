@@ -101,7 +101,7 @@ const Navbar = () => {
                         </>
                     ) : (
                         <>
-                            <Link to="/register" className="btn-secondary" onClick={closeNav} style={{ marginRight: '10px' }}>Sign Up</Link>
+                            <Link to="/register" className="btn-secondary" onClick={closeNav} style={{ marginRight: '10px' }}>SignUp</Link>
                             <Link to="/login" className="btn-primary" onClick={closeNav} style={{ animation: 'pulse-glow 2s infinite', boxShadow: '0 0 20px rgba(79, 70, 229, 0.5)' }}>Login</Link>
                         </>
                     )}

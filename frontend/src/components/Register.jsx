@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { authAPI } from '../services/api';
 import GoogleSignInButton from './GoogleSignInButton';
 const Register = () => {
     const navigate = useNavigate();
-    const { register } = useAuth();
+    const { register, setAuth } = useAuth();
+    const [role, setRole] = useState('student');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        phone: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        secretKey: ''
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -32,23 +34,83 @@ const Register = () => {
             return;
         }
         setLoading(true);
-        const { confirmPassword, ...userData } = formData;
-        const result = await register(userData);
-        if (result.success) {
-            navigate('/');
-        } else {
-            setError(result.message);
+        try {
+            if (role === 'admin') {
+                const response = await authAPI.adminRegister({
+                    email: formData.email,
+                    password: formData.password,
+                    secretKey: formData.secretKey
+                });
+                if (response.success) {
+                    setAuth(response.user, response.token);
+                    navigate('/admin');
+                } else {
+                    setError(response.message || 'SignUp failed');
+                }
+            } else {
+                const { confirmPassword, secretKey, ...userData } = formData;
+                const result = await register(userData);
+                if (result.success) {
+                    navigate('/');
+                } else {
+                    setError(result.message);
+                }
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || 'SignUp failed. Please try again.');
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
     return (
         <section className="enrollment-page" style={{ padding: '120px 0 60px', minHeight: '100vh', backgroundColor: '#f9f9f9' }}>
             <div className="container">
                 <div className="section-header text-center" style={{ marginBottom: '40px' }}>
-                    <h2 className="section-title">Student <span className="highlight">Registration</span></h2>
-                    <p className="section-subtitle">Create your account to get started</p>
+                    <h2 className="section-title">
+                        {role === 'admin' ? <span style={{ color: '#3949ab' }}>Admin</span> : 'Student'}{' '}
+                        <span className="highlight">SignUp</span>
+                    </h2>
+                    <p className="section-subtitle">
+                        {role === 'admin' ? 'Create your admin account' : 'Create your account to get started'}
+                    </p>
                 </div>
                 <div style={{ maxWidth: '600px', margin: '0 auto', background: '#fff', padding: '40px', borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+                    <div style={{ display: 'flex', marginBottom: '30px', background: '#f5f5f5', padding: '5px', borderRadius: '10px' }}>
+                        <button
+                            onClick={() => setRole('student')}
+                            style={{
+                                flex: 1,
+                                padding: '10px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                background: role === 'student' ? '#fff' : 'transparent',
+                                color: role === 'student' ? '#4f46e5' : '#64748b',
+                                fontWeight: '600',
+                                boxShadow: role === 'student' ? '0 2px 10px rgba(0,0,0,0.1)' : 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s'
+                            }}
+                        >
+                            Student
+                        </button>
+                        <button
+                            onClick={() => setRole('admin')}
+                            style={{
+                                flex: 1,
+                                padding: '10px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                background: role === 'admin' ? '#fff' : 'transparent',
+                                color: role === 'admin' ? '#3949ab' : '#64748b',
+                                fontWeight: '600',
+                                boxShadow: role === 'admin' ? '0 2px 10px rgba(0,0,0,0.1)' : 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s'
+                            }}
+                        >
+                            Admin
+                        </button>
+                    </div>
                     <form onSubmit={handleSubmit}>
                         {error && (
                             <div style={{
@@ -62,24 +124,26 @@ const Register = () => {
                                 {error}
                             </div>
                         )}
-                        <div className="form-group" style={{ marginBottom: '20px' }}>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Full Name</label>
-                            <input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                placeholder="Enter your full name"
-                                required
-                                style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    border: '1px solid #ddd',
-                                    borderRadius: '8px',
-                                    fontSize: '15px'
-                                }}
-                            />
-                        </div>
+                        {role === 'student' && (
+                            <div className="form-group" style={{ marginBottom: '20px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Full Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    placeholder="Enter your full name"
+                                    required={role === 'student'}
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '8px',
+                                        fontSize: '15px'
+                                    }}
+                                />
+                            </div>
+                        )}
                         <div className="form-group" style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Email</label>
                             <input
@@ -88,25 +152,6 @@ const Register = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="Enter your email"
-                                required
-                                style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    border: '1px solid #ddd',
-                                    borderRadius: '8px',
-                                    fontSize: '15px'
-                                }}
-                            />
-                        </div>
-                        <div className="form-group" style={{ marginBottom: '20px' }}>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Phone Number</label>
-                            <input
-                                type="tel"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                placeholder="10-digit mobile number"
-                                pattern="[0-9]{10}"
                                 required
                                 style={{
                                     width: '100%',
@@ -135,7 +180,7 @@ const Register = () => {
                                 }}
                             />
                         </div>
-                        <div className="form-group" style={{ marginBottom: '25px' }}>
+                        <div className="form-group" style={{ marginBottom: role === 'admin' ? '20px' : '25px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Confirm Password</label>
                             <input
                                 type="password"
@@ -153,6 +198,29 @@ const Register = () => {
                                 }}
                             />
                         </div>
+                        {role === 'admin' && (
+                            <div className="form-group" style={{ marginBottom: '25px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#ef5350' }}>Admin Secret Key</label>
+                                <input
+                                    type="password"
+                                    name="secretKey"
+                                    value={formData.secretKey}
+                                    onChange={handleChange}
+                                    placeholder="••••••••"
+                                    required={role === 'admin'}
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px',
+                                        border: `1px solid ${formData.secretKey ? '#ddd' : '#ef5350'}`,
+                                        borderRadius: '8px',
+                                        fontSize: '15px'
+                                    }}
+                                />
+                                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '5px' }}>
+                                    Contact the administrator to get the secret key
+                                </p>
+                            </div>
+                        )}
                         <button
                             type="submit"
                             className="btn-primary"
@@ -166,7 +234,7 @@ const Register = () => {
                                 cursor: loading ? 'not-allowed' : 'pointer'
                             }}
                         >
-                            {loading ? 'Creating Account...' : 'Register'}
+                            {loading ? 'Creating Account...' : 'SignUp'}
                         </button>
                         <div style={{
                             margin: '25px 0',

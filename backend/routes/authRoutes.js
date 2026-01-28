@@ -43,6 +43,50 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.post('/admin-register', async (req, res) => {
+    try {
+        const { email, password, secretKey } = req.body;
+
+        if (secretKey !== 'admin123') {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid admin secret key'
+            });
+        }
+
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email already registered'
+            });
+        }
+
+        const user = await User.create({
+            name: 'Admin',
+            email,
+            password,
+            role: 'admin',
+            phone: 'N/A'
+        });
+        const token = signToken(user._id);
+
+        res.status(201).json({
+            success: true,
+            message: 'Admin registration successful',
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -60,6 +104,17 @@ router.post('/login', async (req, res) => {
                 success: false,
                 message: 'Invalid email or password'
             });
+        }
+
+        // If user is admin, verify secret key
+        if (user.role === 'admin') {
+            const { secretKey } = req.body;
+            if (secretKey !== 'admin123') {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Invalid admin secret key'
+                });
+            }
         }
 
         const token = signToken(user._id);

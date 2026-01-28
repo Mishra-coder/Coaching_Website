@@ -25,10 +25,7 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: function () {
-            return this.authProvider === 'local';
-        },
-        match: [/^[0-9]{10}$/, 'Invalid 10-digit phone number']
+        default: 'N/A'
     },
     googleId: {
         type: String,
