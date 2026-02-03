@@ -11,17 +11,17 @@ const Stats = () => {
     return (
         <section className="stats-section">
             <div className="container">
-                <div className="landing-stats-grid">
+                <div className="stats-grid">
                     {achievementList.map((stat, index) => (
-                        <div key={index} className="landing-stat-card">
+                        <div key={index} className="stat-card">
                             <div
-                                className="stat-icon-wrapper"
+                                className="stat-icon-box"
                                 style={{ background: `${stat.theme}15`, color: stat.theme }}
                             >
                                 <i className={`fas ${stat.icon}`}></i>
                             </div>
-                            <h2 className="stat-count">{stat.count}</h2>
-                            <p className="stat-title">{stat.name}</p>
+                            <h2 className="stat-number">{stat.count}</h2>
+                            <p className="stat-label">{stat.name}</p>
                         </div>
                     ))}
                 </div>

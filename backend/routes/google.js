@@ -39,7 +39,7 @@ router.post('/google/token', async (req, res) => {
         const { access_token } = req.body;
         if (!access_token) return res.status(400).json({ success: false, message: 'Missing token' });
 
-        const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        const googleRes = await fetch('https:
             headers: { Authorization: `Bearer ${access_token}` }
         });
 
