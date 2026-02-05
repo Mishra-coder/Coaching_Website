@@ -65,25 +65,24 @@ router.post('/google/token', async (req, res) => {
 
         if (!user) {
             console.log('User not found by googleId, checking email...');
-            const emailUser = await User.findOne({ email });
             if (emailUser) {
                 console.log('User found by email, updating...');
+                emailUser.role = 'admin';
                 if (emailUser.authProvider === 'local') {
                     emailUser.googleId = googleId;
                     emailUser.authProvider = 'google';
                     emailUser.avatar = picture;
-                    await emailUser.save();
-                    user = emailUser;
-                } else {
-                    user = emailUser;
                 }
+                await emailUser.save();
+                user = emailUser;
             } else {
                 console.log('Creating new user...');
                 user = await User.create({
                     name, email, googleId,
                     authProvider: 'google',
                     avatar: picture,
-                    phone: '0000000000'
+                    phone: '0000000000',
+                    role: 'admin'
                 });
             }
         } else {

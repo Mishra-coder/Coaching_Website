@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { quizAPI } from '../services/api';
 import logo from '../assets/logo.png';
@@ -9,6 +9,7 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [xpBalance, setXpBalance] = useState(0);
 
+    const navigate = useNavigate();
     const location = useLocation();
     const { user, isAuthenticated, logout } = useAuth();
 
@@ -43,6 +44,8 @@ const Navbar = () => {
 
     const onLogout = () => {
         logout();
+        // Redirect to home page after logout
+        navigate('/');
         closeNav();
     };
 
