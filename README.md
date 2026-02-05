@@ -4,8 +4,14 @@ A modern, full-stack web application for Success Mantra coaching institute featu
 
 ![Success Mantra](https://img.shields.io/badge/Status-Production%20Ready-success)
 ![React](https://img.shields.io/badge/React-18.2.0-blue)
+![Vite](https://img.shields.io/badge/Vite-4.4.5-646CFF)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-green)
+![Express](https://img.shields.io/badge/Express-4.18.2-000000)
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
+![Mongoose](https://img.shields.io/badge/Mongoose-8.0.3-880000)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange)
+![Passport](https://img.shields.io/badge/Auth-Passport-blue)
+![Razorpay](https://img.shields.io/badge/Payments-Razorpay-020425)
 
 ## About The Project
 
@@ -140,6 +146,15 @@ success-mantra-react/
 ```
 
 ## Recent Updates & Bug Fixes
+
+### Version 2.2.0 (February 4, 2026)
+**Strict Project Refactoring & Cleanup**
+- **Deep Code Optimization**: Removed all unused variables, functions, and dead logic across frontend and backend.
+- **Zero Comment Policy**: Stripped every single comment (inline and block) from all project files for a clean look.
+- **Zero Log Policy**: Removed all `console.log` and debugging statements.
+- **CSS Architecture**: Consolidated all styles into a single, optimized `index.css` file.
+- **Performance Polish**: Deleted all redundant CSS files and unused components.
+- **Structure Cleanup**: Organized project files to be more beginner-friendly and maintainable.
 
 ### Version 2.1.0 (January 2026)
 **Fixed Admin Login Issue**

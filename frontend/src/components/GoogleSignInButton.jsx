@@ -9,18 +9,25 @@ const GoogleSignInButton = ({ mode = 'signin' }) => {
 
     const handleGoogleAuth = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
+            console.log('Google Auth Success:', tokenResponse);
             try {
                 const data = await authAPI.googleLogin(tokenResponse.access_token);
+                console.log('Backend Login Response:', data);
                 if (data.success) {
                     setAuth(data.user, data.token);
                     navigate('/');
+                } else {
+                    console.error('Backend login failed:', data);
+                    alert('Login failed: ' + (data.message || 'Unknown error'));
                 }
             } catch (error) {
-                alert('Failed to authenticate with Google. Please try again.');
+                console.error('API Error during Google Login:', error);
+                alert('Failed to authenticate with Google API. Check console for details.');
             }
         },
         onError: (error) => {
-            alert('Failed to login with Google. Please try again.');
+            console.error('Google Login Error:', error);
+            alert('Failed to login with Google. Check console for details.');
         },
     });
 

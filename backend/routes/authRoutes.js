@@ -13,13 +13,16 @@ const signToken = (id) => {
 
 router.post('/register', async (req, res) => {
     try {
+        console.log('Register request received:', req.body.email);
         const { name, email, password, phone } = req.body;
 
         if (await User.findOne({ email })) {
+            console.warn('Register failed: Email already exists', email);
             return res.status(400).json({ success: false, message: 'Email already registered' });
         }
 
         const user = await User.create({ name, email, password, phone });
+        console.log('User created successfully:', user._id);
         const token = signToken(user._id);
 
         res.status(201).json({
@@ -65,22 +68,27 @@ router.post('/admin-register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
+        console.log('Login attempt:', req.body.email);
         const { email, password, secretKey } = req.body;
 
         if (!email || !password) {
+            console.warn('Login failed: Missing credentials');
             return res.status(400).json({ success: false, message: 'Please provide email and password' });
         }
 
         const user = await User.findOne({ email }).select('+password');
 
         if (!user || !(await user.comparePassword(password))) {
+            console.warn('Login failed: Invalid credentials for', email);
             return res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
 
         if (user.role === 'admin' && secretKey !== 'admin123') {
+            console.warn('Login failed: Invalid admin key for', email);
             return res.status(401).json({ success: false, message: 'Invalid admin secret key' });
         }
 
+        console.log('Login successful for:', user.email);
         const token = signToken(user._id);
 
         res.status(200).json({
