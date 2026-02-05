@@ -63,6 +63,13 @@ export const authAPI = {
     }
 };
 
+export const leaderboardAPI = {
+    getLeaderboard: async () => {
+        const res = await api.get('/leaderboard');
+        return res.data;
+    }
+};
+
 export const quizAPI = {
     submit: async (resultData) => {
         const res = await api.post('/quiz/submit', resultData);

@@ -8,6 +8,7 @@ import Courses from './components/Courses';
 import Faculty from './components/Faculty';
 import Enrollment from './components/Enrollment';
 import Quiz from './components/Quiz';
+import Leaderboard from './components/Leaderboard';
 import Profile from './components/Profile';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -40,6 +41,12 @@ function App() {
                         <Route path="/quiz" element={
                             <ProtectedRoute>
                                 <Quiz />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/leaderboard" element={
+                            <ProtectedRoute>
+                                <Leaderboard />
                             </ProtectedRoute>
                         } />
 

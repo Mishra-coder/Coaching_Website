@@ -12,7 +12,21 @@ router.get('/', async (req, res) => {
         if (chapter) query.chapter = chapter;
 
         const questions = await Question.find(query);
-        res.status(200).json({ success: true, count: questions.length, questions });
+
+        // SHUFFLE OPTIONS LOGIC
+        const shuffledQuestions = questions.map(q => {
+            const qObj = q.toObject();
+            if (qObj.options && Array.isArray(qObj.options)) {
+                // Fisher-Yates shuffle for options
+                for (let i = qObj.options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [qObj.options[i], qObj.options[j]] = [qObj.options[j], qObj.options[i]];
+                }
+            }
+            return qObj;
+        });
+
+        res.status(200).json({ success: true, count: shuffledQuestions.length, questions: shuffledQuestions });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

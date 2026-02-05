@@ -79,7 +79,7 @@ const Navbar = () => {
 
                     {isAuthenticated() ? (
                         <>
-                            <div className="nav-xp-container">
+                            <Link to="/leaderboard" className="nav-xp-container" style={{ textDecoration: 'none' }}>
                                 <div className="nav-xp-icon">
                                     <i className="fas fa-bolt" style={{ color: '#fff', fontSize: '0.8rem' }}></i>
                                 </div>
@@ -87,7 +87,7 @@ const Navbar = () => {
                                     <span className="xp-label">XP</span>
                                     <span className="xp-value">{xpBalance}</span>
                                 </div>
-                            </div>
+                            </Link>
 
                             <Link to="/profile" className="btn-profile-outline" onClick={closeNav}>
                                 Profile

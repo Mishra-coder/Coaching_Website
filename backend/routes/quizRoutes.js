@@ -15,10 +15,14 @@ router.post('/submit', protect, async (req, res) => {
         });
 
         if (record) {
-            if (score > record.score) {
-                Object.assign(record, { score, totalQuestions, percentage });
-                await record.save();
-            }
+            // REVISE MODE: If record exists, do NOT update score/XP.
+            // Just return success so user sees their result, but database XP stays same.
+            return res.status(200).json({
+                success: true,
+                message: 'Revision completed. No new XP earned.',
+                quizResult: record,
+                isRevise: true
+            });
         } else {
             record = await QuizResult.create({
                 user: req.user.id,

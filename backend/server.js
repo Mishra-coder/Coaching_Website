@@ -12,6 +12,7 @@ import enrollmentRoutes from './routes/enrollmentRoutes.js';
 import quizRoutes from './routes/quizRoutes.js';
 import googleAuthRoutes from './routes/google.js';
 import questionRoutes from './routes/questionRoutes.js';
+import leaderboardRoutes from './routes/leaderboardRoutes.js';
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/questions', questionRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 
 
 app.get('/api/health', (req, res) => {

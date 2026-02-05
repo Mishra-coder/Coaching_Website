@@ -89,13 +89,20 @@ const Quiz = () => {
 
         const { correct, total, percentage } = calculateScore();
         try {
-            await quizAPI.submit({
+            const res = await quizAPI.submit({
                 className: selectedClass,
                 chapter: selectedChapter,
                 score: correct,
                 totalQuestions: total,
                 percentage
             });
+
+            // Handle revision mode message
+            if (res.isRevise) {
+                // You could add a toast notification here if you had one
+                console.log('Revision mode: XP not updated');
+            }
+
             window.dispatchEvent(new Event('quizCompleted'));
         } catch (error) {
             console.error('Failed to save quiz result:', error);
