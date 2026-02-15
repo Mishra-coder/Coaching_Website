@@ -16,7 +16,7 @@ const StudentManager = () => {
             const res = await authAPI.getAllStudents();
             setStudents(res.students);
         } catch (error) {
-            console.error('Error fetching students:', error);
+            // Error handled silently
         } finally {
             setLoading(false);
         }

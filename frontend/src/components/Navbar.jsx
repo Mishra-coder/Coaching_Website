@@ -35,7 +35,7 @@ const Navbar = () => {
             const total = data.history.reduce((acc, curr) => acc + curr.score, 0);
             setXpBalance(total);
         } catch (error) {
-            console.error('Failed to update XP:', error);
+            // Error handled silently
         }
     };
 

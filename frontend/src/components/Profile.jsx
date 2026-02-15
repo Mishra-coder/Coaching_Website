@@ -32,7 +32,7 @@ const Profile = () => {
             const data = await enrollmentsAPI.getUserEnrollments(user.id);
             setMyCourses(data.enrollments);
         } catch (err) {
-            console.error('Failed to load profile data:', err);
+            // Error handled silently
         } finally {
             setIsFetching(false);
         }

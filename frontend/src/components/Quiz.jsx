@@ -31,7 +31,7 @@ const Quiz = () => {
             setChapters(chaptersWithCounts);
             setView('chapter-select');
         } catch (error) {
-            console.error('Error fetching chapters:', error);
+            // Error handled silently
         } finally {
             setLoading(false);
         }
@@ -48,7 +48,7 @@ const Quiz = () => {
             setShowWarning(false);
             setView('quiz');
         } catch (error) {
-            console.error('Error fetching questions:', error);
+            // Error handled silently
         } finally {
             setLoading(false);
         }
@@ -99,13 +99,12 @@ const Quiz = () => {
 
             // Handle revision mode message
             if (res.isRevise) {
-                // You could add a toast notification here if you had one
-                console.log('Revision mode: XP not updated');
+                // Revision mode
             }
 
             window.dispatchEvent(new Event('quizCompleted'));
         } catch (error) {
-            console.error('Failed to save quiz result:', error);
+            // Error handled silently
         }
         setView('result');
         window.scrollTo(0, 0);

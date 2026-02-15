@@ -13,11 +13,9 @@ router.get('/', async (req, res) => {
 
         const questions = await Question.find(query);
 
-        // SHUFFLE OPTIONS LOGIC
         const shuffledQuestions = questions.map(q => {
             const qObj = q.toObject();
             if (qObj.options && Array.isArray(qObj.options)) {
-                // Fisher-Yates shuffle for options
                 for (let i = qObj.options.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [qObj.options[i], qObj.options[j]] = [qObj.options[j], qObj.options[i]];

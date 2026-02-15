@@ -4,10 +4,8 @@ import QuizResult from '../models/QuizResult.js';
 
 const router = express.Router();
 
-// Get leaderboard based on total XP (quiz scores)
 router.get('/', async (req, res) => {
     try {
-        // Aggregate all quiz results to calculate total score per user
         const leaderboard = await QuizResult.aggregate([
             {
                 $group: {

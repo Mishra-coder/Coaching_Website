@@ -16,7 +16,7 @@ const EnrollmentManager = () => {
             const res = await enrollmentsAPI.getAll();
             setEnrollments(res.enrollments);
         } catch (error) {
-            console.error('Error fetching enrollments:', error);
+            // Error handled silently
         } finally {
             setLoading(false);
         }
@@ -29,7 +29,7 @@ const EnrollmentManager = () => {
             setSelectedEnrollment(prev => ({ ...prev, status: newStatus, adminRemarks: remarks }));
             alert('Status updated successfully!');
         } catch (error) {
-            console.error('Error updating status:', error);
+            // Error handled silently
             alert('Failed to update status');
         }
     };
