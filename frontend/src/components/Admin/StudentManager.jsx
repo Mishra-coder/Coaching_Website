@@ -16,7 +16,6 @@ const StudentManager = () => {
             const res = await authAPI.getAllStudents();
             setStudents(res.students);
         } catch (error) {
-            // Error handled silently
         } finally {
             setLoading(false);
         }

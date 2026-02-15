@@ -3355,14 +3355,9 @@ footer {
     }
 }
 
-/* ==========================================================================
-   LEADERBOARD STYLES
-   ========================================================================== */
-
 .leaderboard-section {
     padding: 120px 0 60px;
     background: #1a1a2e;
-    /* Deep dark purple/blue background */
     min-height: 100vh;
     color: #fff;
 }
@@ -3391,7 +3386,6 @@ footer {
     font-size: 1.1rem;
 }
 
-/* Podium UI */
 .podium-container {
     display: flex;
     justify-content: center;
@@ -3525,7 +3519,6 @@ footer {
     height: 90px;
 }
 
-/* List View */
 .leaderboard-list-card {
     background: #1e293b;
     border-radius: 20px;

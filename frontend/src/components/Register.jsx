@@ -52,7 +52,11 @@ const Register = () => {
 
                 if (response.success) {
                     setAuth(response.user, response.token);
-                    navigate('/admin');
+                    if (response.user.role === 'admin') {
+                        navigate('/admin');
+                    } else {
+                        navigate('/');
+                    }
                 } else {
                     setError(response.message || 'SignUp failed');
                 }
@@ -61,7 +65,11 @@ const Register = () => {
                 const result = await register(userData);
 
                 if (result.success) {
-                    navigate('/');
+                    if (result.user.role === 'admin') {
+                        navigate('/admin');
+                    } else {
+                        navigate('/');
+                    }
                 } else {
                     setError(result.message);
                 }
@@ -193,7 +201,7 @@ const Register = () => {
                             <div className="divider-line"></div>
                         </div>
 
-                        <GoogleSignInButton mode="signup" />
+                        <GoogleSignInButton mode="signup" isAdmin={role === 'admin'} />
 
                         <div className="auth-footer">
                             Already have an account?{' '}

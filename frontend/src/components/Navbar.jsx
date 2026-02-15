@@ -35,7 +35,6 @@ const Navbar = () => {
             const total = data.history.reduce((acc, curr) => acc + curr.score, 0);
             setXpBalance(total);
         } catch (error) {
-            // Error handled silently
         }
     };
 
@@ -44,7 +43,6 @@ const Navbar = () => {
 
     const onLogout = () => {
         logout();
-        // Redirect to home page after logout
         navigate('/');
         closeNav();
     };

@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
 
-const GoogleSignInButton = ({ mode = 'signin' }) => {
+const GoogleSignInButton = ({ mode = 'signin', isAdmin = false }) => {
     const navigate = useNavigate();
     const { setAuth } = useAuth();
 
     const handleGoogleAuth = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             try {
-                const data = await authAPI.googleLogin(tokenResponse.access_token);
+                const data = await authAPI.googleLogin(tokenResponse.access_token, isAdmin);
                 if (data.success) {
                     setAuth(data.user, data.token);
                     if (data.user.role === 'admin') {
@@ -18,7 +18,8 @@ const GoogleSignInButton = ({ mode = 'signin' }) => {
                     } else {
                         navigate('/');
                     }
-                } else {
+                }
+                else {
                     alert('Login failed: ' + (data.message || 'Unknown error'));
                 }
             } catch (error) {

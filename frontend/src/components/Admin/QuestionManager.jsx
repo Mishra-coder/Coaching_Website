@@ -23,7 +23,6 @@ const QuestionManager = () => {
             const res = await questionsAPI.getAll();
             setQuestions(res.questions);
         } catch (error) {
-            // Error handled silently
         }
     };
 
@@ -61,7 +60,6 @@ const QuestionManager = () => {
             });
             fetchQuestions();
         } catch (error) {
-            // Error handled silently
             setStatusMessage({ text: 'Error saving question. Please try again.', type: 'error' });
             setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
         }
@@ -210,7 +208,6 @@ const QuestionManager = () => {
                                                             setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
                                                             setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
                                                         } catch (error) {
-                                                            // Error handled silently
                                                         }
                                                     }
                                                 }}

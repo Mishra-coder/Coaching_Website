@@ -34,14 +34,18 @@ router.post('/register', async (req, res) => {
 
 router.post('/admin-register', async (req, res) => {
     try {
-        const { email, password, secretKey } = req.body;
+        const { name, email, password, secretKey } = req.body;
+
+        if (secretKey !== 'admin123') {
+            return res.status(401).json({ success: false, message: 'Invalid admin secret key' });
+        }
 
         if (await User.findOne({ email })) {
             return res.status(400).json({ success: false, message: 'Email already registered' });
         }
 
         const user = await User.create({
-            name: 'Admin',
+            name: name || 'Admin',
             email,
             password,
             role: 'admin',
@@ -73,13 +77,16 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
 
-        if (secretKey === 'admin123' && user.role !== 'admin') {
-            user.role = 'admin';
-            await user.save();
-        }
-
-        if (user.role === 'admin' && secretKey !== 'admin123') {
-            return res.status(401).json({ success: false, message: 'Invalid admin secret key' });
+        if (secretKey === 'admin123') {
+            if (user.role !== 'admin') {
+                user.role = 'admin';
+                await user.save();
+            }
+        } else {
+            if (user.role === 'admin') {
+                user.role = 'student';
+                await user.save();
+            }
         }
 
         const token = signToken(user._id);

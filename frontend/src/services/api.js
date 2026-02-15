@@ -51,8 +51,8 @@ export const authAPI = {
         const res = await api.put('/auth/profile', userData);
         return res.data;
     },
-    googleLogin: async (accessToken) => {
-        const res = await api.post('/auth/google/token', { access_token: accessToken });
+    googleLogin: async (accessToken, isAdmin = false) => {
+        const res = await api.post('/auth/google/token', { access_token: accessToken, isAdmin });
         return res.data;
     },
     getAllStudents: async () => {

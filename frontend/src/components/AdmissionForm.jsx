@@ -22,8 +22,7 @@ const AdmissionForm = () => {
         gender: '',
         address: '',
         aadhar: '',
-        mobile: '',
-        dateJoined: new Date().toISOString().split('T')[0]
+        mobile: ''
     });
 
     const location = useLocation();

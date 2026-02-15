@@ -31,13 +31,8 @@ const Login = () => {
         const result = await login(formData);
 
         if (result.success) {
-            if (role === 'admin') {
-                if (result.user.role === 'admin') {
-                    navigate('/admin');
-                } else {
-                    setError('Access Denied: Admin privileges required.');
-                    setLoading(false);
-                }
+            if (result.user.role === 'admin') {
+                navigate('/admin');
             } else {
                 navigate('/');
             }
@@ -136,7 +131,7 @@ const Login = () => {
                             <div className="divider-line"></div>
                         </div>
 
-                        <GoogleSignInButton mode="signin" />
+                        <GoogleSignInButton mode="signin" isAdmin={role === 'admin'} />
 
                         <div className="auth-footer">
                             Don't have an account?{' '}

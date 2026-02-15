@@ -21,7 +21,6 @@ const AdminDashboard = () => {
                     totalEnrolled: enrollments.count || 0
                 });
             } catch (error) {
-                // Error handled silently
             }
         };
         fetchStats();

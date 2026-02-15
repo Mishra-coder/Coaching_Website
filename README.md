@@ -230,6 +230,7 @@ FRONTEND_URL=http://localhost:5173
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_CALLBACK_URL=http://localhost:5001/api/auth/google/callback
+ADMIN_SECRET_KEY=admin123
 
 ### 4. Setup Google Cloud Console
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)

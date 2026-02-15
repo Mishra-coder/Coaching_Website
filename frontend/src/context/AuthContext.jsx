@@ -33,8 +33,9 @@ export const AuthProvider = ({ children }) => {
             if (response.success) {
                 const { token, user } = response;
                 saveAuthData(user, token);
-                return { success: true };
+                return { success: true, user };
             }
+            return { success: false, message: response.message || 'Registration failed' };
         } catch (error) {
             return {
                 success: false,

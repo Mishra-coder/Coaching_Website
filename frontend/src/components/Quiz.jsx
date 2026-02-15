@@ -31,7 +31,6 @@ const Quiz = () => {
             setChapters(chaptersWithCounts);
             setView('chapter-select');
         } catch (error) {
-            // Error handled silently
         } finally {
             setLoading(false);
         }
@@ -48,7 +47,6 @@ const Quiz = () => {
             setShowWarning(false);
             setView('quiz');
         } catch (error) {
-            // Error handled silently
         } finally {
             setLoading(false);
         }
@@ -97,14 +95,11 @@ const Quiz = () => {
                 percentage
             });
 
-            // Handle revision mode message
             if (res.isRevise) {
-                // Revision mode
             }
 
             window.dispatchEvent(new Event('quizCompleted'));
         } catch (error) {
-            // Error handled silently
         }
         setView('result');
         window.scrollTo(0, 0);

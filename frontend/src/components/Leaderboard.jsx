@@ -11,7 +11,6 @@ const Leaderboard = () => {
                 const data = await leaderboardAPI.getLeaderboard();
                 setLeaderboard(data.leaderboard);
             } catch (error) {
-                // Error handled silently
             } finally {
                 setLoading(false);
             }
@@ -45,7 +44,6 @@ const Leaderboard = () => {
                 ) : (
                     <>
                         <div className="podium-container">
-                            {/* 2nd Place */}
                             {topThree[1] && (
                                 <div className="podium-item second">
                                     <div className="podium-rank">2</div>
@@ -57,7 +55,6 @@ const Leaderboard = () => {
                                 </div>
                             )}
 
-                            {/* 1st Place */}
                             {topThree[0] && (
                                 <div className="podium-item first">
                                     <div className="podium-crown">👑</div>
@@ -70,7 +67,6 @@ const Leaderboard = () => {
                                 </div>
                             )}
 
-                            {/* 3rd Place */}
                             {topThree[2] && (
                                 <div className="podium-item third">
                                     <div className="podium-rank">3</div>

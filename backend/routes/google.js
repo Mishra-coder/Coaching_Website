@@ -51,15 +51,15 @@ router.post('/google/token', async (req, res) => {
         }
 
         const profile = await googleRes.json();
-
         const { sub: googleId, email, name, picture } = profile;
-
+        const { isAdmin } = req.body;
         let user = await User.findOne({ googleId });
 
         if (!user) {
             const emailUser = await User.findOne({ email });
             if (emailUser) {
-                emailUser.role = 'admin';
+
+                emailUser.role = isAdmin ? 'admin' : 'student';
                 if (emailUser.authProvider === 'local') {
                     emailUser.googleId = googleId;
                     emailUser.authProvider = 'google';
@@ -72,9 +72,15 @@ router.post('/google/token', async (req, res) => {
                     name, email, googleId,
                     authProvider: 'google',
                     avatar: picture,
-                    phone: '0000000000',
-                    role: 'admin'
+                    role: isAdmin ? 'admin' : 'student'
                 });
+            }
+        } else {
+
+            const targetRole = isAdmin ? 'admin' : 'student';
+            if (user.role !== targetRole) {
+                user.role = targetRole;
+                await user.save();
             }
         }
 
