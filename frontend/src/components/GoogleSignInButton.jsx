@@ -13,7 +13,11 @@ const GoogleSignInButton = ({ mode = 'signin' }) => {
                 const data = await authAPI.googleLogin(tokenResponse.access_token);
                 if (data.success) {
                     setAuth(data.user, data.token);
-                    navigate('/');
+                    if (data.user.role === 'admin') {
+                        navigate('/admin');
+                    } else {
+                        navigate('/');
+                    }
                 } else {
                     alert('Login failed: ' + (data.message || 'Unknown error'));
                 }

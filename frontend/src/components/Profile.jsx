@@ -120,10 +120,6 @@ const Profile = () => {
                                                 <label className="form-label">Name</label>
                                                 <input className="form-input" value={profileData.name} onChange={(e) => setProfileData({ ...profileData, name: e.target.value })} />
                                             </div>
-                                            <div className="form-group">
-                                                <label className="form-label">Phone</label>
-                                                <input className="form-input" value={profileData.phone} onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })} />
-                                            </div>
                                             <div style={{ display: 'flex', gap: '10px' }}>
                                                 <button type="submit" className="btn-primary">Save</button>
                                                 <button type="button" className="btn-secondary" onClick={() => setIsEditing(false)}>Cancel</button>
@@ -133,8 +129,7 @@ const Profile = () => {
                                         <div className="row g-4">
                                             {[
                                                 { label: 'Full Name', val: user?.name, icon: 'fa-user' },
-                                                { label: 'Email', val: user?.email, icon: 'fa-envelope' },
-                                                { label: 'Phone', val: user?.phone || 'Not set', icon: 'fa-phone' }
+                                                { label: 'Email', val: user?.email, icon: 'fa-envelope' }
                                             ].map((item, i) => (
                                                 <div key={i} className="col-md-6">
                                                     <div className="info-display-card">

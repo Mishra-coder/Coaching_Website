@@ -44,7 +44,6 @@ const StudentManager = () => {
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Phone</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -53,7 +52,6 @@ const StudentManager = () => {
                                     <tr key={student._id}>
                                         <td>{student.name}</td>
                                         <td>{student.email}</td>
-                                        <td>{student.phone || 'N/A'}</td>
                                         <td>
                                             <button
                                                 onClick={() => handleViewStats(student)}
