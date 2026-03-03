@@ -1,6 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { questionsAPI } from '../../services/api';
 
+const CHAPTERS = {
+    '10': [
+        'Real Numbers',
+        'Polynomials',
+        'Pair of Linear Equations in Two Variables',
+        'Quadratic Equations',
+        'Arithmetic Progressions',
+        'Triangles',
+        'Coordinate Geometry',
+        'Introduction to Trigonometry',
+        'Some Applications of Trigonometry',
+        'Circles',
+        'Constructions',
+        'Areas Related to Circles',
+        'Surface Areas and Volumes',
+        'Statistics',
+        'Probability'
+    ],
+    '12': [
+        'Relations and Functions',
+        'Inverse Trigonometric Functions',
+        'Matrices',
+        'Determinants',
+        'Continuity and Differentiability',
+        'Application of Derivatives',
+        'Integrals',
+        'Application of Integrals',
+        'Differential Equations',
+        'Vector Algebra',
+        'Three Dimensional Geometry',
+        'Linear Programming',
+        'Probability'
+    ]
+};
+
 const QuestionManager = () => {
     const [questions, setQuestions] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -28,7 +63,11 @@ const QuestionManager = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setCurrentQuestion(prev => ({ ...prev, [name]: value }));
+        if (name === 'class') {
+            setCurrentQuestion(prev => ({ ...prev, [name]: value, chapter: '' }));
+        } else {
+            setCurrentQuestion(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleOptionChange = (index, value) => {
@@ -137,14 +176,20 @@ const QuestionManager = () => {
                         </div>
                         <div className="form-group">
                             <label className="form-label">Chapter Name</label>
-                            <input
+                            <select
                                 name="chapter"
                                 value={currentQuestion.chapter}
                                 onChange={handleInputChange}
-                                placeholder=""
                                 required
                                 className="form-input"
-                            />
+                            >
+                                <option value="">Select Chapter</option>
+                                {CHAPTERS[currentQuestion.class].map((chapter) => (
+                                    <option key={chapter} value={chapter}>
+                                        {chapter}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
 
