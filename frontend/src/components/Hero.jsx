@@ -17,7 +17,7 @@ const Hero = () => {
         <section id="home" className="hero">
             <div className="container hero-container">
                 <div className="hero-content fade-in-up">
-                    <span className="badge">Admissions Open 2025-26</span>
+                    <span className="badge">Admissions Open 2026-27</span>
 
                     <h1>
                         Unlock Your True <br />
