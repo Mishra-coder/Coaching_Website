@@ -19,6 +19,15 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/stats/count', async (req, res) => {
+    try {
+        const count = await Course.countDocuments({ isActive: true });
+        res.status(200).json({ success: true, count });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);

@@ -15,9 +15,9 @@ const AdminDashboard = () => {
             try {
                 setLoading(true);
                 const [questions, courses, enrollments] = await Promise.all([
-                    questionsAPI.getAll(),
-                    coursesAPI.getAll(),
-                    enrollmentsAPI.getAll()
+                    questionsAPI.getStats(),
+                    coursesAPI.getStats(),
+                    enrollmentsAPI.getStats()
                 ]);
                 setStats({
                     totalQuestions: questions.count || 0,

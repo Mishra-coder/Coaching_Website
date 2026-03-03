@@ -84,6 +84,10 @@ export const questionsAPI = {
         const res = await api.get('/questions', { params: filters });
         return res.data;
     },
+    getStats: async () => {
+        const res = await api.get('/questions/stats');
+        return res.data;
+    },
     create: async (data) => {
         const res = await api.post('/questions', data);
         return res.data;
@@ -101,6 +105,10 @@ export const questionsAPI = {
 export const coursesAPI = {
     getAll: async (filters = {}) => {
         const res = await api.get('/courses', { params: filters });
+        return res.data;
+    },
+    getStats: async () => {
+        const res = await api.get('/courses/stats/count');
         return res.data;
     },
     getById: async (id) => {
@@ -128,6 +136,10 @@ export const enrollmentsAPI = {
     },
     getAll: async () => {
         const res = await api.get('/enrollments');
+        return res.data;
+    },
+    getStats: async () => {
+        const res = await api.get('/enrollments/stats/count');
         return res.data;
     },
     getUserEnrollments: async (userId) => {

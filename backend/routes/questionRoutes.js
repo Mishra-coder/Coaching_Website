@@ -30,6 +30,15 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/stats', async (req, res) => {
+    try {
+        const count = await Question.countDocuments({ isActive: true });
+        res.status(200).json({ success: true, count });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 router.post('/', protect, authorize('admin'), async (req, res) => {
     try {
         const question = await Question.create(req.body);

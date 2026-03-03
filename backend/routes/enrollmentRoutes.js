@@ -61,6 +61,15 @@ router.get('/', protect, async (req, res) => {
     }
 });
 
+router.get('/stats/count', protect, async (req, res) => {
+    try {
+        const count = await Enrollment.countDocuments();
+        res.status(200).json({ success: true, count });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 router.get('/user/:userId', protect, async (req, res) => {
     try {
         if (req.user.id !== req.params.userId && req.user.role !== 'admin') {

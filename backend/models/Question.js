@@ -39,5 +39,23 @@ const questionSchema = new mongoose.Schema({
     }
 });
 
+questionSchema.pre('save', function(next) {
+    if (this.chapter) {
+        this.chapter = this.chapter.trim();
+    }
+    next();
+});
+
+questionSchema.pre('findOneAndUpdate', function(next) {
+    const update = this.getUpdate();
+    if (update.chapter) {
+        update.chapter = update.chapter.trim();
+    }
+    if (update.$set && update.$set.chapter) {
+        update.$set.chapter = update.$set.chapter.trim();
+    }
+    next();
+});
+
 const Question = mongoose.model('Question', questionSchema);
 export default Question;
