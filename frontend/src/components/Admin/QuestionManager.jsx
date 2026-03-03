@@ -39,6 +39,7 @@ const CHAPTERS = {
 const QuestionManager = () => {
     const [questions, setQuestions] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
+    const [showBulkUpload, setShowBulkUpload] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState({
         question: '',
         options: ['', '', '', ''],
@@ -104,13 +105,133 @@ const QuestionManager = () => {
         }
     };
 
+    const handleBulkUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const validTypes = [
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.ms-excel',
+            'text/csv'
+        ];
+
+        if (!validTypes.includes(file.type) && !file.name.match(/\.(xlsx|xls|csv)$/i)) {
+            setStatusMessage({ 
+                text: 'Invalid file type. Please upload .xlsx, .xls, or .csv file only.', 
+                type: 'error' 
+            });
+            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
+            e.target.value = '';
+            return;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+            setStatusMessage({ 
+                text: 'File too large. Maximum size is 10MB.', 
+                type: 'error' 
+            });
+            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
+            e.target.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            try {
+                setStatusMessage({ text: 'Processing file... Please wait.', type: 'info' });
+                const result = await questionsAPI.bulkUpload(event.target.result);
+                
+                if (result.errors > 0 && result.uploaded === 0) {
+                    let errorMsg = `❌ Upload failed! ${result.errors} errors found:\n\n`;
+                    result.errorDetails.slice(0, 5).forEach(err => {
+                        errorMsg += `Row ${err.row}: ${err.message}\n`;
+                    });
+                    if (result.errors > 5) errorMsg += `\n...and ${result.errors - 5} more errors. Check console for details.`;
+                    console.error('All upload errors:', result.errorDetails);
+                    setStatusMessage({ text: errorMsg, type: 'error' });
+                } else if (result.errors > 0 && result.uploaded > 0) {
+                    let warnMsg = `⚠️ Partially uploaded ${result.uploaded} questions. ${result.errors} rows skipped:\n\n`;
+                    result.errorDetails.slice(0, 3).forEach(err => {
+                        warnMsg += `Row ${err.row}: ${err.message}\n`;
+                    });
+                    if (result.errors > 3) warnMsg += `\n...and ${result.errors - 3} more. Check console for details.`;
+                    console.warn('Upload warnings:', result.errorDetails);
+                    setStatusMessage({ text: warnMsg, type: 'warning' });
+                    fetchQuestions();
+                } else {
+                    setStatusMessage({ 
+                        text: `✅ Success! Uploaded ${result.uploaded} questions successfully!`, 
+                        type: 'success' 
+                    });
+                    fetchQuestions();
+                    setShowBulkUpload(false);
+                }
+                
+                setTimeout(() => setStatusMessage({ text: '', type: '' }), 10000);
+            } catch (error) {
+                console.error('Upload error:', error);
+                const errorMsg = error.response?.data?.message || error.message || 'Upload failed. Please try again.';
+                setStatusMessage({ 
+                    text: `❌ Upload failed: ${errorMsg}\n\nPlease check your file format and try again.`, 
+                    type: 'error' 
+                });
+                setTimeout(() => setStatusMessage({ text: '', type: '' }), 8000);
+            }
+        };
+
+        reader.onerror = () => {
+            setStatusMessage({ 
+                text: '❌ Failed to read file. Please try again.', 
+                type: 'error' 
+            });
+            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
+        };
+
+        reader.readAsDataURL(file);
+        e.target.value = '';
+    };
+
     return (
         <div className="admin-container">
-            <h2 className="admin-header-title">Question Manager</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+                <h2 className="admin-header-title">Question Manager</h2>
+                <button 
+                    onClick={() => setShowBulkUpload(!showBulkUpload)} 
+                    className="btn-primary"
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                    <i className="fas fa-file-excel"></i>
+                    {showBulkUpload ? 'Hide' : 'Bulk Upload'}
+                </button>
+            </div>
 
             {statusMessage.text && (
-                <div className={`status-message ${statusMessage.type === 'success' ? 'status-success' : 'status-error'}`}>
-                    {statusMessage.text}
+                <div className={`status-message ${statusMessage.type === 'success' ? 'status-success' : statusMessage.type === 'info' ? 'status-info' : statusMessage.type === 'warning' ? 'status-warning' : 'status-error'}`}>
+                    <pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit' }}>{statusMessage.text}</pre>
+                </div>
+            )}
+
+            {showBulkUpload && (
+                <div className="admin-card" style={{ marginBottom: '30px', background: '#f0fdf4' }}>
+                    <h4 style={{ color: '#166534', marginBottom: '15px' }}>
+                        <i className="fas fa-upload"></i> Bulk Upload Questions
+                    </h4>
+                    <p style={{ color: '#15803d', marginBottom: '15px', fontSize: '0.9rem' }}>
+                        Upload an Excel file (.xlsx, .xls) or CSV with your questions. Maximum file size: 10MB
+                    </p>
+                    <input 
+                        type="file" 
+                        accept=".xlsx,.xls,.csv" 
+                        onChange={handleBulkUpload}
+                        style={{ 
+                            padding: '10px',
+                            border: '2px dashed #22c55e',
+                            borderRadius: '8px',
+                            width: '100%',
+                            cursor: 'pointer',
+                            backgroundColor: '#fff'
+                        }}
+                    />
                 </div>
             )}
 

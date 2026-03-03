@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
             {
                 $group: {
                     _id: '$user',
-                    totalXP: { $sum: '$score' },
+                    totalXP: { $sum: { $multiply: ['$score', 3] } },
                     quizzesTaken: { $sum: 1 }
                 }
             },

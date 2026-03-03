@@ -92,6 +92,10 @@ export const questionsAPI = {
         const res = await api.post('/questions', data);
         return res.data;
     },
+    bulkUpload: async (fileData) => {
+        const res = await api.post('/questions/bulk-upload', { fileData });
+        return res.data;
+    },
     update: async (id, data) => {
         const res = await api.put(`/questions/${id}`, data);
         return res.data;

@@ -2349,6 +2349,335 @@ footer {
     margin: 0;
 }
 
+.admission-form-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.admission-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+}
+
+.admission-icon-wrapper i {
+    font-size: 2.5rem;
+    color: #fff;
+}
+
+.admission-main-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a237e;
+    margin-bottom: 10px;
+}
+
+.admission-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.modern-admission-form {
+    background: #fff;
+}
+
+.modern-alert {
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border-left: 4px solid #dc2626;
+}
+
+.alert-success {
+    background: #d1fae5;
+    color: #065f46;
+    border-left: 4px solid #10b981;
+}
+
+.photo-upload-section {
+    margin-bottom: 40px;
+}
+
+.photo-upload-label {
+    display: block;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.photo-upload-box {
+    width: 180px;
+    height: 220px;
+    border: 3px dashed #cbd5e1;
+    border-radius: 16px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    margin: 0 auto;
+}
+
+.photo-upload-box:hover {
+    border-color: #4f46e5;
+    background: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15);
+}
+
+.uploaded-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-placeholder {
+    text-align: center;
+    color: #64748b;
+    padding: 20px;
+}
+
+.photo-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    display: block;
+    color: #94a3b8;
+}
+
+.photo-placeholder span {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.photo-placeholder small {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.form-section-modern {
+    margin-bottom: 30px;
+}
+
+.section-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: 12px;
+    margin-bottom: 25px;
+    color: #fff;
+}
+
+.section-title-bar i {
+    font-size: 1.5rem;
+}
+
+.section-title-bar h4 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field.full-width {
+    grid-column: span 2;
+}
+
+.modern-label {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.modern-input {
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    font-family: 'Outfit', sans-serif;
+}
+
+.modern-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.modern-input::placeholder {
+    color: #94a3b8;
+}
+
+.dob-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr;
+    gap: 10px;
+}
+
+.gender-options {
+    display: flex;
+    gap: 15px;
+}
+
+.gender-option {
+    flex: 1;
+    cursor: pointer;
+}
+
+.gender-option input[type="radio"] {
+    display: none;
+}
+
+.gender-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s;
+    background: #fff;
+}
+
+.gender-option input[type="radio"]:checked + .gender-label {
+    border-color: #4f46e5;
+    background: #eff6ff;
+    color: #4f46e5;
+}
+
+.gender-label i {
+    font-size: 1.2rem;
+}
+
+.declaration-box {
+    display: flex;
+    gap: 20px;
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+    border: 2px solid #fed7aa;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.declaration-icon {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f97316;
+    font-size: 1.5rem;
+}
+
+.declaration-content h5 {
+    color: #9a3412;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+}
+
+.declaration-content p {
+    color: #c2410c;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.submit-btn-modern {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+    font-family: 'Outfit', sans-serif;
+}
+
+.submit-btn-modern:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(79, 70, 229, 0.4);
+}
+
+.submit-btn-modern:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field.full-width {
+        grid-column: span 1;
+    }
+
+    .admission-form-wrapper {
+        padding: 25px;
+    }
+
+    .admission-main-title {
+        font-size: 2rem;
+    }
+
+    .declaration-box {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .declaration-icon {
+        margin: 0 auto;
+    }
+}
+
 .profile-page {
     background: #f8fafc;
     min-height: 100vh;
@@ -2793,6 +3122,18 @@ footer {
     background-color: #fef2f2;
     color: #dc2626;
     border: 1px solid #f87171;
+}
+
+.status-warning {
+    background-color: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fbbf24;
+}
+
+.status-info {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #60a5fa;
 }
 
 @keyframes slideIn {

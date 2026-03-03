@@ -121,150 +121,180 @@ const AdmissionForm = () => {
 
     return (
         <section className="admission-page">
-            <div className="container">
+            <div className="container" style={{ maxWidth: '900px' }}>
                 <div className="admission-form-wrapper">
-                    <form className="contact-form" onSubmit={onFormSubmit}>
-                        <div className="form-header-row">
-                            <h3 className="form-title">Admission Form</h3>
+                    <div className="admission-form-header">
+                        <div className="admission-icon-wrapper">
+                            <i className="fas fa-graduation-cap"></i>
+                        </div>
+                        <h2 className="admission-main-title">Admission Form</h2>
+                        <p className="admission-subtitle">Join Success Mantra Institute - Your Path to Excellence</p>
+                    </div>
 
-                            <div className="photo-upload-area" onClick={() => fileInput.current.click()}>
+                    <form className="modern-admission-form" onSubmit={onFormSubmit}>
+                        {statusMessage.text && (
+                            <div className={`modern-alert ${statusMessage.type === 'error' ? 'alert-error' : 'alert-success'}`}>
+                                <i className={`fas ${statusMessage.type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'}`}></i>
+                                <span>{statusMessage.text}</span>
+                            </div>
+                        )}
+
+                        <div className="photo-upload-section">
+                            <label className="photo-upload-label">Student Photo</label>
+                            <div className="photo-upload-box" onClick={() => fileInput.current.click()}>
                                 {studentPhoto ? (
-                                    <img src={studentPhoto} alt="Student" className="photo-preview" />
+                                    <img src={studentPhoto} alt="Student" className="uploaded-photo" />
                                 ) : (
-                                    <div className="photo-placeholder-content">
-                                        <i className="fas fa-camera photo-icon" />
-                                        <span className="photo-text">Upload Photo</span>
+                                    <div className="photo-placeholder">
+                                        <i className="fas fa-camera"></i>
+                                        <span>Click to Upload Photo</span>
+                                        <small>JPG, PNG (Max 2MB)</small>
                                     </div>
                                 )}
                                 <input type="file" accept="image/*" hidden ref={fileInput} onChange={onFileSelect} />
                             </div>
                         </div>
 
-                        {statusMessage.text && (
-                            <div className={`form-alert ${statusMessage.type === 'error' ? 'form-input-error' : ''}`} style={{ backgroundColor: statusMessage.type === 'error' ? '#fee' : '#ecfdf5', color: statusMessage.type === 'error' ? '#c33' : '#047857' }}>
-                                {statusMessage.text}
-                            </div>
-                        )}
-
-                        <div className="form-section">
-                            <h5 className="form-section-label">Personal Information</h5>
-
-                            <div className="form-group">
-                                <label className="form-label">Full Name</label>
-                                <input
-                                    type="text"
-                                    name="studentName"
-                                    value={details.studentName}
-                                    onChange={updateField}
-                                    placeholder="Student's Name"
-                                    required
-                                    className="form-input"
-                                />
+                        <div className="form-section-modern">
+                            <div className="section-title-bar">
+                                <i className="fas fa-user-circle"></i>
+                                <h4>Personal Information</h4>
                             </div>
 
-                            <div className="row">
-                                <div className="col-md-6 form-group">
-                                    <label className="form-label">Father's Name</label>
+                            <div className="form-grid">
+                                <div className="form-field full-width">
+                                    <label className="modern-label">Full Name <span className="required">*</span></label>
+                                    <input
+                                        type="text"
+                                        name="studentName"
+                                        value={details.studentName}
+                                        onChange={updateField}
+                                        placeholder="Enter student's full name"
+                                        required
+                                        className="modern-input"
+                                    />
+                                </div>
+
+                                <div className="form-field">
+                                    <label className="modern-label">Father's Name <span className="required">*</span></label>
                                     <input
                                         type="text"
                                         name="fatherName"
                                         value={details.fatherName}
                                         onChange={updateField}
-                                        placeholder="Father's Name"
+                                        placeholder="Enter father's name"
                                         required
-                                        className="form-input"
+                                        className="modern-input"
                                     />
                                 </div>
-                                <div className="col-md-6 form-group">
-                                    <label className="form-label">Mother's Name</label>
+
+                                <div className="form-field">
+                                    <label className="modern-label">Mother's Name <span className="required">*</span></label>
                                     <input
                                         type="text"
                                         name="motherName"
                                         value={details.motherName}
                                         onChange={updateField}
-                                        placeholder="Mother's Name"
+                                        placeholder="Enter mother's name"
                                         required
-                                        className="form-input"
+                                        className="modern-input"
                                     />
                                 </div>
-                            </div>
 
-                            <div className="row">
-                                <div className="col-md-6 form-group">
-                                    <label className="form-label">Date of Birth</label>
-                                    <div className="dob-grid">
-                                        <input type="number" name="birthDay" value={details.birthDay} onChange={updateField} placeholder="DD" min="1" max="31" required className="form-input" />
-                                        <input type="number" name="birthMonth" value={details.birthMonth} onChange={updateField} placeholder="MM" min="1" max="12" required className="form-input" />
-                                        <input type="number" name="birthYear" value={details.birthYear} onChange={updateField} placeholder="YYYY" min="2000" max="2025" required className="form-input" />
+                                <div className="form-field">
+                                    <label className="modern-label">Date of Birth <span className="required">*</span></label>
+                                    <div className="dob-inputs">
+                                        <input type="number" name="birthDay" value={details.birthDay} onChange={updateField} placeholder="DD" min="1" max="31" required className="modern-input" />
+                                        <input type="number" name="birthMonth" value={details.birthMonth} onChange={updateField} placeholder="MM" min="1" max="12" required className="modern-input" />
+                                        <input type="number" name="birthYear" value={details.birthYear} onChange={updateField} placeholder="YYYY" min="2000" max="2025" required className="modern-input" />
                                     </div>
                                 </div>
-                                <div className="col-md-6 form-group">
-                                    <label className="form-label">Gender</label>
-                                    <div className="gender-select-group">
-                                        {['male', 'female'].map(g => (
-                                            <label key={g} className="radio-label">
-                                                <span className="radio-text">{g}</span>
-                                                <input type="radio" name="gender" value={g} checked={details.gender === g} onChange={updateField} required className="radio-input" />
-                                            </label>
-                                        ))}
+
+                                <div className="form-field">
+                                    <label className="modern-label">Gender <span className="required">*</span></label>
+                                    <div className="gender-options">
+                                        <label className="gender-option">
+                                            <input type="radio" name="gender" value="male" checked={details.gender === 'male'} onChange={updateField} required />
+                                            <span className="gender-label">
+                                                <i className="fas fa-mars"></i> Male
+                                            </span>
+                                        </label>
+                                        <label className="gender-option">
+                                            <input type="radio" name="gender" value="female" checked={details.gender === 'female'} onChange={updateField} required />
+                                            <span className="gender-label">
+                                                <i className="fas fa-venus"></i> Female
+                                            </span>
+                                        </label>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="form-group">
-                                <label className="form-label">Address</label>
-                                <textarea
-                                    name="address"
-                                    value={details.address}
-                                    onChange={updateField}
-                                    placeholder="Full Home Address"
-                                    rows="2"
-                                    required
-                                    className="form-input"
-                                />
-                            </div>
+                                <div className="form-field full-width">
+                                    <label className="modern-label">Address <span className="required">*</span></label>
+                                    <textarea
+                                        name="address"
+                                        value={details.address}
+                                        onChange={updateField}
+                                        placeholder="Enter complete address"
+                                        rows="3"
+                                        required
+                                        className="modern-input"
+                                    />
+                                </div>
 
-                            <div className="row">
-                                <div className="col-md-6 form-group">
-                                    <label className="form-label">Aadhar No</label>
+                                <div className="form-field">
+                                    <label className="modern-label">Aadhar Number <span className="required">*</span></label>
                                     <input
                                         type="text"
                                         name="aadhar"
                                         value={details.aadhar}
                                         onChange={updateField}
-                                        placeholder="12-digit Number"
+                                        placeholder="Enter 12-digit Aadhar"
                                         pattern="[0-9]{12}"
                                         required
-                                        className="form-input"
+                                        className="modern-input"
                                     />
                                 </div>
-                                <div className="col-md-6 form-group">
-                                    <label className="form-label">Mobile No</label>
+
+                                <div className="form-field">
+                                    <label className="modern-label">Mobile Number <span className="required">*</span></label>
                                     <input
                                         type="tel"
                                         name="mobile"
                                         value={details.mobile}
                                         onChange={updateField}
-                                        placeholder="10-digit Number"
+                                        placeholder="Enter 10-digit mobile"
                                         pattern="[0-9]{10}"
                                         required
-                                        className="form-input"
+                                        className="modern-input"
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        <div className="declaration-container">
-                            <h5 className="declaration-title">DECLARATION :</h5>
-                            <p className="declaration-text">कोचिंग के नियमो का पालन करना होगा एवं अनुशासन में रहना होगा यदि आप कोचिंग के नियमो का उलघन करते है तो आपका नाम निरस्त कर दिया जायेगा |</p>
+                        <div className="declaration-box">
+                            <div className="declaration-icon">
+                                <i className="fas fa-file-contract"></i>
+                            </div>
+                            <div className="declaration-content">
+                                <h5>Declaration</h5>
+                                <p>कोचिंग के नियमो का पालन करना होगा एवं अनुशासन में रहना होगा। यदि आप कोचिंग के नियमो का उल्लंघन करते है तो आपका नाम निरस्त कर दिया जायेगा।</p>
+                            </div>
                         </div>
 
                         <button
                             type="submit"
-                            className={`btn-primary btn-block ${isSubmitting ? 'btn-loading' : ''}`}
+                            className="submit-btn-modern"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Processing...' : 'Submit Admission'}
+                            {isSubmitting ? (
+                                <>
+                                    <i className="fas fa-spinner fa-spin"></i> Processing...
+                                </>
+                            ) : (
+                                <>
+                                    <i className="fas fa-paper-plane"></i> Submit Admission Form
+                                </>
+                            )}
                         </button>
                     </form>
                 </div>

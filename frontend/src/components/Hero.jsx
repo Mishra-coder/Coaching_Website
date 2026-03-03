@@ -31,7 +31,7 @@ const Hero = () => {
                     </p>
 
                     <div className="hero-btns">
-                        <Link to="/demo" className="btn-primary">
+                        <Link to="/admission" className="btn-primary">
                             Book a Free Demo <i className="fas fa-arrow-right" style={{ marginLeft: '8px' }}></i>
                         </Link>
                         <Link to="/courses" className="btn-secondary">
