@@ -14,12 +14,15 @@ const signToken = (id) => {
 router.post('/register', async (req, res) => {
     try {
         const { name, email, password, phone } = req.body;
+        console.log('Registration attempt:', { name, email, phone });
 
         if (await User.findOne({ email })) {
+            console.log('Registration failed: Email already exists', email);
             return res.status(400).json({ success: false, message: 'Email already registered' });
         }
 
         const user = await User.create({ name, email, password, phone });
+        console.log('User created successfully:', user._id);
         const token = signToken(user._id);
 
         res.status(201).json({
@@ -28,6 +31,7 @@ router.post('/register', async (req, res) => {
             user: { id: user._id, name: user.name, email: user.email, phone: user.phone, role: user.role }
         });
     } catch (err) {
+        console.error('Registration error:', err);
         res.status(500).json({ success: false, message: err.message });
     }
 });

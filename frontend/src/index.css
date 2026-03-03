@@ -2548,17 +2548,6 @@ footer {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-.modal-close-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #64748b;
-    cursor: pointer;
-}
-
 .detail-row {
     margin-bottom: 15px;
 }
@@ -2699,6 +2688,56 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 25px;
+}
+
+.details-grid-full {
+    grid-column: span 2;
+}
+
+.enrollment-list-mobile {
+    display: none;
+}
+
+.enrollment-table-desktop {
+    display: block;
+}
+
+.enrollment-card-mobile {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #e2e8f0;
+}
+
+.enrollment-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.enrollment-student-name {
+    font-weight: 700;
+    color: #1a237e;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.enrollment-date {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.enrollment-details-top {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.enrollment-details-panel {
+    position: sticky;
+    top: 20px;
 }
 
 .question-form-grid {
@@ -3204,6 +3243,49 @@ footer {
     .admin-container {
         padding-left: 15px !important;
         padding-right: 15px !important;
+        padding-top: 100px !important;
+    }
+
+    .enrollment-list-mobile {
+        display: block !important;
+    }
+
+    .enrollment-table-desktop {
+        display: none !important;
+    }
+
+    .enrollment-details-panel {
+        position: static !important;
+        margin-top: 20px;
+    }
+
+    .enrollment-details-top {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center;
+    }
+
+    .student-photo-preview-large {
+        width: 100px !important;
+        height: 120px !important;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    .details-grid-full {
+        grid-column: span 1 !important;
+    }
+
+    .admin-header-title {
+        font-size: 1.5rem !important;
+    }
+
+    .status-badge {
+        font-size: 0.75rem !important;
+        padding: 4px 8px !important;
     }
 
     .hero {

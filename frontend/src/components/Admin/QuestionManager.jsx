@@ -141,7 +141,7 @@ const QuestionManager = () => {
                                 name="chapter"
                                 value={currentQuestion.chapter}
                                 onChange={handleInputChange}
-                                placeholder="e.g. Real Numbers"
+                                placeholder=""
                                 required
                                 className="form-input"
                             />

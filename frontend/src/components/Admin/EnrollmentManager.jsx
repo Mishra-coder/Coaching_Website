@@ -41,7 +41,31 @@ const EnrollmentManager = () => {
             <div className="admin-manager-layout" style={{ gridTemplateColumns: selectedEnrollment ? '1fr 1.2fr' : '1fr' }}>
                 <div className="admin-card">
                     <h4 style={{ marginBottom: '20px' }}>All Submissions</h4>
-                    <div className="admin-table-wrapper">
+                    
+                    <div className="enrollment-list-mobile">
+                        {enrollments.map((en) => (
+                            <div key={en._id} className="enrollment-card-mobile">
+                                <div className="enrollment-card-header">
+                                    <div>
+                                        <div className="enrollment-student-name">{en.studentName}</div>
+                                        <div className="enrollment-date">{new Date(en.createdAt).toLocaleDateString()}</div>
+                                    </div>
+                                    <span className={`status-badge ${en.status}`}>
+                                        {en.status === 'completed' ? 'COMPLETED' : en.status.toUpperCase()}
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={() => setSelectedEnrollment(en)}
+                                    className="btn-action btn-view"
+                                    style={{ width: '100%', marginTop: '10px' }}
+                                >
+                                    View Details
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="admin-table-wrapper enrollment-table-desktop">
                         <table className="admin-table">
                             <thead>
                                 <tr>
@@ -77,13 +101,13 @@ const EnrollmentManager = () => {
                 </div>
 
                 {selectedEnrollment && (
-                    <div className="admin-card fade-in" style={{ position: 'sticky', top: '20px' }}>
+                    <div className="admin-card fade-in enrollment-details-panel">
                         <div className="details-panel-header">
                             <h3 style={{ margin: 0, color: '#1a237e' }}>Admission Details</h3>
                             <button onClick={() => setSelectedEnrollment(null)} className="close-btn">&times;</button>
                         </div>
 
-                        <div style={{ display: 'flex', gap: '25px', marginBottom: '30px' }}>
+                        <div className="enrollment-details-top">
                             {selectedEnrollment.photo ? (
                                 <img src={selectedEnrollment.photo} alt="Student" className="student-photo-preview-large" />
                             ) : (
@@ -93,7 +117,7 @@ const EnrollmentManager = () => {
                             )}
                             <div style={{ flex: 1 }}>
                                 <h4 style={{ margin: '0 0 10px 0', fontWeight: '800' }}>{selectedEnrollment.studentName}</h4>
-                                <p style={{ color: '#64748b', marginBottom: '15px' }}>Application ID: <br /><small>{selectedEnrollment._id}</small></p>
+                                <p style={{ color: '#64748b', marginBottom: '15px', wordBreak: 'break-all' }}>Application ID: <br /><small>{selectedEnrollment._id}</small></p>
 
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                                     <select
@@ -143,7 +167,7 @@ const EnrollmentManager = () => {
                                 <label className="detail-label">Gender</label>
                                 <p className="info-value" style={{ textTransform: 'capitalize' }}>{selectedEnrollment.gender}</p>
                             </div>
-                            <div style={{ gridColumn: 'span 2' }}>
+                            <div className="details-grid-full">
                                 <label className="detail-label">Aadhar Number</label>
                                 <p className="info-value" style={{ letterSpacing: '1px' }}>{selectedEnrollment.aadharNumber}</p>
                             </div>
@@ -151,7 +175,7 @@ const EnrollmentManager = () => {
                                 <label className="detail-label">Mobile Number</label>
                                 <p className="info-value">{selectedEnrollment.mobileNumber}</p>
                             </div>
-                            <div style={{ gridColumn: 'span 2' }}>
+                            <div className="details-grid-full">
                                 <label className="detail-label">Address</label>
                                 <p className="info-value">{selectedEnrollment.address}</p>
                             </div>

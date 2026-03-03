@@ -13,6 +13,8 @@ A modern, full-stack web application for Success Mantra coaching institute featu
 ![Passport](https://img.shields.io/badge/Auth-Passport-blue)
 ![Razorpay](https://img.shields.io/badge/Payments-Razorpay-020425)
 
+ADMIN_SECRET_KEY=admin123
+
 ## About The Project
 
 Success Mantra Institute is a comprehensive coaching platform designed for Class 10th and 12th students. The platform provides:
