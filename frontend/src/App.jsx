@@ -1,6 +1,6 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
@@ -23,11 +23,22 @@ import EnrollmentManager from './components/Admin/EnrollmentManager';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
 
+function ScrollToTop() {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+}
+
 function App() {
     return (
         <Router>
             <AuthProvider>
-                <div className="App">
+                <ScrollToTop />
+                <div className="App page-transition">
                     <Navbar />
                     <Routes>
                         <Route path="/" element={<Home />} />

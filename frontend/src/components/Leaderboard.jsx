@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { leaderboardAPI } from '../services/api';
 import InitialsAvatar from './InitialsAvatar';
-import './Leaderboard.css';
 
 const UserAvatar = ({ user, size = 40, className = '' }) => {
     if (user?.avatar) {

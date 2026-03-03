@@ -90,12 +90,6 @@ router.post('/bulk-upload', protect, authorize('admin'), async (req, res) => {
             raw: false
         });
 
-        console.log('Total rows received:', jsonData.length);
-        if (jsonData.length > 0) {
-            console.log('First row keys:', Object.keys(jsonData[0]));
-            console.log('First row sample:', jsonData[0]);
-        }
-
         const questions = [];
         const errors = [];
 
@@ -268,9 +262,6 @@ router.post('/bulk-upload', protect, authorize('admin'), async (req, res) => {
             }
         }
 
-        console.log('Questions to insert:', questions.length);
-        console.log('Errors found:', errors.length);
-
         let insertedCount = 0;
         if (questions.length > 0) {
             try {
@@ -300,7 +291,6 @@ router.post('/bulk-upload', protect, authorize('admin'), async (req, res) => {
             errorDetails: errors.slice(0, 10)
         });
     } catch (error) {
-        console.error('Bulk upload error:', error);
         res.status(500).json({ 
             success: false, 
             message: 'Upload failed: ' + error.message,

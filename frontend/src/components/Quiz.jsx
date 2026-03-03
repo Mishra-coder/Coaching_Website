@@ -1,16 +1,50 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { questionsAPI, quizAPI } from '../services/api';
 
 const Quiz = () => {
-    const [view, setView] = useState('class-select');
-    const [selectedClass, setSelectedClass] = useState(null);
-    const [selectedChapter, setSelectedChapter] = useState(null);
+    const [view, setView] = useState(() => {
+        return sessionStorage.getItem('quizView') || 'class-select';
+    });
+    const [selectedClass, setSelectedClass] = useState(() => {
+        return sessionStorage.getItem('quizClass') || null;
+    });
+    const [selectedChapter, setSelectedChapter] = useState(() => {
+        return sessionStorage.getItem('quizChapter') || null;
+    });
     const [userAnswers, setUserAnswers] = useState({});
     const [showWarning, setShowWarning] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [questions, setQuestions] = useState([]);
     const [chapters, setChapters] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        sessionStorage.setItem('quizView', view);
+    }, [view]);
+
+    useEffect(() => {
+        if (selectedClass) {
+            sessionStorage.setItem('quizClass', selectedClass);
+        }
+    }, [selectedClass]);
+
+    useEffect(() => {
+        if (selectedChapter) {
+            sessionStorage.setItem('quizChapter', selectedChapter);
+        }
+    }, [selectedChapter]);
+
+    useEffect(() => {
+        const savedView = sessionStorage.getItem('quizView');
+        const savedClass = sessionStorage.getItem('quizClass');
+        const savedChapter = sessionStorage.getItem('quizChapter');
+
+        if (savedView === 'chapter-select' && savedClass) {
+            handleClassSelect(savedClass);
+        } else if (savedView === 'quiz' && savedClass && savedChapter) {
+            handleChapterSelect(savedChapter, savedClass);
+        }
+    }, []);
 
     const handleClassSelect = async (cls) => {
         setSelectedClass(cls);
@@ -36,11 +70,11 @@ const Quiz = () => {
         }
     };
 
-    const handleChapterSelect = async (chapter) => {
+    const handleChapterSelect = async (chapter, classLevel = selectedClass) => {
         setSelectedChapter(chapter);
         setLoading(true);
         try {
-            const res = await questionsAPI.getAll({ class: selectedClass, chapter });
+            const res = await questionsAPI.getAll({ class: classLevel, chapter });
             setQuestions(res.questions);
             setUserAnswers({});
             setCurrentQuestionIndex(0);
@@ -120,10 +154,17 @@ const Quiz = () => {
     };
 
     const handleRestart = () => {
+        sessionStorage.removeItem('quizView');
+        sessionStorage.removeItem('quizClass');
+        sessionStorage.removeItem('quizChapter');
         setUserAnswers({});
         setShowWarning(false);
         setCurrentQuestionIndex(0);
-        setView('quiz');
+        setView('class-select');
+        setSelectedClass(null);
+        setSelectedChapter(null);
+        setQuestions([]);
+        setChapters([]);
     };
 
     const renderClassSelection = () => {

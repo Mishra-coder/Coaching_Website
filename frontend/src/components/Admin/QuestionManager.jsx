@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { questionsAPI } from '../../services/api';
 
 const CHAPTERS = {
@@ -38,6 +38,8 @@ const CHAPTERS = {
 
 const QuestionManager = () => {
     const [questions, setQuestions] = useState([]);
+    const [filteredQuestions, setFilteredQuestions] = useState([]);
+    const [selectedClassFilter, setSelectedClassFilter] = useState('all');
     const [isEditing, setIsEditing] = useState(false);
     const [showBulkUpload, setShowBulkUpload] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState({
@@ -51,6 +53,14 @@ const QuestionManager = () => {
     useEffect(() => {
         fetchQuestions();
     }, []);
+
+    useEffect(() => {
+        if (selectedClassFilter === 'all') {
+            setFilteredQuestions(questions);
+        } else {
+            setFilteredQuestions(questions.filter(q => q.class === selectedClassFilter));
+        }
+    }, [selectedClassFilter, questions]);
 
     const [statusMessage, setStatusMessage] = useState({ text: '', type: '' });
 
@@ -193,12 +203,11 @@ const QuestionManager = () => {
 
     return (
         <div className="admin-container">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+            <div className="question-manager-header">
                 <h2 className="admin-header-title">Question Manager</h2>
                 <button 
                     onClick={() => setShowBulkUpload(!showBulkUpload)} 
-                    className="btn-primary"
-                    style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                    className="btn-primary bulk-upload-btn"
                 >
                     <i className="fas fa-file-excel"></i>
                     {showBulkUpload ? 'Hide' : 'Bulk Upload'}
@@ -207,36 +216,29 @@ const QuestionManager = () => {
 
             {statusMessage.text && (
                 <div className={`status-message ${statusMessage.type === 'success' ? 'status-success' : statusMessage.type === 'info' ? 'status-info' : statusMessage.type === 'warning' ? 'status-warning' : 'status-error'}`}>
-                    <pre style={{ whiteSpace: 'pre-wrap', margin: 0, fontFamily: 'inherit' }}>{statusMessage.text}</pre>
+                    <pre>{statusMessage.text}</pre>
                 </div>
             )}
 
             {showBulkUpload && (
-                <div className="admin-card" style={{ marginBottom: '30px', background: '#f0fdf4' }}>
-                    <h4 style={{ color: '#166534', marginBottom: '15px' }}>
+                <div className="admin-card bulk-upload-card">
+                    <h4 className="bulk-upload-title">
                         <i className="fas fa-upload"></i> Bulk Upload Questions
                     </h4>
-                    <p style={{ color: '#15803d', marginBottom: '15px', fontSize: '0.9rem' }}>
+                    <p className="bulk-upload-description">
                         Upload an Excel file (.xlsx, .xls) or CSV with your questions. Maximum file size: 10MB
                     </p>
                     <input 
                         type="file" 
                         accept=".xlsx,.xls,.csv" 
                         onChange={handleBulkUpload}
-                        style={{ 
-                            padding: '10px',
-                            border: '2px dashed #22c55e',
-                            borderRadius: '8px',
-                            width: '100%',
-                            cursor: 'pointer',
-                            backgroundColor: '#fff'
-                        }}
+                        className="bulk-upload-input"
                     />
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="admin-card" style={{ marginBottom: '40px' }}>
-                <h3 style={{ color: '#1a237e', marginBottom: '20px' }}>{isEditing ? '📝 Edit Question' : '➕ Add New Question'}</h3>
+            <form onSubmit={handleSubmit} className="admin-card question-form-card">
+                <h3 className="question-form-title">{isEditing ? '📝 Edit Question' : '➕ Add New Question'}</h3>
 
                 <div className="question-form-grid">
                     <div className="form-group">
@@ -247,8 +249,7 @@ const QuestionManager = () => {
                             onChange={handleInputChange}
                             placeholder="Type your question here..."
                             required
-                            className="form-input"
-                            style={{ minHeight: '100px' }}
+                            className="form-input question-textarea"
                         />
                     </div>
 
@@ -314,8 +315,8 @@ const QuestionManager = () => {
                         </div>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '15px' }}>
-                        <button type="submit" className="btn-primary" style={{ flex: 2 }}>
+                    <div className="form-actions">
+                        <button type="submit" className="btn-primary">
                             {isEditing ? 'Update Question' : 'Save Question'}
                         </button>
                         {isEditing && (
@@ -326,7 +327,6 @@ const QuestionManager = () => {
                                     setCurrentQuestion({ question: '', options: ['', '', '', ''], correctAnswer: '', class: '10', chapter: '' });
                                 }}
                                 className="btn-secondary"
-                                style={{ flex: 1 }}
                             >
                                 Cancel
                             </button>
@@ -336,8 +336,76 @@ const QuestionManager = () => {
             </form>
 
             <div className="admin-card">
-                <h3 style={{ color: '#1a237e', marginBottom: '20px' }}>All Questions</h3>
-                <div className="admin-table-wrapper">
+                <div className="questions-list-header">
+                    <h3 className="questions-list-title">All Questions</h3>
+                    <div className="class-filter-buttons">
+                        <button
+                            onClick={() => setSelectedClassFilter('all')}
+                            className={`class-filter-btn ${selectedClassFilter === 'all' ? 'active' : ''}`}
+                        >
+                            All ({questions.length})
+                        </button>
+                        <button
+                            onClick={() => setSelectedClassFilter('10')}
+                            className={`class-filter-btn ${selectedClassFilter === '10' ? 'active' : ''}`}
+                        >
+                            Class 10 ({questions.filter(q => q.class === '10').length})
+                        </button>
+                        <button
+                            onClick={() => setSelectedClassFilter('12')}
+                            className={`class-filter-btn ${selectedClassFilter === '12' ? 'active' : ''}`}
+                        >
+                            Class 12 ({questions.filter(q => q.class === '12').length})
+                        </button>
+                    </div>
+                </div>
+
+                <div className="enrollment-list-mobile">
+                    {filteredQuestions.map((q) => (
+                        <div key={q._id} className="enrollment-card-mobile">
+                            <div className="enrollment-card-header">
+                                <div>
+                                    <div className="enrollment-student-name question-card-text">
+                                        {q.question.length > 60 ? q.question.substring(0, 60) + '...' : q.question}
+                                    </div>
+                                    <div className="enrollment-date">
+                                        Class {q.class} • {q.chapter}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="question-card-actions">
+                                <button
+                                    onClick={() => {
+                                        setIsEditing(true);
+                                        setCurrentQuestion(q);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    className="btn-action btn-view"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={async () => {
+                                        if (window.confirm('Are you sure you want to delete this question?')) {
+                                            try {
+                                                await questionsAPI.delete(q._id);
+                                                fetchQuestions();
+                                                setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
+                                                setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+                                            } catch (error) {
+                                            }
+                                        }
+                                    }}
+                                    className="btn-action btn-delete"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="admin-table-wrapper enrollment-table-desktop">
                     <table className="admin-table">
                         <thead>
                             <tr>
@@ -348,13 +416,13 @@ const QuestionManager = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {questions.map((q) => (
+                            {filteredQuestions.map((q) => (
                                 <tr key={q._id}>
-                                    <td style={{ fontWeight: '600' }}>Class {q.class}</td>
-                                    <td style={{ color: '#1a237e' }}>{q.chapter}</td>
-                                    <td style={{ maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{q.question}</td>
+                                    <td className="question-table-class">Class {q.class}</td>
+                                    <td className="question-table-chapter">{q.chapter}</td>
+                                    <td className="question-table-text">{q.question}</td>
                                     <td>
-                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                        <div className="question-table-actions">
                                             <button
                                                 onClick={() => {
                                                     setIsEditing(true);
