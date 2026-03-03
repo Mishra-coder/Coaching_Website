@@ -171,6 +171,7 @@ const Profile = () => {
                                         <div className="modal-overlay" onClick={() => setSelectedForm(null)}>
                                             <div className="modal-content-box" onClick={e => e.stopPropagation()}>
                                                 <button onClick={() => setSelectedForm(null)} className="modal-close-btn">&times;</button>
+                                                
                                                 <h3 style={{ marginBottom: '25px', color: '#1a237e' }}>Form Details</h3>
 
                                                 {selectedForm.adminRemarks && (

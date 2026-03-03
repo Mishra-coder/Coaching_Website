@@ -20,6 +20,8 @@ const AdmissionForm = () => {
         birthMonth: '',
         birthYear: '',
         gender: '',
+        class: '',
+        board: '',
         address: '',
         aadhar: '',
         mobile: ''
@@ -49,6 +51,8 @@ const AdmissionForm = () => {
                 birthMonth: enrollment.dateOfBirth.month.toString(),
                 birthYear: enrollment.dateOfBirth.year.toString(),
                 gender: enrollment.gender,
+                class: enrollment.class || '',
+                board: enrollment.board || '',
                 address: enrollment.address,
                 aadhar: enrollment.aadharNumber,
                 mobile: enrollment.mobileNumber,
@@ -98,6 +102,8 @@ const AdmissionForm = () => {
                     year: parseInt(details.birthYear)
                 },
                 gender: details.gender,
+                class: details.class,
+                board: details.board,
                 address: details.address,
                 aadharNumber: details.aadhar,
                 mobileNumber: details.mobile,
@@ -226,6 +232,47 @@ const AdmissionForm = () => {
                                             </span>
                                         </label>
                                     </div>
+                                </div>
+
+                                <div className="form-field">
+                                    <label className="modern-label">Class <span className="required">*</span></label>
+                                    <select
+                                        name="class"
+                                        value={details.class}
+                                        onChange={updateField}
+                                        required
+                                        className="modern-input"
+                                    >
+                                        <option value="">Select Class</option>
+                                        <option value="1">Class 1st</option>
+                                        <option value="2">Class 2nd</option>
+                                        <option value="3">Class 3rd</option>
+                                        <option value="4">Class 4th</option>
+                                        <option value="5">Class 5th</option>
+                                        <option value="6">Class 6th</option>
+                                        <option value="7">Class 7th</option>
+                                        <option value="8">Class 8th</option>
+                                        <option value="9">Class 9th</option>
+                                        <option value="10">Class 10th</option>
+                                        <option value="11">Class 11th</option>
+                                        <option value="12">Class 12th</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-field">
+                                    <label className="modern-label">Board <span className="required">*</span></label>
+                                    <select
+                                        name="board"
+                                        value={details.board}
+                                        onChange={updateField}
+                                        required
+                                        className="modern-input"
+                                    >
+                                        <option value="">Select Board</option>
+                                        <option value="CBSE">CBSE</option>
+                                        <option value="ICSE">ICSE</option>
+                                        <option value="State Board">State Board</option>
+                                    </select>
                                 </div>
 
                                 <div className="form-field full-width">

@@ -38,6 +38,10 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .logo-title { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .logo-icon { font-size: 2rem; }
+        .header h1 { margin: 0; font-size: 1.8rem; }
+        .header p { margin: 10px 0 0 0; font-size: 1rem; opacity: 0.95; }
         .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; }
         .info-box { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #667eea; }
         .info-row { display: flex; padding: 8px 0; border-bottom: 1px solid #e9ecef; }
@@ -56,7 +60,10 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
     <body>
         <div class="container">
             <div class="header">
-                <h1>Success Mantra Institute</h1>
+                <div class="logo-title">
+                    <span class="logo-icon">🎓</span>
+                    <h1>Success Mantra Institute</h1>
+                </div>
                 <p>Admission Form Submitted Successfully</p>
             </div>
             
@@ -102,12 +109,10 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                 <h3 style="color: #667eea;">Next Steps:</h3>
                 <ul>
                     <li>Our team will review your application within 24-48 hours</li>
-                    <li>You will receive an email notification once your application is reviewed</li>
-                    <li>Keep your mobile number active for any updates</li>
-                    <li>You can check your application status anytime by logging into your account</li>
+                    <li>You will receive an email notification once reviewed</li>
+                    <li>Check your application status in your profile</li>
+                    <li>You can resubmit from your profile if changes are needed</li>
                 </ul>
-                
-                <p><strong>Important:</strong> If you need to make any changes to your application, please contact us immediately.</p>
                 
                 <div style="text-align: center;">
                     <p style="margin: 30px 0 10px 0; color: #6c757d;">For any queries, contact us:</p>
@@ -126,7 +131,127 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
     `;
     
     await sendEmail(user.email, subject, html);
-};
+    
+    const adminEmail = process.env.ADMIN_EMAIL || 'mysuccessmantrainstitute@gmail.com';
+    const adminSubject = 'New Admission Form Submitted';
+    
+    const adminEmailStyles = `
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .logo-title { display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .logo-icon { font-size: 2.5rem; }
+        .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; }
+        .info-box { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #667eea; }
+        .info-row { display: flex; padding: 8px 0; border-bottom: 1px solid #e9ecef; }
+        .info-label { font-weight: bold; width: 150px; color: #667eea; }
+        .info-value { flex: 1; }
+        .student-photo { width: 150px; height: 150px; border-radius: 10px; object-fit: cover; margin: 20px auto; display: block; border: 3px solid #667eea; }
+        .action-buttons { text-align: center; margin: 30px 0; }
+        .btn { display: inline-block; padding: 15px 40px; margin: 0 10px; text-decoration: none; border-radius: 50px; font-weight: bold; color: white; font-size: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn-approve { background: #28a745; }
+        .btn-cancel { background: #dc3545; }
+        .footer { text-align: center; padding: 20px; color: #6c757d; font-size: 14px; }
+    `;
+    
+    const adminHtml = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>${adminEmailStyles}</style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="logo-title">
+                    <span class="logo-icon">🎓</span>
+                    <h1 style="margin: 0;">Success Mantra Institute</h1>
+                </div>
+                <p style="margin: 10px 0 0 0;">New Admission Form Received</p>
+            </div>
+            
+            <div class="content">
+                <p>A new admission form has been submitted and requires your review.</p>
+                
+                <div class="info-box">
+                    <h3 style="margin-top: 0; color: #667eea;">Student Details</h3>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Application ID:</span>
+                        <span class="info-value">${enrollment._id}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Student Name:</span>
+                        <span class="info-value">${enrollment.studentName}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Father's Name:</span>
+                        <span class="info-value">${enrollment.fatherName}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Mother's Name:</span>
+                        <span class="info-value">${enrollment.motherName}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Mobile Number:</span>
+                        <span class="info-value">${enrollment.mobileNumber}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">${user.email}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Date of Birth:</span>
+                        <span class="info-value">${enrollment.dateOfBirth.day}/${enrollment.dateOfBirth.month}/${enrollment.dateOfBirth.year}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Gender:</span>
+                        <span class="info-value" style="text-transform: capitalize;">${enrollment.gender}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Aadhar Number:</span>
+                        <span class="info-value">${enrollment.aadharNumber}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">Address:</span>
+                        <span class="info-value">${enrollment.address}</span>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=approve" class="btn btn-approve">
+                        Approve Application
+                    </a>
+                    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=cancel" class="btn btn-cancel">
+                        Cancel Application
+                    </a>
+                </div>
+                
+                <p style="text-align: center; margin-top: 20px; color: #6c757d;">
+                    Or review this application in the admin panel
+                </p>
+            </div>
+            
+            <div class="footer">
+                <p>This is an automated notification from Success Mantra Institute.</p>
+                <p>&copy; 2026 Success Mantra Institute. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    `;
+    
+    await sendEmail(adminEmail, adminSubject, adminHtml);
+}
 
 export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStatus) {
     let subject = '';
@@ -201,7 +326,7 @@ export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStat
                 ` : ''}
                 
                 ${newStatus === 'cancelled' ? `
-                <p>If you have any questions or would like to resubmit your application, please contact us.</p>
+                <p>You can resubmit your admission form by visiting your profile page and updating the required information.</p>
                 ` : ''}
                 
                 <div style="text-align: center; margin-top: 30px;">

@@ -4,6 +4,7 @@ import User from '../models/User.js';
 import Course from '../models/Course.js';
 import { protect } from '../middleware/auth.js';
 import { sendEnrollmentConfirmation, sendStatusUpdateEmail } from '../utils/email.js';
+import { sendResubmitConfirmation } from '../utils/emailResubmit.js';
 
 const router = express.Router();
 
@@ -45,6 +46,9 @@ router.put('/:id', protect, async (req, res) => {
 
         const data = { ...req.body, status: 'pending', adminRemarks: '' };
         const updated = await Enrollment.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true });
+
+        const user = await User.findById(req.user.id);
+        sendResubmitConfirmation(user, updated);
 
         res.status(200).json({ success: true, message: 'Enrollment resubmitted', enrollment: updated });
     } catch (err) {

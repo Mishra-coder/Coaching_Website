@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { questionsAPI, coursesAPI, enrollmentsAPI } from '../../services/api';
 
 const AdminDashboard = () => {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [stats, setStats] = useState({
         totalQuestions: 0,
         totalCourses: 0,
@@ -11,6 +13,14 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const enrollmentId = searchParams.get('id');
+        const action = searchParams.get('action');
+        
+        if (enrollmentId && action) {
+            navigate(`/admin/enrollments?id=${enrollmentId}&action=${action}`);
+            return;
+        }
+        
         const fetchStats = async () => {
             try {
                 setLoading(true);

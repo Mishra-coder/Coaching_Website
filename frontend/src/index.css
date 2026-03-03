@@ -4625,23 +4625,27 @@ footer {
 }
 
 .modal-close-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: #fff;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
     border: none;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 28px;
+    color: #64748b;
     cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
     transition: all 0.3s;
-    font-family: 'Outfit', sans-serif;
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
 }
 
 .modal-close-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    background: #f1f5f9;
+    color: #1e293b;
+    transform: rotate(90deg);
 }
 
 @media (max-width: 768px) {
