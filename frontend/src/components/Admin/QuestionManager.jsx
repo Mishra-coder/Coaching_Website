@@ -152,7 +152,7 @@ const QuestionManager = () => {
                 const result = await questionsAPI.bulkUpload(event.target.result);
                 
                 if (result.errors > 0 && result.uploaded === 0) {
-                    let errorMsg = `❌ Upload failed! ${result.errors} errors found:\n\n`;
+                    let errorMsg = `Upload failed! ${result.errors} errors found:\n\n`;
                     result.errorDetails.slice(0, 5).forEach(err => {
                         errorMsg += `Row ${err.row}: ${err.message}\n`;
                     });
@@ -160,7 +160,7 @@ const QuestionManager = () => {
                     console.error('All upload errors:', result.errorDetails);
                     setStatusMessage({ text: errorMsg, type: 'error' });
                 } else if (result.errors > 0 && result.uploaded > 0) {
-                    let warnMsg = `⚠️ Partially uploaded ${result.uploaded} questions. ${result.errors} rows skipped:\n\n`;
+                    let warnMsg = `Partially uploaded ${result.uploaded} questions. ${result.errors} rows skipped:\n\n`;
                     result.errorDetails.slice(0, 3).forEach(err => {
                         warnMsg += `Row ${err.row}: ${err.message}\n`;
                     });
@@ -170,7 +170,7 @@ const QuestionManager = () => {
                     fetchQuestions();
                 } else {
                     setStatusMessage({ 
-                        text: `✅ Success! Uploaded ${result.uploaded} questions successfully!`, 
+                        text: `Success! Uploaded ${result.uploaded} questions successfully!`, 
                         type: 'success' 
                     });
                     fetchQuestions();
@@ -182,7 +182,7 @@ const QuestionManager = () => {
                 console.error('Upload error:', error);
                 const errorMsg = error.response?.data?.message || error.message || 'Upload failed. Please try again.';
                 setStatusMessage({ 
-                    text: `❌ Upload failed: ${errorMsg}\n\nPlease check your file format and try again.`, 
+                    text: `Upload failed: ${errorMsg}\n\nPlease check your file format and try again.`, 
                     type: 'error' 
                 });
                 setTimeout(() => setStatusMessage({ text: '', type: '' }), 8000);
@@ -191,7 +191,7 @@ const QuestionManager = () => {
 
         reader.onerror = () => {
             setStatusMessage({ 
-                text: '❌ Failed to read file. Please try again.', 
+                text: 'Failed to read file. Please try again.', 
                 type: 'error' 
             });
             setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
@@ -238,7 +238,7 @@ const QuestionManager = () => {
             )}
 
             <form onSubmit={handleSubmit} className="admin-card question-form-card">
-                <h3 className="question-form-title">{isEditing ? '📝 Edit Question' : '➕ Add New Question'}</h3>
+                <h3 className="question-form-title">{isEditing ? 'Edit Question' : 'Add New Question'}</h3>
 
                 <div className="question-form-grid">
                     <div className="form-group">
