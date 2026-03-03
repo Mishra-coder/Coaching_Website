@@ -32,7 +32,15 @@ const EnrollmentManager = () => {
         }
     };
 
-    if (loading) return <div className="admin-container">Loading enrollments...</div>;
+    if (loading) return (
+        <div className="admin-container">
+            <h2 className="admin-header-title">Enrollment Manager</h2>
+            <div className="admin-card" style={{ textAlign: 'center', padding: '60px 20px' }}>
+                <div className="loading-spinner" style={{ margin: '0 auto 20px' }}></div>
+                <p style={{ color: '#64748b' }}>Loading enrollments...</p>
+            </div>
+        </div>
+    );
 
     return (
         <div className="admin-container">

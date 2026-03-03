@@ -51,9 +51,9 @@ router.put('/:id', protect, async (req, res) => {
 router.get('/', protect, async (req, res) => {
     try {
         const list = await Enrollment.find()
-            .populate('user', 'name email')
-            .populate('course', 'title price')
-            .sort({ createdAt: -1 });
+            .select('studentName fatherName motherName dateOfBirth gender aadharNumber mobileNumber address photo status adminRemarks createdAt')
+            .sort({ createdAt: -1 })
+            .lean();
 
         res.status(200).json({ success: true, count: list.length, enrollments: list });
     } catch (err) {

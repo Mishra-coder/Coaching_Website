@@ -22,7 +22,8 @@ const questionSchema = new mongoose.Schema({
     },
     chapter: {
         type: String,
-        required: [true, 'Chapter name is required']
+        required: [true, 'Chapter name is required'],
+        trim: true
     },
     subject: {
         type: String,

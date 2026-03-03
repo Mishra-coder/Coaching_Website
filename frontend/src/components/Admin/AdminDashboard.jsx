@@ -8,19 +8,25 @@ const AdminDashboard = () => {
         totalCourses: 0,
         totalEnrolled: 0
     });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const questions = await questionsAPI.getAll();
-                const courses = await coursesAPI.getAll();
-                const enrollments = await enrollmentsAPI.getAll();
+                setLoading(true);
+                const [questions, courses, enrollments] = await Promise.all([
+                    questionsAPI.getAll(),
+                    coursesAPI.getAll(),
+                    enrollmentsAPI.getAll()
+                ]);
                 setStats({
                     totalQuestions: questions.count || 0,
                     totalCourses: courses.count || 0,
                     totalEnrolled: enrollments.count || 0
                 });
             } catch (error) {
+            } finally {
+                setLoading(false);
             }
         };
         fetchStats();
@@ -31,21 +37,27 @@ const AdminDashboard = () => {
             <h2 className="admin-header-title">Admin Dashboard</h2>
             <div className="stats-grid">
                 <div className="stat-card">
-                    <h1 className="stat-number" style={{ color: '#1a237e' }}>{stats.totalQuestions}</h1>
+                    <h1 className="stat-number" style={{ color: '#1a237e' }}>
+                        {loading ? '...' : stats.totalQuestions}
+                    </h1>
                     <p className="stat-label">Total Questions</p>
                     <Link to="/admin/questions" className="btn-primary">
                         Manage Questions
                     </Link>
                 </div>
                 <div className="stat-card">
-                    <h1 className="stat-number" style={{ color: '#ffab00' }}>{stats.totalCourses}</h1>
+                    <h1 className="stat-number" style={{ color: '#ffab00' }}>
+                        {loading ? '...' : stats.totalCourses}
+                    </h1>
                     <p className="stat-label">Total Courses</p>
                     <button className="btn-primary btn-disabled" disabled>
                         Manage Courses
                     </button>
                 </div>
                 <div className="stat-card">
-                    <h1 className="stat-number" style={{ color: '#4caf50' }}>{stats.totalEnrolled}</h1>
+                    <h1 className="stat-number" style={{ color: '#4caf50' }}>
+                        {loading ? '...' : stats.totalEnrolled}
+                    </h1>
                     <p className="stat-label">Student Enrollments</p>
                     <Link to="/admin/enrollments" className="btn-primary">
                         Manage Enrollments

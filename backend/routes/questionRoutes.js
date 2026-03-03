@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         const { class: classLevel, chapter } = req.query;
         let query = { isActive: true };
         if (classLevel) query.class = classLevel;
-        if (chapter) query.chapter = chapter;
+        if (chapter) query.chapter = chapter.trim();
 
         const questions = await Question.find(query);
 
