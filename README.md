@@ -61,6 +61,7 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 ### Core Features
 - **Unified Authentication** - Single login/signup pages for both Students and Admins with role selection
 - **Admin Security** - Protected Admin registration and login with Secret Key (`admin123`)
+- **Email Notifications** - Automated confirmation and status update emails to students
 - **Course Catalog** - Foundation, Board, and Competitive exam courses with detailed information
 - **Online Enrollment** - Digital admission form with photo upload capability
 - **Interactive Quiz System** - Dynamic chapter-wise practice questions for Class 10 & 12
@@ -149,6 +150,25 @@ success-mantra-react/
 
 ## Recent Updates & Bug Fixes
 
+### Version 2.3.0 (March 4, 2026)
+**Email Notification System**
+- Added automated email notifications for admission form submissions
+- Students receive confirmation email with application details and next steps
+- Status update emails sent when admin approves or rejects applications
+- Professional HTML email templates with Success Mantra branding
+- Gmail SMTP integration using Nodemailer
+- Email includes application ID, student details, and status updates
+
+**Testimonials Update**
+- Added new student testimonial (Anuj Kumar)
+- Removed outdated testimonial
+- Updated admission year to 2026-27
+
+**Code Quality Improvements**
+- Refactored email utility for better readability
+- Improved code structure and maintainability
+- Removed unnecessary dependencies
+
 ### Version 2.2.0 (February 4, 2026)
 **Strict Project Refactoring & Cleanup**
 - **Deep Code Optimization**: Removed all unused variables, functions, and dead logic across frontend and backend.
@@ -228,6 +248,10 @@ JWT_EXPIRE=7d
 # Frontend URL (for CORS)
 FRONTEND_URL=http://localhost:5173
 
+# Email Configuration (Gmail SMTP)
+EMAIL_USER=your_gmail@gmail.com
+EMAIL_PASSWORD=your_gmail_app_password
+
 # Google OAuth Credentials
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
@@ -243,6 +267,15 @@ ADMIN_SECRET_KEY=admin123
 6. Add Authorized JavaScript Origins: `http://localhost:5173`
 7. Add Authorized Redirect URIs: `http://localhost:5001/api/auth/google/callback`
 8. Copy Client ID and Client Secret to `.env` files
+
+### 5. Setup Gmail for Email Notifications
+1. Go to Google Account Security: https://myaccount.google.com/security
+2. Enable 2-Step Verification
+3. Generate App Password:
+   - Go to App Passwords section
+   - Select "Mail" and "Other (Custom name)"
+   - Copy the 16-digit password
+4. Update EMAIL_USER and EMAIL_PASSWORD in backend/.env
 ```
 
 ### 4. Setup Database
@@ -262,7 +295,7 @@ brew services start mongodb-community
 sudo systemctl start mongod
 ```
 
-### 5. Seed Database with Sample Courses
+### 6. Seed Database with Sample Courses
 ```bash
 cd backend
 npm run seed

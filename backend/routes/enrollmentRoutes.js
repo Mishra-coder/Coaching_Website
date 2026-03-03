@@ -3,6 +3,7 @@ import Enrollment from '../models/Enrollment.js';
 import User from '../models/User.js';
 import Course from '../models/Course.js';
 import { protect } from '../middleware/auth.js';
+import { sendEnrollmentConfirmation, sendStatusUpdateEmail } from '../utils/email.js';
 
 const router = express.Router();
 
@@ -23,6 +24,9 @@ router.post('/', protect, async (req, res) => {
 
         await User.findByIdAndUpdate(req.user.id, { $push: { enrollments: enrollment._id } });
         await enrollment.populate('course');
+
+        const user = await User.findById(req.user.id);
+        sendEnrollmentConfirmation(user, enrollment);
 
         res.status(201).json({ success: true, message: 'Enrollment submitted', enrollment });
     } catch (err) {
@@ -107,14 +111,20 @@ router.get('/:id', protect, async (req, res) => {
 router.put('/:id/status', protect, async (req, res) => {
     try {
         const { status, adminRemarks } = req.body;
-        const record = await Enrollment.findById(req.params.id);
+        const record = await Enrollment.findById(req.params.id).populate('user');
 
         if (!record) return res.status(404).json({ success: false, message: 'Not found' });
 
+        const oldStatus = record.status;
         record.status = status;
         if (adminRemarks !== undefined) record.adminRemarks = adminRemarks;
 
         await record.save();
+
+        if (oldStatus !== status) {
+            sendStatusUpdateEmail(record.user, record, oldStatus, status);
+        }
+
         res.status(200).json({ success: true, message: 'Status updated', enrollment: record });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
