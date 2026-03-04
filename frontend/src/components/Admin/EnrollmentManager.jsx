@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { enrollmentsAPI } from '../../services/api';
 
@@ -9,6 +9,7 @@ const EnrollmentManager = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const detailsPanelRef = useRef(null);
 
     useEffect(() => {
         fetchEnrollments();
@@ -102,9 +103,19 @@ const EnrollmentManager = () => {
         try {
             const { enrollment: fullDetails } = await enrollmentsAPI.getById(enrollment._id);
             setSelectedEnrollment(fullDetails);
+            setTimeout(() => {
+                if (detailsPanelRef.current) {
+                    detailsPanelRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
         } catch (error) {
             console.error('Failed to load enrollment details:', error);
             setSelectedEnrollment(enrollment);
+            setTimeout(() => {
+                if (detailsPanelRef.current) {
+                    detailsPanelRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
         }
     };
 
@@ -251,7 +262,7 @@ const EnrollmentManager = () => {
                 </div>
 
                 {selectedEnrollment && (
-                    <div className="admin-card fade-in enrollment-details-panel">
+                    <div ref={detailsPanelRef} className="admin-card fade-in enrollment-details-panel">
                         <div className="details-panel-header">
                             <h3 style={{ margin: 0, color: '#1a237e' }}>Admission Details</h3>
                             <button onClick={() => setSelectedEnrollment(null)} className="close-btn">&times;</button>
