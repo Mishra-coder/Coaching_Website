@@ -150,9 +150,7 @@ const AdmissionForm = () => {
                     text: isEditing ? 'Form updated successfully! Redirecting...' : 'Enrollment successful! Redirecting...' 
                 });
                 window.scrollTo(0, 0);
-                setTimeout(() => {
-                    navigate('/profile');
-                }, 1000);
+                navigate('/profile');
             }
         } catch (err) {
             console.error('Form submission error:', err);
