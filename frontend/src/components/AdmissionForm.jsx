@@ -251,9 +251,9 @@ const AdmissionForm = () => {
                                 <div className="form-field">
                                     <label className="modern-label">Date of Birth <span className="required">*</span></label>
                                     <div className="dob-inputs">
-                                        <input type="number" name="birthDay" value={details.birthDay} onChange={updateField} placeholder="DD" min="1" max="31" required className="modern-input" />
-                                        <input type="number" name="birthMonth" value={details.birthMonth} onChange={updateField} placeholder="MM" min="1" max="12" required className="modern-input" />
-                                        <input type="number" name="birthYear" value={details.birthYear} onChange={updateField} placeholder="YYYY" min="2000" max="2025" required className="modern-input" />
+                                        <input type="number" name="birthDay" value={details.birthDay} onChange={updateField} placeholder="DD" min="1" max="31" required className="modern-input" inputMode="numeric" />
+                                        <input type="number" name="birthMonth" value={details.birthMonth} onChange={updateField} placeholder="MM" min="1" max="12" required className="modern-input" inputMode="numeric" />
+                                        <input type="number" name="birthYear" value={details.birthYear} onChange={updateField} placeholder="YYYY" min="2000" max="2025" required className="modern-input" inputMode="numeric" />
                                     </div>
                                 </div>
 
@@ -338,6 +338,8 @@ const AdmissionForm = () => {
                                         onChange={updateField}
                                         placeholder="Enter 12-digit Aadhar"
                                         pattern="[0-9]{12}"
+                                        maxLength="12"
+                                        inputMode="numeric"
                                         required
                                         className="modern-input"
                                     />
