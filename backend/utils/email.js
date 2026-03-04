@@ -50,98 +50,145 @@ async function sendEmail(to, subject, html) {
 export async function sendEnrollmentConfirmation(user, enrollment) {
     const subject = 'Admission Form Submitted - Success Mantra Institute';
     
-    const emailStyles = `
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .logo-title { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .logo-icon { font-size: 2rem; }
-        .header h1 { margin: 0; font-size: 1.8rem; }
-        .header p { margin: 10px 0 0 0; font-size: 1rem; opacity: 0.95; }
-        .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; }
-        .info-box { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #667eea; }
-        .info-row { display: flex; padding: 8px 0; border-bottom: 1px solid #e9ecef; }
-        .info-label { font-weight: bold; width: 150px; color: #667eea; }
-        .info-value { flex: 1; }
-        .footer { text-align: center; padding: 20px; color: #6c757d; font-size: 14px; }
-        .status-badge { display: inline-block; padding: 5px 15px; background: #ffc107; color: #000; border-radius: 20px; font-size: 12px; font-weight: bold; }
-    `;
-    
     const html = `
     <!DOCTYPE html>
     <html>
     <head>
-        <style>${emailStyles}</style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
     </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <div class="logo-title">
-                    <span class="logo-icon">🎓</span>
-                    <h1>Success Mantra Institute</h1>
-                </div>
-                <p>Admission Form Submitted Successfully</p>
-            </div>
-            
-            <div class="content">
-                <p>Dear <strong>${enrollment.studentName}</strong>,</p>
-                
-                <p>Thank you for submitting your admission form to Success Mantra Institute. We have received your application and it is currently under review.</p>
-                
-                <div class="info-box">
-                    <h3 style="margin-top: 0; color: #667eea;">Application Details</h3>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Application ID:</span>
-                        <span class="info-value">${enrollment._id}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Student Name:</span>
-                        <span class="info-value">${enrollment.studentName}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Father's Name:</span>
-                        <span class="info-value">${enrollment.fatherName}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Mobile Number:</span>
-                        <span class="info-value">${enrollment.mobileNumber}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Date of Birth:</span>
-                        <span class="info-value">${enrollment.dateOfBirth.day}/${enrollment.dateOfBirth.month}/${enrollment.dateOfBirth.year}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Status:</span>
-                        <span class="info-value"><span class="status-badge">PENDING REVIEW</span></span>
-                    </div>
-                </div>
-                
-                <h3 style="color: #667eea;">Next Steps:</h3>
-                <ul>
-                    <li>Our team will review your application within 24-48 hours</li>
-                    <li>You will receive an email notification once reviewed</li>
-                    <li>Check your application status in your profile</li>
-                    <li>You can resubmit from your profile if changes are needed</li>
-                </ul>
-                
-                <div style="text-align: center;">
-                    <p style="margin: 30px 0 10px 0; color: #6c757d;">For any queries, contact us:</p>
-                    <p style="margin: 5px 0;"><strong>Phone:</strong> ${enrollment.mobileNumber}</p>
-                    <p style="margin: 5px 0;"><strong>Email:</strong> ${user.email}</p>
-                </div>
-            </div>
-            
-            <div class="footer">
-                <p>This is an automated email. Please do not reply to this email.</p>
-                <p>&copy; 2026 Success Mantra Institute. All rights reserved.</p>
-            </div>
-        </div>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f4f4f4;">
+            <tr>
+                <td align="center" style="padding: 20px 10px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center;">
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tr>
+                                        <td align="center" style="padding-bottom: 15px;">
+                                            <span style="font-size: 48px;">🎓</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: bold;">Success Mantra Institute</h1>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="padding-top: 10px;">
+                                            <p style="margin: 0; color: #ffffff; font-size: 16px; opacity: 0.95;">Admission Form Submitted Successfully</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="padding: 30px 20px; background-color: #f8f9fa;">
+                                <p style="margin: 0 0 20px 0; color: #333; font-size: 16px; line-height: 1.6;">Dear <strong>${enrollment.studentName}</strong>,</p>
+                                
+                                <p style="margin: 0 0 20px 0; color: #333; font-size: 16px; line-height: 1.6;">Thank you for submitting your admission form to Success Mantra Institute. We have received your application and it is currently under review.</p>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-left: 4px solid #667eea; border-radius: 8px; margin: 20px 0;">
+                                    <tr>
+                                        <td style="padding: 20px;">
+                                            <h3 style="margin: 0 0 15px 0; color: #667eea; font-size: 18px;">Application Details</h3>
+                                            
+                                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                <tr>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px;">Application ID:</strong>
+                                                    </td>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef; text-align: right;">
+                                                        <span style="color: #333; font-size: 14px;">${enrollment._id}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px;">Student Name:</strong>
+                                                    </td>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef; text-align: right;">
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.studentName}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px;">Father's Name:</strong>
+                                                    </td>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef; text-align: right;">
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.fatherName}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px;">Mobile Number:</strong>
+                                                    </td>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef; text-align: right;">
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.mobileNumber}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px;">Date of Birth:</strong>
+                                                    </td>
+                                                    <td style="padding: 8px 0; border-bottom: 1px solid #e9ecef; text-align: right;">
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.dateOfBirth.day}/${enrollment.dateOfBirth.month}/${enrollment.dateOfBirth.year}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px 0;">
+                                                        <strong style="color: #667eea; font-size: 14px;">Status:</strong>
+                                                    </td>
+                                                    <td style="padding: 8px 0; text-align: right;">
+                                                        <span style="display: inline-block; padding: 5px 15px; background-color: #ffc107; color: #000; border-radius: 20px; font-size: 12px; font-weight: bold;">PENDING REVIEW</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <h3 style="margin: 30px 0 15px 0; color: #667eea; font-size: 18px;">Next Steps:</h3>
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tr>
+                                        <td style="padding: 5px 0 5px 20px; color: #333; font-size: 14px; line-height: 1.6;">• Our team will review your application within 24-48 hours</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 0 5px 20px; color: #333; font-size: 14px; line-height: 1.6;">• You will receive an email notification once reviewed</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 0 5px 20px; color: #333; font-size: 14px; line-height: 1.6;">• Check your application status in your profile</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 0 5px 20px; color: #333; font-size: 14px; line-height: 1.6;">• You can resubmit from your profile if changes are needed</td>
+                                    </tr>
+                                </table>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px;">
+                                    <tr>
+                                        <td align="center">
+                                            <p style="margin: 0 0 10px 0; color: #6c757d; font-size: 14px;">For any queries, contact us:</p>
+                                            <p style="margin: 5px 0; color: #333; font-size: 14px;"><strong>Phone:</strong> ${enrollment.mobileNumber}</p>
+                                            <p style="margin: 5px 0; color: #333; font-size: 14px;"><strong>Email:</strong> ${user.email}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td align="center" style="padding: 20px; background-color: #f8f9fa; border-top: 1px solid #e9ecef;">
+                                <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 12px;">This is an automated email. Please do not reply to this email.</p>
+                                <p style="margin: 0; color: #6c757d; font-size: 12px;">&copy; 2026 Success Mantra Institute. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
     </body>
     </html>
     `;
@@ -151,117 +198,144 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
     const adminEmail = process.env.ADMIN_EMAIL || 'mysuccessmantrainstitute@gmail.com';
     const adminSubject = 'New Admission Form Submitted';
     
-    const adminEmailStyles = `
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .logo-title { display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .logo-icon { font-size: 2.5rem; }
-        .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; }
-        .info-box { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #667eea; }
-        .info-row { display: flex; padding: 8px 0; border-bottom: 1px solid #e9ecef; }
-        .info-label { font-weight: bold; width: 150px; color: #667eea; }
-        .info-value { flex: 1; }
-        .student-photo { width: 150px; height: 150px; border-radius: 10px; object-fit: cover; margin: 20px auto; display: block; border: 3px solid #667eea; }
-        .action-buttons { text-align: center; margin: 30px 0; }
-        .btn { display: inline-block; padding: 15px 40px; margin: 0 10px; text-decoration: none; border-radius: 50px; font-weight: bold; color: white; font-size: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .btn-approve { background: #28a745; }
-        .btn-cancel { background: #dc3545; }
-        .footer { text-align: center; padding: 20px; color: #6c757d; font-size: 14px; }
-    `;
-    
     const adminHtml = `
     <!DOCTYPE html>
     <html>
     <head>
-        <style>${adminEmailStyles}</style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
     </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <div class="logo-title">
-                    <span class="logo-icon">🎓</span>
-                    <h1 style="margin: 0;">Success Mantra Institute</h1>
-                </div>
-                <p style="margin: 10px 0 0 0;">New Admission Form Received</p>
-            </div>
-            
-            <div class="content">
-                <p>A new admission form has been submitted and requires your review.</p>
-                
-                <div class="info-box">
-                    <h3 style="margin-top: 0; color: #667eea;">Student Details</h3>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Application ID:</span>
-                        <span class="info-value">${enrollment._id}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Student Name:</span>
-                        <span class="info-value">${enrollment.studentName}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Father's Name:</span>
-                        <span class="info-value">${enrollment.fatherName}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Mother's Name:</span>
-                        <span class="info-value">${enrollment.motherName}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Mobile Number:</span>
-                        <span class="info-value">${enrollment.mobileNumber}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Email:</span>
-                        <span class="info-value">${user.email}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Date of Birth:</span>
-                        <span class="info-value">${enrollment.dateOfBirth.day}/${enrollment.dateOfBirth.month}/${enrollment.dateOfBirth.year}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Gender:</span>
-                        <span class="info-value" style="text-transform: capitalize;">${enrollment.gender}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Aadhar Number:</span>
-                        <span class="info-value">${enrollment.aadharNumber}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Address:</span>
-                        <span class="info-value">${enrollment.address}</span>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=approve" class="btn btn-approve">
-                        Approve Application
-                    </a>
-                    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=cancel" class="btn btn-cancel">
-                        Cancel Application
-                    </a>
-                </div>
-                
-                <p style="text-align: center; margin-top: 20px; color: #6c757d;">
-                    Or review this application in the admin panel
-                </p>
-            </div>
-            
-            <div class="footer">
-                <p>This is an automated notification from Success Mantra Institute.</p>
-                <p>&copy; 2026 Success Mantra Institute. All rights reserved.</p>
-            </div>
-        </div>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f4f4f4;">
+            <tr>
+                <td align="center" style="padding: 20px 10px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center;">
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tr>
+                                        <td align="center" style="padding-bottom: 15px;">
+                                            <span style="font-size: 48px;">🎓</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: bold;">Success Mantra Institute</h1>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="padding-top: 10px;">
+                                            <p style="margin: 0; color: #ffffff; font-size: 16px; opacity: 0.95;">New Admission Form Received</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="padding: 30px 20px; background-color: #f8f9fa;">
+                                <p style="margin: 0 0 20px 0; color: #333; font-size: 16px; line-height: 1.6;">A new admission form has been submitted and requires your review.</p>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-left: 4px solid #667eea; border-radius: 8px; margin: 20px 0;">
+                                    <tr>
+                                        <td style="padding: 20px;">
+                                            <h3 style="margin: 0 0 15px 0; color: #667eea; font-size: 18px;">Student Details</h3>
+                                            
+                                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Application ID:</strong>
+                                                        <span style="color: #333; font-size: 14px; word-break: break-all;">${enrollment._id}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Student Name:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.studentName}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Father's Name:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.fatherName}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Mother's Name:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.motherName}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Mobile Number:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.mobileNumber}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Email:</strong>
+                                                        <span style="color: #333; font-size: 14px; word-break: break-all;">${user.email}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Date of Birth:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.dateOfBirth.day}/${enrollment.dateOfBirth.month}/${enrollment.dateOfBirth.year}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Gender:</strong>
+                                                        <span style="color: #333; font-size: 14px; text-transform: capitalize;">${enrollment.gender}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Aadhar Number:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.aadharNumber}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Address:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${enrollment.address}</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 30px 0;">
+                                    <tr>
+                                        <td align="center" style="padding: 0 0 15px 0;">
+                                            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=approve" style="display: inline-block; padding: 15px 30px; background-color: #28a745; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 15px rgba(40,167,69,0.3); margin: 5px;">Approve Application</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=cancel" style="display: inline-block; padding: 15px 30px; background-color: #dc3545; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 15px rgba(220,53,69,0.3); margin: 5px;">Cancel Application</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <p style="margin: 20px 0 0 0; text-align: center; color: #6c757d; font-size: 14px;">Or review this application in the admin panel</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td align="center" style="padding: 20px; background-color: #f8f9fa; border-top: 1px solid #e9ecef;">
+                                <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 12px;">This is an automated notification from Success Mantra Institute.</p>
+                                <p style="margin: 0; color: #6c757d; font-size: 12px;">&copy; 2026 Success Mantra Institute. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
     </body>
     </html>
     `;
