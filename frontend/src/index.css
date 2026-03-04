@@ -2410,7 +2410,7 @@ footer {
 }
 
 .photo-upload-section {
-    margin-bottom: 40px;
+    margin-bottom: 5px;
 }
 
 .photo-upload-label {
@@ -2552,15 +2552,22 @@ footer {
 .gender-options {
     display: flex;
     gap: 15px;
+    flex-wrap: nowrap;
+    margin-bottom: 45px;
 }
 
 .gender-option {
     flex: 1;
     cursor: pointer;
+    position: relative;
+    min-width: 0;
 }
 
 .gender-option input[type="radio"] {
-    display: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .gender-label {
@@ -2574,6 +2581,9 @@ footer {
     font-weight: 600;
     transition: all 0.3s;
     background: #fff;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
 }
 
 .gender-option input[type="radio"]:checked + .gender-label {
@@ -2661,20 +2671,208 @@ footer {
     }
 
     .admission-form-wrapper {
-        padding: 25px;
+        padding: 20px 15px;
+        margin: 0 10px;
+    }
+
+    .admission-page {
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+
+    .admission-form-header {
+        margin-bottom: 30px;
+    }
+
+    .admission-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
     }
 
     .admission-main-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
+    }
+
+    .admission-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .form-section-modern {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+    }
+
+    .section-title-bar {
+        padding: 12px 15px;
+        margin-bottom: 20px;
+    }
+
+    .section-title-bar h4 {
+        font-size: 1rem;
+    }
+
+    .form-grid {
+        gap: 25px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-field {
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    .form-field.full-width {
+        grid-column: span 1;
+    }
+
+    .modern-label {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        display: block;
+        font-weight: 600;
+    }
+
+    .modern-input,
+    .modern-input select,
+    .modern-input textarea {
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+
+    .photo-upload-box {
+        min-height: 200px;
+    }
+
+    .photo-placeholder {
+        padding: 30px 20px;
+    }
+
+    .photo-placeholder i {
+        font-size: 2.5rem;
+    }
+
+    .photo-placeholder span {
+        font-size: 0.95rem;
+    }
+
+    .photo-placeholder small {
+        font-size: 0.8rem;
+    }
+
+    .dob-inputs {
+        gap: 8px;
+    }
+
+    .dob-inputs input {
+        padding: 12px 10px;
+        font-size: 16px;
+    }
+
+    .gender-options {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .gender-option {
+        width: 100%;
+        min-width: unset;
+        flex: none;
+    }
+
+    .gender-label {
+        padding: 16px 20px;
+        font-size: 1rem;
+        justify-content: flex-start;
+        gap: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .gender-label i {
+        font-size: 1.3rem;
+        flex-shrink: 0;
     }
 
     .declaration-box {
         flex-direction: column;
         text-align: center;
+        padding: 20px 15px;
     }
 
     .declaration-icon {
-        margin: 0 auto;
+        margin: 0 auto 15px;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+
+    .declaration-content h5 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .declaration-content p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .submit-btn-modern {
+        padding: 16px 30px;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .modern-alert {
+        padding: 15px;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admission-form-wrapper {
+        padding: 15px 10px;
+        margin: 0 5px;
+    }
+
+    .admission-main-title {
+        font-size: 1.5rem;
+    }
+
+    .admission-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .form-section-modern {
+        padding: 15px 10px;
+    }
+
+    .modern-input,
+    .modern-input select,
+    .modern-input textarea {
+        padding: 10px 12px;
+    }
+
+    .dob-inputs input {
+        padding: 10px 8px;
+    }
+
+    .gender-label {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+
+    .declaration-content p {
+        font-size: 0.85rem;
+    }
+
+    .submit-btn-modern {
+        padding: 14px 25px;
+        font-size: 0.95rem;
     }
 }
 

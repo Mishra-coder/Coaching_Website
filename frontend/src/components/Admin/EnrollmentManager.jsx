@@ -7,6 +7,8 @@ const EnrollmentManager = () => {
     const [loading, setLoading] = useState(true);
     const [selectedEnrollment, setSelectedEnrollment] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [statusFilter, setStatusFilter] = useState('all');
 
     useEffect(() => {
         fetchEnrollments();
@@ -49,14 +51,17 @@ const EnrollmentManager = () => {
         }
 
         try {
+            setLoading(true);
             await enrollmentsAPI.delete(id);
-            alert('Enrollment deleted successfully!');
-            fetchEnrollments();
             if (selectedEnrollment?._id === id) {
                 setSelectedEnrollment(null);
             }
+            await fetchEnrollments();
+            alert('Enrollment deleted successfully!');
         } catch (error) {
+            console.error('Delete failed:', error);
             alert('Failed to delete enrollment: ' + (error.response?.data?.message || error.message));
+            setLoading(false);
         }
     };
 
@@ -64,12 +69,23 @@ const EnrollmentManager = () => {
         try {
             setLoading(true);
             const res = await enrollmentsAPI.getAll();
-            setEnrollments(res.enrollments);
+            setEnrollments(res.enrollments || []);
         } catch (error) {
+            console.error('Failed to fetch enrollments:', error);
+            setEnrollments([]);
+            alert('Failed to load enrollments. Please check your connection and try again.');
         } finally {
             setLoading(false);
         }
     };
+
+    const filteredEnrollments = enrollments.filter(en => {
+        const matchesSearch = en.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            en.fatherName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            en.mobileNumber.includes(searchTerm);
+        const matchesStatus = statusFilter === 'all' || en.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
 
     const handleStatusUpdate = async (id, newStatus, remarks = '') => {
         try {
@@ -96,12 +112,61 @@ const EnrollmentManager = () => {
         <div className="admin-container">
             <h2 className="admin-header-title">Enrollment Manager</h2>
 
+            <div className="admin-card" style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <input
+                        type="text"
+                        placeholder="Search By Students Details"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{
+                            flex: '1',
+                            minWidth: '200px',
+                            padding: '10px 15px',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '8px',
+                            fontSize: '14px'
+                        }}
+                    />
+                    <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        style={{
+                            padding: '10px 15px',
+                            border: '2px solid #e0e0e0',
+                            borderRadius: '8px',
+                            fontSize: '14px'
+                        }}
+                    >
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="active">Active</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <div style={{ color: '#666', fontSize: '14px', fontWeight: '500' }}>
+                        {filteredEnrollments.length} results
+                    </div>
+                </div>
+            </div>
+
             <div className="admin-manager-layout" style={{ gridTemplateColumns: selectedEnrollment ? '1fr 1.2fr' : '1fr' }}>
                 <div className="admin-card">
                     <h4 style={{ marginBottom: '20px' }}>All Submissions</h4>
                     
+                    {filteredEnrollments.length === 0 ? (
+                        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748b' }}>
+                            <i className="fas fa-inbox" style={{ fontSize: '3rem', marginBottom: '20px', opacity: 0.3 }}></i>
+                            <p style={{ fontSize: '1.1rem', fontWeight: '500', marginBottom: '10px' }}>No enrollments found</p>
+                            <p style={{ fontSize: '0.9rem' }}>
+                                {searchTerm || statusFilter !== 'all' 
+                                    ? 'Try adjusting your search or filter' 
+                                    : 'No students have submitted enrollment forms yet'}
+                            </p>
+                        </div>
+                    ) : (
+                        <>
                     <div className="enrollment-list-mobile">
-                        {enrollments.map((en) => (
+                        {filteredEnrollments.map((en) => (
                             <div key={en._id} className="enrollment-card-mobile">
                                 <div className="enrollment-card-header">
                                     <div>
@@ -141,7 +206,7 @@ const EnrollmentManager = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {enrollments.map((en) => (
+                                {filteredEnrollments.map((en) => (
                                     <tr key={en._id}>
                                         <td>{new Date(en.createdAt).toLocaleDateString()}</td>
                                         <td style={{ fontWeight: '600' }}>{en.studentName}</td>
@@ -171,6 +236,8 @@ const EnrollmentManager = () => {
                             </tbody>
                         </table>
                     </div>
+                    </>
+                    )}
                 </div>
 
                 {selectedEnrollment && (

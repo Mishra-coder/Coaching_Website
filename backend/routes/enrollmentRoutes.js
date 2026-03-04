@@ -65,7 +65,7 @@ router.put('/:id', protect, async (req, res) => {
 router.get('/', protect, async (req, res) => {
     try {
         const list = await Enrollment.find()
-            .select('studentName fatherName motherName dateOfBirth gender aadharNumber mobileNumber address photo status adminRemarks createdAt')
+            .select('studentName fatherName motherName dateOfBirth gender aadharNumber mobileNumber address status adminRemarks createdAt class board')
             .sort({ createdAt: -1 })
             .lean();
 
