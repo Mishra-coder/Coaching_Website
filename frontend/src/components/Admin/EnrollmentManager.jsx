@@ -98,6 +98,16 @@ const EnrollmentManager = () => {
         }
     };
 
+    const handleViewDetails = async (enrollment) => {
+        try {
+            const { enrollment: fullDetails } = await enrollmentsAPI.getById(enrollment._id);
+            setSelectedEnrollment(fullDetails);
+        } catch (error) {
+            console.error('Failed to load enrollment details:', error);
+            setSelectedEnrollment(enrollment);
+        }
+    };
+
     if (loading) return (
         <div className="admin-container">
             <h2 className="admin-header-title">Enrollment Manager</h2>
@@ -178,7 +188,7 @@ const EnrollmentManager = () => {
                                     </span>
                                 </div>
                                 <button
-                                    onClick={() => setSelectedEnrollment(en)}
+                                    onClick={() => handleViewDetails(en)}
                                     className="btn-action btn-view"
                                     style={{ width: '100%', marginTop: '10px' }}
                                 >
@@ -217,7 +227,7 @@ const EnrollmentManager = () => {
                                         </td>
                                         <td>
                                             <button
-                                                onClick={() => setSelectedEnrollment(en)}
+                                                onClick={() => handleViewDetails(en)}
                                                 className="btn-action btn-view"
                                                 style={{ marginRight: '10px' }}
                                             >
