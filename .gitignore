@@ -4,6 +4,7 @@ node_modules/
 .DS_Store
 dist/
 uploads/
+TROUBLESHOOTING.md
 
 # OS files
 .DS_Store

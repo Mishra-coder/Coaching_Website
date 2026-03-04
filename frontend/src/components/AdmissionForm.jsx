@@ -69,8 +69,38 @@ const AdmissionForm = () => {
     const onFileSelect = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (file.size > 2 * 1024 * 1024) {
+                setStatusMessage({ type: 'error', text: 'Photo size should be less than 2MB' });
+                return;
+            }
+            
             const reader = new FileReader();
-            reader.onloadend = () => setStudentPhoto(reader.result);
+            reader.onloadend = () => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    const maxSize = 800;
+                    if (width > height && width > maxSize) {
+                        height = (height * maxSize) / width;
+                        width = maxSize;
+                    } else if (height > maxSize) {
+                        width = (width * maxSize) / height;
+                        height = maxSize;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    setStudentPhoto(compressedBase64);
+                };
+                img.src = reader.result;
+            };
             reader.readAsDataURL(file);
         }
     };
@@ -117,14 +147,20 @@ const AdmissionForm = () => {
             if (response.success) {
                 setStatusMessage({ 
                     type: 'success', 
-                    text: isEditing ? 'Form updated successfully!' : 'Enrollment successful! Redirecting...' 
+                    text: isEditing ? 'Form updated successfully! Redirecting...' : 'Enrollment successful! Redirecting...' 
                 });
+                window.scrollTo(0, 0);
                 setTimeout(() => {
                     navigate('/profile');
-                }, 1500);
+                }, 1000);
             }
         } catch (err) {
-            setStatusMessage({ type: 'error', text: err.response?.data?.message || 'Submission failed' });
+            console.error('Form submission error:', err);
+            setStatusMessage({ 
+                type: 'error', 
+                text: err.response?.data?.message || 'Submission failed. Please try again.' 
+            });
+            window.scrollTo(0, 0);
         } finally {
             setIsSubmitting(false);
         }
