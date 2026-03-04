@@ -5,14 +5,17 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
 async function sendEmail(to, subject, html) {
     try {
         if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
-            console.log('Email not configured');
-            return { success: false };
+            console.log('Email credentials not configured');
+            return { success: false, error: 'Email not configured' };
         }
 
         const mailOptions = {
@@ -22,11 +25,15 @@ async function sendEmail(to, subject, html) {
             html: html
         };
 
-        await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully to:', to);
-        return { success: true };
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Resubmit email sent successfully to:', to, '- Message ID:', info.messageId);
+        return { success: true, messageId: info.messageId };
     } catch (error) {
-        console.error('Email send failed:', error.message);
+        console.error('Resubmit email send failed to:', to);
+        console.error('Error details:', error.message);
+        if (error.code === 'EAUTH') {
+            console.error('Authentication failed - Check EMAIL_USER and EMAIL_PASSWORD in .env');
+        }
         return { success: false, error: error.message };
     }
 }

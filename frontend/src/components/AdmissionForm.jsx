@@ -115,8 +115,13 @@ const AdmissionForm = () => {
                 : await enrollmentsAPI.create(submission);
 
             if (response.success) {
-                alert(isEditing ? 'Form updated successfully!' : 'Enrollment successful!');
-                navigate('/profile');
+                setStatusMessage({ 
+                    type: 'success', 
+                    text: isEditing ? 'Form updated successfully!' : 'Enrollment successful! Redirecting...' 
+                });
+                setTimeout(() => {
+                    navigate('/profile');
+                }, 1500);
             }
         } catch (err) {
             setStatusMessage({ type: 'error', text: err.response?.data?.message || 'Submission failed' });

@@ -27,7 +27,10 @@ router.post('/', protect, async (req, res) => {
         await enrollment.populate('course');
 
         const user = await User.findById(req.user.id);
-        sendEnrollmentConfirmation(user, enrollment);
+        
+        sendEnrollmentConfirmation(user, enrollment).catch(err => {
+            console.error('Failed to send enrollment email:', err.message);
+        });
 
         res.status(201).json({ success: true, message: 'Enrollment submitted', enrollment });
     } catch (err) {
@@ -48,7 +51,10 @@ router.put('/:id', protect, async (req, res) => {
         const updated = await Enrollment.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true });
 
         const user = await User.findById(req.user.id);
-        sendResubmitConfirmation(user, updated);
+        
+        sendResubmitConfirmation(user, updated).catch(err => {
+            console.error('Failed to send resubmit email:', err.message);
+        });
 
         res.status(200).json({ success: true, message: 'Enrollment resubmitted', enrollment: updated });
     } catch (err) {
@@ -126,7 +132,9 @@ router.put('/:id/status', protect, async (req, res) => {
         await record.save();
 
         if (oldStatus !== status) {
-            sendStatusUpdateEmail(record.user, record, oldStatus, status);
+            sendStatusUpdateEmail(record.user, record, oldStatus, status).catch(err => {
+                console.error('Failed to send status update email:', err.message);
+            });
         }
 
         res.status(200).json({ success: true, message: 'Status updated', enrollment: record });

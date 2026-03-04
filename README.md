@@ -150,6 +150,22 @@ success-mantra-react/
 
 ## Recent Updates & Bug Fixes
 
+### Version 2.4.0 (March 4, 2026)
+**Performance Optimization & Bug Fixes**
+- Fixed backend constantly restarting issue by adding nodemon.json configuration
+- Fixed form submission hanging with blank page - now shows success message and redirects
+- Improved email error handling - emails no longer block form submission
+- Added email transporter verification on startup
+- Better error logging for email authentication failures
+- Form submission now works even if email fails to send
+- Added 1.5 second delay before redirect to show success message
+
+**Email System Improvements**
+- Non-blocking email sending - form submission completes immediately
+- Better error messages for email authentication failures
+- Email verification runs on server startup
+- Detailed logging for troubleshooting email issues
+
 ### Version 2.3.0 (March 4, 2026)
 **Email Notification System**
 - Added automated email notifications for admission form submissions
@@ -276,6 +292,15 @@ ADMIN_SECRET_KEY=admin123
    - Select "Mail" and "Other (Custom name)"
    - Copy the 16-digit password
 4. Update EMAIL_USER and EMAIL_PASSWORD in backend/.env
+
+> [!IMPORTANT]
+> **Email Troubleshooting:**
+> If you see "App password removed" or authentication errors:
+> 1. Gmail may have revoked your app password for security reasons
+> 2. Generate a new app password from Google Account settings
+> 3. Update EMAIL_PASSWORD in backend/.env with the new 16-digit password
+> 4. Restart the backend server
+> 5. Check backend logs for "Email server is ready to send messages"
 ```
 
 ### 4. Setup Database
