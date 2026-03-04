@@ -102,7 +102,7 @@ const EnrollmentManager = () => {
             setSelectedEnrollment(fullDetails);
             setTimeout(() => {
                 if (detailsPanelRef.current) {
-                    detailsPanelRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    detailsPanelRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
                 }
             }, 100);
         } catch (error) {
@@ -110,7 +110,7 @@ const EnrollmentManager = () => {
             setSelectedEnrollment(enrollment);
             setTimeout(() => {
                 if (detailsPanelRef.current) {
-                    detailsPanelRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    detailsPanelRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
                 }
             }, 100);
         }
