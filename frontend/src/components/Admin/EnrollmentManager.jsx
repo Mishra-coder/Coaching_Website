@@ -57,7 +57,6 @@ const EnrollmentManager = () => {
                 setSelectedEnrollment(null);
             }
             setEnrollments(prev => prev.filter(en => en._id !== id));
-            alert('Enrollment deleted successfully!');
         } catch (error) {
             console.error('Delete failed:', error);
             alert('Failed to delete enrollment: ' + (error.response?.data?.message || error.message));
