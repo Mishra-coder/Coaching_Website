@@ -162,6 +162,10 @@ export const enrollmentsAPI = {
     updateStatus: async (id, statusData) => {
         const res = await api.put(`/enrollments/${id}/status`, statusData);
         return res.data;
+    },
+    delete: async (id) => {
+        const res = await api.delete(`/enrollments/${id}`);
+        return res.data;
     }
 };
 

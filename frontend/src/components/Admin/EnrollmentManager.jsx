@@ -43,6 +43,23 @@ const EnrollmentManager = () => {
         }
     };
 
+    const handleDelete = async (id, studentName) => {
+        if (!window.confirm(`Are you sure you want to delete ${studentName}'s enrollment? This action cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            await enrollmentsAPI.delete(id);
+            alert('Enrollment deleted successfully!');
+            fetchEnrollments();
+            if (selectedEnrollment?._id === id) {
+                setSelectedEnrollment(null);
+            }
+        } catch (error) {
+            alert('Failed to delete enrollment: ' + (error.response?.data?.message || error.message));
+        }
+    };
+
     const fetchEnrollments = async () => {
         try {
             setLoading(true);
@@ -102,6 +119,13 @@ const EnrollmentManager = () => {
                                 >
                                     View Details
                                 </button>
+                                <button
+                                    onClick={() => handleDelete(en._id, en.studentName)}
+                                    className="btn-action"
+                                    style={{ width: '100%', marginTop: '10px', backgroundColor: '#dc3545', color: 'white' }}
+                                >
+                                    Delete
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -130,8 +154,16 @@ const EnrollmentManager = () => {
                                             <button
                                                 onClick={() => setSelectedEnrollment(en)}
                                                 className="btn-action btn-view"
+                                                style={{ marginRight: '10px' }}
                                             >
                                                 View Details
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(en._id, en.studentName)}
+                                                className="btn-action"
+                                                style={{ backgroundColor: '#dc3545', color: 'white' }}
+                                            >
+                                                Delete
                                             </button>
                                         </td>
                                     </tr>

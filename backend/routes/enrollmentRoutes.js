@@ -143,4 +143,22 @@ router.put('/:id/status', protect, async (req, res) => {
     }
 });
 
+router.delete('/:id', protect, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: 'Only admins can delete enrollments' });
+        }
+
+        const enrollment = await Enrollment.findById(req.params.id);
+        if (!enrollment) {
+            return res.status(404).json({ success: false, message: 'Enrollment not found' });
+        }
+
+        await Enrollment.findByIdAndDelete(req.params.id);
+        res.status(200).json({ success: true, message: 'Enrollment deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 export default router;
