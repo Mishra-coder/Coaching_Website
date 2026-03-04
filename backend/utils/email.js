@@ -69,7 +69,7 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <span style="font-size: 48px;">🎓</span>
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto;" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -216,7 +216,7 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <span style="font-size: 48px;">🎓</span>
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto;" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -361,74 +361,113 @@ export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStat
         statusColor = '#ffc107';
     }
     
-    const emailStyles = `
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; }
-        .status-box { background: white; padding: 25px; margin: 20px 0; border-radius: 8px; border-left: 4px solid ${statusColor}; text-align: center; }
-        .status-badge { display: inline-block; padding: 10px 20px; background: ${statusColor}; color: white; border-radius: 20px; font-size: 14px; font-weight: bold; text-transform: uppercase; }
-        .remarks-box { background: #fff3cd; padding: 15px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #ffc107; }
-        .footer { text-align: center; padding: 20px; color: #6c757d; font-size: 14px; }
-    `;
-    
     const html = `
     <!DOCTYPE html>
     <html>
     <head>
-        <style>${emailStyles}</style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
     </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>Success Mantra Institute</h1>
-                <p>Admission Status Update</p>
-            </div>
-            
-            <div class="content">
-                <p>Dear <strong>${enrollment.studentName}</strong>,</p>
-                
-                <div class="status-box">
-                    <h2 style="margin-top: 0; color: ${statusColor};">${statusMessage}</h2>
-                    <p style="margin: 20px 0;">Your application status has been updated to:</p>
-                    <span class="status-badge">${newStatus.toUpperCase()}</span>
-                </div>
-                
-                ${enrollment.adminRemarks ? `
-                <div class="remarks-box">
-                    <h4 style="margin-top: 0; color: #856404;">Admin Remarks:</h4>
-                    <p style="margin: 0;">${enrollment.adminRemarks}</p>
-                </div>
-                ` : ''}
-                
-                <p><strong>Application ID:</strong> ${enrollment._id}</p>
-                
-                ${newStatus === 'active' ? `
-                <h3 style="color: #667eea;">Welcome to Success Mantra Institute!</h3>
-                <p>Your admission has been confirmed. Please visit the institute for further formalities and fee payment.</p>
-                <ul>
-                    <li>Bring original documents for verification</li>
-                    <li>Complete the fee payment process</li>
-                    <li>Collect your student ID card</li>
-                    <li>Get your class schedule</li>
-                </ul>
-                ` : ''}
-                
-                ${newStatus === 'cancelled' ? `
-                <p>You can resubmit your admission form by visiting your profile page and updating the required information.</p>
-                ` : ''}
-                
-                <div style="text-align: center; margin-top: 30px;">
-                    <p style="color: #6c757d;">For any queries, contact us:</p>
-                    <p><strong>Email:</strong> mysuccessmantrainstitute@gmail.com</p>
-                </div>
-            </div>
-            
-            <div class="footer">
-                <p>This is an automated email. Please do not reply to this email.</p>
-                <p>&copy; 2026 Success Mantra Institute. All rights reserved.</p>
-            </div>
-        </div>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f4f4f4;">
+            <tr>
+                <td align="center" style="padding: 20px 10px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center;">
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tr>
+                                        <td align="center" style="padding-bottom: 15px;">
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto;" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: bold;">Success Mantra Institute</h1>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="padding-top: 10px;">
+                                            <p style="margin: 0; color: #ffffff; font-size: 16px; opacity: 0.95;">Admission Status Update</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="padding: 30px 20px; background-color: #f8f9fa;">
+                                <p style="margin: 0 0 20px 0; color: #333; font-size: 16px; line-height: 1.6;">Dear <strong>${enrollment.studentName}</strong>,</p>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-left: 4px solid ${statusColor}; border-radius: 8px; margin: 20px 0;">
+                                    <tr>
+                                        <td style="padding: 30px; text-align: center;">
+                                            <h2 style="margin: 0 0 20px 0; color: ${statusColor}; font-size: 22px;">${statusMessage}</h2>
+                                            <p style="margin: 0 0 20px 0; color: #333; font-size: 16px;">Your application status has been updated to:</p>
+                                            <span style="display: inline-block; padding: 10px 25px; background-color: ${statusColor}; color: #ffffff; border-radius: 25px; font-size: 14px; font-weight: bold; text-transform: uppercase;">${newStatus}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                ${enrollment.adminRemarks ? `
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: 8px; margin: 20px 0;">
+                                    <tr>
+                                        <td style="padding: 20px;">
+                                            <h4 style="margin: 0 0 10px 0; color: #856404; font-size: 16px;">Admin Remarks:</h4>
+                                            <p style="margin: 0; color: #856404; font-size: 14px; line-height: 1.6;">${enrollment.adminRemarks}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                ` : ''}
+                                
+                                <p style="margin: 20px 0 10px 0; color: #667eea; font-size: 14px;"><strong>Application ID:</strong> ${enrollment._id}</p>
+                                
+                                ${newStatus === 'active' ? `
+                                <h3 style="margin: 30px 0 15px 0; color: #667eea; font-size: 18px;">Welcome to Success Mantra Institute!</h3>
+                                <p style="margin: 0 0 15px 0; color: #333; font-size: 16px; line-height: 1.6;">Your admission has been confirmed. Please visit the institute for further formalities and fee payment.</p>
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tr>
+                                        <td style="padding: 5px 0 5px 20px; color: #333; font-size: 14px; line-height: 1.6;">• Bring original documents for verification</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 0 5px 20px; color: #333; font-size: 14px; line-height: 1.6;">• Complete the fee payment process</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 0 5px 20px; color: #333; font-size: 14px; line-height: 1.6;">• Collect your student ID card</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 0 5px 20px; color: #333; font-size: 14px; line-height: 1.6;">• Get your class schedule</td>
+                                    </tr>
+                                </table>
+                                ` : ''}
+                                
+                                ${newStatus === 'cancelled' ? `
+                                <p style="margin: 20px 0; color: #333; font-size: 16px; line-height: 1.6;">You can resubmit your admission form by visiting your profile page and updating the required information.</p>
+                                ` : ''}
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top: 30px;">
+                                    <tr>
+                                        <td align="center">
+                                            <p style="margin: 0 0 10px 0; color: #6c757d; font-size: 14px;">For any queries, contact us:</p>
+                                            <p style="margin: 5px 0; color: #333; font-size: 14px;"><strong>Email:</strong> mysuccessmantrainstitute@gmail.com</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td align="center" style="padding: 20px; background-color: #f8f9fa; border-top: 1px solid #e9ecef;">
+                                <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 12px;">This is an automated email. Please do not reply to this email.</p>
+                                <p style="margin: 0; color: #6c757d; font-size: 12px;">&copy; 2026 Success Mantra Institute. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
     </body>
     </html>
     `;

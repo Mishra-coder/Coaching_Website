@@ -46,7 +46,6 @@ export async function sendResubmitConfirmation(user, enrollment) {
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .logo-title { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; }
-        .logo-icon { font-size: 2rem; }
         .header h1 { margin: 0; font-size: 1.8rem; }
         .header p { margin: 10px 0 0 0; font-size: 1rem; opacity: 0.95; }
         .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; }
@@ -65,7 +64,7 @@ export async function sendResubmitConfirmation(user, enrollment) {
         <div class="container">
             <div class="header">
                 <div class="logo-title">
-                    <span class="logo-icon">🎓</span>
+                    <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 60px; height: auto;" />
                     <h1>Success Mantra Institute</h1>
                 </div>
                 <p>Form Resubmitted Successfully</p>
@@ -116,7 +115,6 @@ export async function sendResubmitConfirmation(user, enrollment) {
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .logo-title { display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .logo-icon { font-size: 2.5rem; }
         .content { background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; }
         .info-box { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #28a745; }
         .action-buttons { text-align: center; margin: 30px 0; }
@@ -137,7 +135,7 @@ export async function sendResubmitConfirmation(user, enrollment) {
         <div class="container">
             <div class="header">
                 <div class="logo-title">
-                    <span class="logo-icon">🎓</span>
+                    <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 60px; height: auto;" />
                     <h1 style="margin: 0;">Success Mantra Institute</h1>
                 </div>
                 <p style="margin: 10px 0 0 0;">Form Resubmitted - Requires Review</p>
