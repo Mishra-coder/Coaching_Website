@@ -93,7 +93,7 @@ export async function sendResubmitConfirmation(user, enrollment) {
                 
                 <div style="text-align: center; margin-top: 30px;">
                     <p style="color: #6c757d;">For any queries, contact us:</p>
-                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Email:</strong> mysuccessmantrainstitute@gmail.com</p>
                 </div>
             </div>
             

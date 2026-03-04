@@ -171,8 +171,7 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                                     <tr>
                                         <td align="center">
                                             <p style="margin: 0 0 10px 0; color: #6c757d; font-size: 14px;">For any queries, contact us:</p>
-                                            <p style="margin: 5px 0; color: #333; font-size: 14px;"><strong>Phone:</strong> ${enrollment.mobileNumber}</p>
-                                            <p style="margin: 5px 0; color: #333; font-size: 14px;"><strong>Email:</strong> ${user.email}</p>
+                                            <p style="margin: 5px 0; color: #333; font-size: 14px;"><strong>Email:</strong> mysuccessmantrainstitute@gmail.com</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -421,8 +420,7 @@ export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStat
                 
                 <div style="text-align: center; margin-top: 30px;">
                     <p style="color: #6c757d;">For any queries, contact us:</p>
-                    <p><strong>Phone:</strong> ${enrollment.mobileNumber}</p>
-                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Email:</strong> mysuccessmantrainstitute@gmail.com</p>
                 </div>
             </div>
             
