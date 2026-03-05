@@ -504,7 +504,7 @@ export async function sendDemoBookingNotification(booking) {
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <img src="https://success-mantra-dm.vercel.app/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
+                                            <img src="https://success-mantra-dm.vercel.app/browser.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
                                         </td>
                                     </tr>
                                     <tr>

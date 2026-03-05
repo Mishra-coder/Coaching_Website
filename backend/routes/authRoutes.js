@@ -16,6 +16,29 @@ router.post('/register', async (req, res) => {
         const { name, email, password, phone } = req.body;
         console.log('Registration attempt:', { name, email, phone });
 
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Please enter a valid email address with proper domain (.com, .in, .org, etc.)' 
+            });
+        }
+
+        if (password.length < 8) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Password must be at least 8 characters long' 
+            });
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number' 
+            });
+        }
+
         if (await User.findOne({ email })) {
             console.log('Registration failed: Email already exists', email);
             return res.status(400).json({ success: false, message: 'Email already registered' });
@@ -39,6 +62,29 @@ router.post('/register', async (req, res) => {
 router.post('/admin-register', async (req, res) => {
     try {
         const { name, email, password, secretKey } = req.body;
+
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Please enter a valid email address with proper domain (.com, .in, .org, etc.)' 
+            });
+        }
+
+        if (password.length < 8) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Password must be at least 8 characters long' 
+            });
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number' 
+            });
+        }
 
         if (secretKey !== 'admin123') {
             return res.status(401).json({ success: false, message: 'Invalid admin secret key' });

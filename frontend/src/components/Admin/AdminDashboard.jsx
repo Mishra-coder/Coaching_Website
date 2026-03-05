@@ -77,7 +77,7 @@ const AdminDashboard = () => {
                     </Link>
                 </div>
                 <div className="stat-card">
-                    <h1 className="stat-number" style={{ color: '#e91e63' }}>
+                    <h1 className="stat-number" style={{ color: '#ff6b6b' }}>
                         {loading ? '...' : stats.totalDemoBookings}
                     </h1>
                     <p className="stat-label">Demo Bookings</p>

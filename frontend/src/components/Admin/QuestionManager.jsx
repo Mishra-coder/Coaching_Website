@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { questionsAPI } from '../../services/api';
+import ConfirmDialog from '../ConfirmDialog';
 
 const CHAPTERS = {
     '10': [
@@ -42,6 +43,7 @@ const QuestionManager = () => {
     const [selectedClassFilter, setSelectedClassFilter] = useState('all');
     const [isEditing, setIsEditing] = useState(false);
     const [showBulkUpload, setShowBulkUpload] = useState(false);
+    const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, id: null });
     const [currentQuestion, setCurrentQuestion] = useState({
         question: '',
         options: ['', '', '', ''],
@@ -85,6 +87,25 @@ const QuestionManager = () => {
         const newOptions = [...currentQuestion.options];
         newOptions[index] = value;
         setCurrentQuestion(prev => ({ ...prev, options: newOptions }));
+    };
+
+    const handleDelete = async () => {
+        const { id } = deleteDialog;
+        try {
+            await questionsAPI.delete(id);
+            fetchQuestions();
+            setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
+            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+        } catch (error) {
+            setStatusMessage({ text: 'Error deleting question.', type: 'error' });
+            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+        } finally {
+            setDeleteDialog({ isOpen: false, id: null });
+        }
+    };
+
+    const cancelDelete = () => {
+        setDeleteDialog({ isOpen: false, id: null });
     };
 
     const handleSubmit = async (e) => {
@@ -385,17 +406,7 @@ const QuestionManager = () => {
                                     Edit
                                 </button>
                                 <button
-                                    onClick={async () => {
-                                        if (window.confirm('Are you sure you want to delete this question?')) {
-                                            try {
-                                                await questionsAPI.delete(q._id);
-                                                fetchQuestions();
-                                                setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
-                                                setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
-                                            } catch (error) {
-                                            }
-                                        }
-                                    }}
+                                    onClick={() => setDeleteDialog({ isOpen: true, id: q._id })}
                                     className="btn-action btn-delete"
                                 >
                                     Delete
@@ -434,17 +445,7 @@ const QuestionManager = () => {
                                                 Edit
                                             </button>
                                             <button
-                                                onClick={async () => {
-                                                    if (window.confirm('Are you sure you want to delete this question?')) {
-                                                        try {
-                                                            await questionsAPI.delete(q._id);
-                                                            fetchQuestions();
-                                                            setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
-                                                            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
-                                                        } catch (error) {
-                                                        }
-                                                    }
-                                                }}
+                                                onClick={() => setDeleteDialog({ isOpen: true, id: q._id })}
                                                 className="btn-action btn-delete"
                                             >
                                                 Delete
@@ -457,6 +458,14 @@ const QuestionManager = () => {
                     </table>
                 </div>
             </div>
+
+            <ConfirmDialog
+                isOpen={deleteDialog.isOpen}
+                title="Delete Question"
+                message="Are you sure you want to delete this question? This action cannot be undone."
+                onConfirm={handleDelete}
+                onCancel={cancelDelete}
+            />
         </div>
     );
 };

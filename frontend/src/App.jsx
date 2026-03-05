@@ -49,7 +49,11 @@ function App() {
                         <Route path="/faculty" element={<Faculty />} />
                         <Route path="/enroll" element={<Enrollment />} />
                         <Route path="/admission" element={<Enrollment />} />
-                        <Route path="/demo-booking" element={<DemoBooking />} />
+                        <Route path="/demo-booking" element={
+                            <ProtectedRoute>
+                                <DemoBooking />
+                            </ProtectedRoute>
+                        } />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
 

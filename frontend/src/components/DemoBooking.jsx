@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { demoBookingsAPI } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 const DemoBooking = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -13,6 +15,15 @@ const DemoBooking = () => {
         preferredDate: '',
         preferredTime: ''
     });
+
+    useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                name: user.name || ''
+            }));
+        }
+    }, [user]);
 
     const handleChange = (e) => {
         setFormData({

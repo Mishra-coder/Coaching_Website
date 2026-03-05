@@ -30,13 +30,25 @@ const Register = () => {
         e.preventDefault();
         setError('');
 
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+        if (!emailRegex.test(formData.email)) {
+            setError('Please enter a valid email address with proper domain (.com, .in, .org, etc.)');
             return;
         }
 
-        if (formData.password.length < 6) {
-            setError('Password must be at least 6 characters');
+        if (formData.password.length < 8) {
+            setError('Password must be at least 8 characters long');
+            return;
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+        if (!passwordRegex.test(formData.password)) {
+            setError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+            return;
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
             return;
         }
 
@@ -150,10 +162,14 @@ const Register = () => {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
-                                placeholder="Minimum 6 characters"
+                                placeholder="Minimum 8 characters"
                                 required
+                                minLength="8"
                                 className="form-input"
                             />
+                            <p className="helper-text" style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+                                Must contain uppercase, lowercase, and number
+                            </p>
                         </div>
 
                         <div className="form-group">

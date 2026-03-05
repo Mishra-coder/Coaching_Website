@@ -26,6 +26,18 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+        if (!emailRegex.test(formData.email)) {
+            setError('Please enter a valid email address with proper domain (.com, .in, .org, etc.)');
+            return;
+        }
+
+        if (formData.password.length < 8) {
+            setError('Password must be at least 8 characters long');
+            return;
+        }
+
         setLoading(true);
 
         const result = await login(formData);
@@ -98,6 +110,7 @@ const Login = () => {
                                 onChange={handleChange}
                                 placeholder="Enter your password"
                                 required
+                                minLength="8"
                                 className="form-input"
                             />
                         </div>

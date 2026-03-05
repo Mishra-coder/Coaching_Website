@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { enrollmentsAPI } from '../../services/api';
+import ConfirmDialog from '../ConfirmDialog';
 
 const EnrollmentManager = () => {
     const [enrollments, setEnrollments] = useState([]);
@@ -9,6 +10,7 @@ const EnrollmentManager = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, id: null, name: '' });
     const detailsPanelRef = useRef(null);
 
     useEffect(() => {
@@ -43,10 +45,11 @@ const EnrollmentManager = () => {
     };
 
     const handleDelete = async (id, studentName) => {
-        if (!window.confirm(`Are you sure you want to delete ${studentName}'s enrollment? This action cannot be undone.`)) {
-            return;
-        }
+        setDeleteDialog({ isOpen: true, id, name: studentName });
+    };
 
+    const confirmDelete = async () => {
+        const { id, name } = deleteDialog;
         try {
             await enrollmentsAPI.delete(id);
             if (selectedEnrollment?._id === id) {
@@ -55,7 +58,13 @@ const EnrollmentManager = () => {
             setEnrollments(prev => prev.filter(en => en._id !== id));
         } catch (error) {
             console.error('Delete failed:', error);
+        } finally {
+            setDeleteDialog({ isOpen: false, id: null, name: '' });
         }
+    };
+
+    const cancelDelete = () => {
+        setDeleteDialog({ isOpen: false, id: null, name: '' });
     };
 
     const fetchEnrollments = async () => {
@@ -95,7 +104,14 @@ const EnrollmentManager = () => {
             setSelectedEnrollment(fullDetails);
             setTimeout(() => {
                 if (detailsPanelRef.current) {
-                    detailsPanelRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
+                    const headerHeight = 80;
+                    const elementPosition = detailsPanelRef.current.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
                 }
             }, 100);
         } catch (error) {
@@ -103,7 +119,14 @@ const EnrollmentManager = () => {
             setSelectedEnrollment(enrollment);
             setTimeout(() => {
                 if (detailsPanelRef.current) {
-                    detailsPanelRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
+                    const headerHeight = 80;
+                    const elementPosition = detailsPanelRef.current.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
                 }
             }, 100);
         }
@@ -334,6 +357,14 @@ const EnrollmentManager = () => {
                     </div>
                 )}
             </div>
+
+            <ConfirmDialog
+                isOpen={deleteDialog.isOpen}
+                title="Delete Enrollment"
+                message={`Are you sure you want to delete ${deleteDialog.name}'s enrollment? This action cannot be undone.`}
+                onConfirm={confirmDelete}
+                onCancel={cancelDelete}
+            />
         </div>
     );
 };

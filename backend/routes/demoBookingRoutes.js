@@ -5,7 +5,7 @@ import { sendDemoBookingNotification } from '../utils/email.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', protect, async (req, res) => {
     try {
         const { name, phone, preferredDate, preferredTime } = req.body;
 
@@ -13,7 +13,8 @@ router.post('/', async (req, res) => {
             name,
             phone,
             preferredDate,
-            preferredTime
+            preferredTime,
+            user: req.user.id
         });
 
         sendDemoBookingNotification(demoBooking).catch(err => {
@@ -37,6 +38,7 @@ router.get('/', protect, async (req, res) => {
         }
 
         const bookings = await DemoBooking.find()
+            .populate('user', 'name email phone')
             .sort({ createdAt: -1 })
             .lean();
 
