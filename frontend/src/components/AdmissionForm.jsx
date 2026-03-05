@@ -135,6 +135,7 @@ const AdmissionForm = () => {
                 gender: details.gender,
                 class: details.class,
                 board: details.board,
+                competitiveCourse: details.competitiveCourse || '',
                 address: details.address,
                 aadharNumber: details.aadhar,
                 mobileNumber: details.mobile,

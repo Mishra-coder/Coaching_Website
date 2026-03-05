@@ -48,6 +48,7 @@ const enrollmentSchema = new mongoose.Schema({
     competitiveCourse: {
         type: String,
         enum: ['', 'SSC', 'Banking', 'Teaching', 'Judiciary', 'NDA', 'CDS', 'AFCAT', 'Agniveer', 'Civil Services'],
+        default: '',
         required: function() {
             return this.class === '12th Pass';
         }
