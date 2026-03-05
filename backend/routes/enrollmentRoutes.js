@@ -5,6 +5,7 @@ import Course from '../models/Course.js';
 import { protect } from '../middleware/auth.js';
 import { sendEnrollmentConfirmation, sendStatusUpdateEmail } from '../utils/email.js';
 import { sendResubmitConfirmation } from '../utils/emailResubmit.js';
+import { addEnrollmentToSheet, updateEnrollmentStatusInSheet } from '../utils/googleSheets.js';
 
 const router = express.Router();
 
@@ -30,6 +31,10 @@ router.post('/', protect, async (req, res) => {
         
         sendEnrollmentConfirmation(user, enrollment).catch(err => {
             console.error('Failed to send enrollment email:', err.message);
+        });
+
+        addEnrollmentToSheet(enrollment, user).catch(err => {
+            console.error('Failed to add enrollment to Google Sheet:', err.message);
         });
 
         res.status(201).json({ success: true, message: 'Enrollment submitted', enrollment });
@@ -134,6 +139,10 @@ router.put('/:id/status', protect, async (req, res) => {
         if (oldStatus !== status) {
             sendStatusUpdateEmail(record.user, record, oldStatus, status).catch(err => {
                 console.error('Failed to send status update email:', err.message);
+            });
+            
+            updateEnrollmentStatusInSheet(record._id, status, adminRemarks).catch(err => {
+                console.error('Failed to update enrollment in Google Sheet:', err.message);
             });
         }
 

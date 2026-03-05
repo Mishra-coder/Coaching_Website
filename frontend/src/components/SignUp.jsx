@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
 import GoogleSignInButton from './GoogleSignInButton';
 
-const Register = () => {
+const SignUp = () => {
     const navigate = useNavigate();
     const { register, setAuth } = useAuth();
 
@@ -232,4 +232,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default SignUp;

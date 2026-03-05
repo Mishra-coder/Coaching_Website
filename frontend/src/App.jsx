@@ -11,7 +11,7 @@ import Quiz from './components/Quiz';
 import Leaderboard from './components/Leaderboard';
 import Profile from './components/Profile';
 import Login from './components/Login';
-import Register from './components/Register';
+import SignUp from './components/SignUp';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
@@ -58,7 +58,8 @@ function App() {
                             </ProtectedRoute>
                         } />
                         <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
+                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/register" element={<SignUp />} />
 
                         <Route path="/quiz" element={
                             <ProtectedRoute>
