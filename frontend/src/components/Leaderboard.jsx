@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { leaderboardAPI } from '../services/api';
 import InitialsAvatar from './InitialsAvatar';
+import xpIcon from '../assets/xps.png';
 
 const UserAvatar = ({ user, size = 40, className = '' }) => {
     if (user?.avatar) {
@@ -15,6 +16,25 @@ const UserAvatar = ({ user, size = 40, className = '' }) => {
         );
     }
     return <InitialsAvatar name={user?.name || '?'} size={size} className={className} />;
+};
+
+const PodiumAvatar = ({ user, size = 120 }) => {
+    if (user?.avatar) {
+        return (
+            <img
+                src={user.avatar}
+                alt={user.name}
+                style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    borderRadius: '50%', 
+                    objectFit: 'cover',
+                    objectPosition: 'center'
+                }}
+            />
+        );
+    }
+    return <InitialsAvatar name={user?.name || '?'} size={size} />;
 };
 
 const Leaderboard = () => {
@@ -71,15 +91,18 @@ const Leaderboard = () => {
                         {[topThree[1], topThree[0], topThree[2]].map((user, idx) => {
                             if (!user) return null;
                             const actualRank = idx === 0 ? 2 : idx === 1 ? 1 : 3;
+                            const displayOrder = actualRank === 1 ? 2 : actualRank === 2 ? 1 : 3;
                             return (
-                                <div key={user._id} className={`podium-position rank-${actualRank}`}>
-                                    <div className="podium-avatar">
-                                        <UserAvatar user={user} size={actualRank === 1 ? 120 : 100} />
+                                <div key={user._id} className={`podium-position rank-${actualRank}`} style={{ order: displayOrder }}>
+                                    <div className="podium-avatar-wrapper">
+                                        <div className="podium-avatar">
+                                            <PodiumAvatar user={user} size={actualRank === 1 ? 120 : 100} />
+                                        </div>
+                                        <div className="rank-badge">{actualRank}</div>
                                     </div>
-                                    <div className="rank-badge">{actualRank}</div>
                                     <div className="podium-name">{user.name.split(' ')[0]}</div>
                                     <div className="podium-score">
-                                        <span className="score-icon">⚡</span>
+                                        <img src={xpIcon} alt="XP" className="score-icon-img" />
                                         {user.totalXP}
                                     </div>
                                 </div>
@@ -133,7 +156,7 @@ const Leaderboard = () => {
                                     </td>
                                     <td className="score-cell">
                                         <span className="score-display">
-                                            <span className="score-icon">⚡</span>
+                                            <img src={xpIcon} alt="XP" className="score-icon-img" />
                                             {user.totalXP}
                                         </span>
                                     </td>

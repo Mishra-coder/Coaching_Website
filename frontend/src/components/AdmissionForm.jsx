@@ -22,6 +22,7 @@ const AdmissionForm = () => {
         gender: '',
         class: '',
         board: '',
+        competitiveCourse: '',
         address: '',
         aadhar: '',
         mobile: ''
@@ -295,16 +296,20 @@ const AdmissionForm = () => {
                                         <option value="10">Class 10th</option>
                                         <option value="11">Class 11th</option>
                                         <option value="12">Class 12th</option>
+                                        <option value="12th Pass">12th Pass</option>
                                     </select>
                                 </div>
 
                                 <div className="form-field">
-                                    <label className="modern-label">Board <span className="required">*</span></label>
+                                    <label className="modern-label">
+                                        Board {details.class !== '12th Pass' && <span className="required">*</span>}
+                                    </label>
                                     <select
                                         name="board"
                                         value={details.board}
                                         onChange={updateField}
-                                        required
+                                        required={details.class !== '12th Pass'}
+                                        disabled={details.class === '12th Pass'}
                                         className="modern-input"
                                     >
                                         <option value="">Select Board</option>
@@ -313,6 +318,36 @@ const AdmissionForm = () => {
                                         <option value="State Board">State Board</option>
                                     </select>
                                 </div>
+
+                                {details.class === '12th Pass' && (
+                                    <div className="form-field full-width">
+                                        <label className="modern-label">Competitive Course <span className="required">*</span></label>
+                                        <select
+                                            name="competitiveCourse"
+                                            value={details.competitiveCourse}
+                                            onChange={updateField}
+                                            required
+                                            className="modern-input"
+                                        >
+                                            <option value="">Select Course</option>
+                                            <optgroup label="Govt Job Exams">
+                                                <option value="SSC">SSC</option>
+                                                <option value="Banking">Banking</option>
+                                                <option value="Teaching">Teaching</option>
+                                                <option value="Judiciary">Judiciary</option>
+                                            </optgroup>
+                                            <optgroup label="Defence">
+                                                <option value="NDA">NDA</option>
+                                                <option value="CDS">CDS</option>
+                                                <option value="AFCAT">AFCAT</option>
+                                                <option value="Agniveer">Agniveer</option>
+                                            </optgroup>
+                                            <optgroup label="UPSC">
+                                                <option value="Civil Services">Civil Services</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                )}
 
                                 <div className="form-field full-width">
                                     <label className="modern-label">Address <span className="required">*</span></label>

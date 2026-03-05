@@ -45,9 +45,8 @@ const Profile = () => {
                 updateUser(res.user);
             }
             setIsEditing(false);
-            alert('Profile updated!');
         } catch (err) {
-            alert('Update failed');
+            console.error('Update failed:', err);
         }
     };
 
@@ -212,18 +211,16 @@ const Profile = () => {
 
                             {view === 'test' && (
                                 <div className="fade-in">
-                                    <h3>Weekly Test</h3>
+                                    <h3>Weekly Contest</h3>
                                     <div className="test-schedule-banner">
-                                        <h4 style={{ opacity: 0.9, marginBottom: '10px' }}>Next Sunday Test</h4>
+                                        <h4 style={{ opacity: 0.9, marginBottom: '10px' }}>Next Sunday Contest</h4>
                                         <h2 style={{ fontSize: '2.5rem', fontWeight: '800' }}>{nextTestDate()}</h2>
                                     </div>
                                     <div className="info-display-card" style={{ padding: 0, overflow: 'hidden' }}>
-                                        {['Maths', 'Physics', 'Science'].map((subject, i) => (
-                                            <div key={i} className="schedule-list-item">
-                                                <span>{subject}</span>
-                                                <span className="schedule-time">10:00 AM</span>
-                                            </div>
-                                        ))}
+                                        <div className="schedule-list-item">
+                                            <span>Maths</span>
+                                            <span className="schedule-time">10:00 AM</span>
+                                        </div>
                                     </div>
                                 </div>
                             )}

@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { questionsAPI, quizAPI } from '../services/api';
 
 const Quiz = () => {
-    const [view, setView] = useState(() => {
-        return sessionStorage.getItem('quizView') || 'class-select';
-    });
-    const [selectedClass, setSelectedClass] = useState(() => {
-        return sessionStorage.getItem('quizClass') || null;
-    });
-    const [selectedChapter, setSelectedChapter] = useState(() => {
-        return sessionStorage.getItem('quizChapter') || null;
-    });
+    const navigate = useNavigate();
+    const location = useLocation();
+    
+    const [view, setView] = useState('class-select');
+    const [selectedClass, setSelectedClass] = useState(null);
+    const [selectedChapter, setSelectedChapter] = useState(null);
     const [userAnswers, setUserAnswers] = useState({});
     const [showWarning, setShowWarning] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -19,31 +17,91 @@ const Quiz = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        sessionStorage.setItem('quizView', view);
-    }, [view]);
+        const handleVisibilityChange = () => {
+            if (document.hidden && view === 'quiz' && questions.length > 0) {
+                sessionStorage.removeItem('quizView');
+                sessionStorage.removeItem('quizClass');
+                sessionStorage.removeItem('quizChapter');
+                navigate('/', { replace: true });
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }, [view, questions, navigate]);
 
     useEffect(() => {
-        if (selectedClass) {
-            sessionStorage.setItem('quizClass', selectedClass);
+        const params = new URLSearchParams(location.search);
+        const classParam = params.get('class');
+        const chapterParam = params.get('chapter');
+        
+        if (!classParam && !chapterParam) {
+            setView('class-select');
+            setSelectedClass(null);
+            setSelectedChapter(null);
+            setUserAnswers({});
+            setCurrentQuestionIndex(0);
+            setQuestions([]);
+            setChapters([]);
+            sessionStorage.removeItem('quizView');
+            sessionStorage.removeItem('quizClass');
+            sessionStorage.removeItem('quizChapter');
+        } else if (classParam && !chapterParam) {
+            setView('chapter-select');
+            setSelectedClass(classParam);
+            sessionStorage.setItem('quizView', 'chapter-select');
+            sessionStorage.setItem('quizClass', classParam);
+        } else if (classParam && chapterParam) {
+            setView('quiz');
+            setSelectedClass(classParam);
+            setSelectedChapter(chapterParam);
+            sessionStorage.setItem('quizView', 'quiz');
+            sessionStorage.setItem('quizClass', classParam);
+            sessionStorage.setItem('quizChapter', chapterParam);
         }
-    }, [selectedClass]);
+    }, [location.search]);
 
     useEffect(() => {
-        if (selectedChapter) {
-            sessionStorage.setItem('quizChapter', selectedChapter);
+        const params = new URLSearchParams(location.search);
+        if (view === 'class-select') {
+            params.delete('class');
+            params.delete('chapter');
+        } else if (view === 'chapter-select' && selectedClass) {
+            params.set('class', selectedClass);
+            params.delete('chapter');
+        } else if (view === 'quiz' && selectedClass && selectedChapter) {
+            params.set('class', selectedClass);
+            params.set('chapter', selectedChapter);
         }
-    }, [selectedChapter]);
+        
+        const newSearch = params.toString();
+        const newPath = newSearch ? `/quiz?${newSearch}` : '/quiz';
+        
+        if (location.pathname + location.search !== newPath) {
+            navigate(newPath, { replace: false });
+        }
+    }, [view, selectedClass, selectedChapter]);
 
     useEffect(() => {
-        const savedView = sessionStorage.getItem('quizView');
-        const savedClass = sessionStorage.getItem('quizClass');
-        const savedChapter = sessionStorage.getItem('quizChapter');
+        const handlePopState = () => {
+            const params = new URLSearchParams(window.location.search);
+            const classParam = params.get('class');
+            const chapterParam = params.get('chapter');
+            
+            if (!classParam && !chapterParam) {
+                setView('class-select');
+            } else if (classParam && !chapterParam) {
+                setView('chapter-select');
+                setSelectedClass(classParam);
+            } else if (classParam && chapterParam) {
+                setView('quiz');
+                setSelectedClass(classParam);
+                setSelectedChapter(chapterParam);
+            }
+        };
 
-        if (savedView === 'chapter-select' && savedClass) {
-            handleClassSelect(savedClass);
-        } else if (savedView === 'quiz' && savedClass && savedChapter) {
-            handleChapterSelect(savedChapter, savedClass);
-        }
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
     }, []);
 
     const handleClassSelect = async (cls) => {
@@ -154,17 +212,11 @@ const Quiz = () => {
     };
 
     const handleRestart = () => {
-        sessionStorage.removeItem('quizView');
-        sessionStorage.removeItem('quizClass');
-        sessionStorage.removeItem('quizChapter');
         setUserAnswers({});
         setShowWarning(false);
         setCurrentQuestionIndex(0);
-        setView('class-select');
-        setSelectedClass(null);
-        setSelectedChapter(null);
+        setView('chapter-select');
         setQuestions([]);
-        setChapters([]);
     };
 
     const renderClassSelection = () => {

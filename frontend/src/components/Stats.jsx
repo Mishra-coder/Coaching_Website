@@ -2,9 +2,9 @@ import React from 'react';
 
 const Stats = () => {
     const achievementList = [
-        { count: '5000+', name: 'Students Enrolled', icon: 'fa-user-graduate', theme: '#3b82f6' },
-        { count: '1200+', name: 'Govt Selections', icon: 'fa-award', theme: '#f59e0b' },
-        { count: '15+', name: 'Years of Excellence', icon: 'fa-calendar-check', theme: '#10b981' },
+        { count: '1000+', name: 'Students Enrolled', icon: 'fa-user-graduate', theme: '#3b82f6' },
+        { count: '100+', name: 'Govt Selections', icon: 'fa-award', theme: '#f59e0b' },
+        { count: '10+', name: 'Years of Excellence', icon: 'fa-calendar-check', theme: '#10b981' },
         { count: '50+', name: 'Expert Faculty', icon: 'fa-chalkboard-teacher', theme: '#8b5cf6' }
     ];
 

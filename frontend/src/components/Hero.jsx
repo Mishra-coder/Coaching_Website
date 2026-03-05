@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
     const metrics = [
         { value: '1000+', title: 'Students Mentored' },
-        { value: '98%', title: 'Success Rate' },
-        { value: '15+', title: 'Years Experience' }
+        { value: '95%', title: 'Success Rate' },
+        { value: '10+', title: 'Years Experience' }
     ];
 
     const highlights = [
@@ -31,7 +31,7 @@ const Hero = () => {
                     </p>
 
                     <div className="hero-btns">
-                        <Link to="/admission" className="btn-primary">
+                        <Link to="/demo-booking" className="btn-primary">
                             Book a Free Demo <i className="fas fa-arrow-right" style={{ marginLeft: '8px' }}></i>
                         </Link>
                         <Link to="/courses" className="btn-secondary">

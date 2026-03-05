@@ -69,7 +69,7 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0; filter: brightness(0) invert(1);" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -216,7 +216,7 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0; filter: brightness(0) invert(1);" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -380,7 +380,7 @@ export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStat
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0; filter: brightness(0) invert(1);" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -474,3 +474,129 @@ export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStat
     
     await sendEmail(user.email, subject, html);
 };
+
+export async function sendDemoBookingNotification(booking) {
+    const adminEmail = process.env.ADMIN_EMAIL || 'mysuccessmantrainstitute@gmail.com';
+    const subject = 'New Demo Booking Request - Success Mantra Institute';
+    
+    const formattedDate = new Date(booking.preferredDate).toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
+    
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    </head>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f4f4f4;">
+            <tr>
+                <td align="center" style="padding: 20px 10px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center;">
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tr>
+                                        <td align="center" style="padding-bottom: 15px;">
+                                            <img src="https://success-mantra-dm.vercel.app/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: bold;">Success Mantra Institute</h1>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" style="padding-top: 10px;">
+                                            <p style="margin: 0; color: #ffffff; font-size: 16px; opacity: 0.95;">New Demo Booking Request</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="padding: 30px 20px; background-color: #f8f9fa;">
+                                <p style="margin: 0 0 20px 0; color: #333; font-size: 16px; line-height: 1.6;">A new demo class booking request has been received and requires your attention.</p>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; border-left: 4px solid #667eea; border-radius: 8px; margin: 20px 0;">
+                                    <tr>
+                                        <td style="padding: 20px;">
+                                            <h3 style="margin: 0 0 15px 0; color: #667eea; font-size: 18px;">Booking Details</h3>
+                                            
+                                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Booking ID:</strong>
+                                                        <span style="color: #333; font-size: 14px; word-break: break-all;">${booking._id}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Student Name:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${booking.name}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Phone Number:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${booking.phone}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Preferred Date:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${formattedDate}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Preferred Time:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${booking.preferredTime}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding: 8px 0;">
+                                                        <strong style="color: #667eea; font-size: 14px; display: block; margin-bottom: 4px;">Booking Date:</strong>
+                                                        <span style="color: #333; font-size: 14px;">${new Date(booking.createdAt).toLocaleString('en-IN')}</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: 8px; margin: 20px 0;">
+                                    <tr>
+                                        <td style="padding: 15px;">
+                                            <p style="margin: 0; color: #856404; font-size: 14px; line-height: 1.6;"><strong>Action Required:</strong> Please contact the student within 24 hours to confirm the demo class schedule.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <p style="margin: 20px 0 0 0; text-align: center; color: #6c757d; font-size: 14px;">Manage this booking in the admin panel</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td align="center" style="padding: 20px; background-color: #f8f9fa; border-top: 1px solid #e9ecef;">
+                                <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 12px;">This is an automated notification from Success Mantra Institute.</p>
+                                <p style="margin: 0; color: #6c757d; font-size: 12px;">&copy; 2026 Success Mantra Institute. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    `;
+    
+    await sendEmail(adminEmail, subject, html);
+}

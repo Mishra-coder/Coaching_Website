@@ -19,6 +19,8 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import QuestionManager from './components/Admin/QuestionManager';
 import StudentManager from './components/Admin/StudentManager';
 import EnrollmentManager from './components/Admin/EnrollmentManager';
+import DemoBooking from './components/DemoBooking';
+import DemoBookingManager from './components/Admin/DemoBookingManager';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
@@ -47,6 +49,7 @@ function App() {
                         <Route path="/faculty" element={<Faculty />} />
                         <Route path="/enroll" element={<Enrollment />} />
                         <Route path="/admission" element={<Enrollment />} />
+                        <Route path="/demo-booking" element={<DemoBooking />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
 
@@ -89,6 +92,12 @@ function App() {
                         <Route path="/admin/enrollments" element={
                             <AdminRoute>
                                 <EnrollmentManager />
+                            </AdminRoute>
+                        } />
+
+                        <Route path="/admin/demo-bookings" element={
+                            <AdminRoute>
+                                <DemoBookingManager />
                             </AdminRoute>
                         } />
                     </Routes>

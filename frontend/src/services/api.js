@@ -169,4 +169,23 @@ export const enrollmentsAPI = {
     }
 };
 
+export const demoBookingsAPI = {
+    create: async (data) => {
+        const res = await api.post('/demo-bookings', data);
+        return res.data;
+    },
+    getAll: async () => {
+        const res = await api.get('/demo-bookings');
+        return res.data;
+    },
+    updateStatus: async (id, statusData) => {
+        const res = await api.put(`/demo-bookings/${id}/status`, statusData);
+        return res.data;
+    },
+    delete: async (id) => {
+        const res = await api.delete(`/demo-bookings/${id}`);
+        return res.data;
+    }
+};
+
 export default api;

@@ -37,12 +37,8 @@ const EnrollmentManager = () => {
             await enrollmentsAPI.updateStatus(id, { status: newStatus, adminRemarks: '' });
             fetchEnrollments();
             setSelectedEnrollment(prev => ({ ...prev, status: newStatus, adminRemarks: '' }));
-            const successMsg = action === 'approve' 
-                ? 'Application approved successfully!' 
-                : 'Application cancelled successfully!';
-            alert(successMsg);
         } catch (error) {
-            alert('Failed to update status');
+            console.error('Failed to update status:', error);
         }
     };
 
@@ -59,7 +55,6 @@ const EnrollmentManager = () => {
             setEnrollments(prev => prev.filter(en => en._id !== id));
         } catch (error) {
             console.error('Delete failed:', error);
-            alert('Failed to delete enrollment: ' + (error.response?.data?.message || error.message));
         }
     };
 
@@ -71,7 +66,6 @@ const EnrollmentManager = () => {
         } catch (error) {
             console.error('Failed to fetch enrollments:', error);
             setEnrollments([]);
-            alert('Failed to load enrollments. Please check your connection and try again.');
         } finally {
             setLoading(false);
         }
@@ -90,9 +84,8 @@ const EnrollmentManager = () => {
             await enrollmentsAPI.updateStatus(id, { status: newStatus, adminRemarks: remarks });
             fetchEnrollments();
             setSelectedEnrollment(prev => ({ ...prev, status: newStatus, adminRemarks: remarks }));
-            alert('Status updated successfully!');
         } catch (error) {
-            alert('Failed to update status');
+            console.error('Failed to update status:', error);
         }
     };
 

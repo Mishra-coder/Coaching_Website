@@ -223,7 +223,7 @@ body {
     width: 100%;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 15px 0;
+    padding: 5px 0;
     transition: var(--transition);
 }
 
@@ -731,7 +731,7 @@ body {
 }
 
 footer {
-    background-color: var(--primary-dark);
+    background: linear-gradient(135deg, #1a237e 0%, #4a148c 100%);
     color: var(--white);
     padding: 80px 0 0;
 }
@@ -1340,14 +1340,21 @@ footer {
 }
 
 .footer-logo-img {
-    height: 45px;
-    margin-right: 10px;
+    height: 75px;
+    margin-right: -10px;
+    background: transparent;
+    object-fit: contain;
+}
+
+footer .footer-logo-img {
+    filter: brightness(0) invert(1) !important;
 }
 
 .footer-logo-text {
     display: flex;
     flex-direction: column;
     line-height: 1;
+    margin-left: -15px;
 }
 
 .footer-brand-main {
@@ -1417,6 +1424,7 @@ footer {
     display: flex;
     align-items: center;
     text-decoration: none;
+    gap: 2px;
 }
 
 .nav-xp-container {
@@ -1736,6 +1744,68 @@ footer {
 .card-text {
     color: #64748b;
     line-height: 1.8;
+}
+
+.achievement-note {
+    margin-top: 4rem;
+    padding: 30px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 20px;
+    border-left: 5px solid #0284c7;
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+    box-shadow: 0 4px 20px rgba(2, 132, 199, 0.1);
+}
+
+.note-icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+}
+
+.note-content h4 {
+    color: #0c4a6e;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.note-content p {
+    color: #475569;
+    line-height: 1.8;
+    font-size: 1rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .achievement-note {
+        flex-direction: column;
+        padding: 25px 20px;
+        gap: 15px;
+    }
+
+    .note-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+
+    .note-content h4 {
+        font-size: 1.3rem;
+    }
+
+    .note-content p {
+        font-size: 0.95rem;
+    }
 }
 
 .programs-page {
@@ -4424,6 +4494,14 @@ footer {
     position: relative;
 }
 
+.podium-avatar-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
 .podium-position.rank-1 {
     order: 2;
 }
@@ -4438,7 +4516,6 @@ footer {
 
 .podium-avatar {
     position: relative;
-    margin-bottom: 30px;
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -4447,6 +4524,7 @@ footer {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     flex-shrink: 0;
     background: #1e293b;
+    margin-bottom: 0;
 }
 
 .podium-position.rank-2 .podium-avatar,
@@ -4459,12 +4537,8 @@ footer {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 20%;
+    object-position: center;
     display: block;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    transform: scale(1.1);
 }
 
 .podium-avatar > div {
@@ -4473,16 +4547,11 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
 }
 
 .rank-badge {
-    position: absolute;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    margin-top: -16px;
     background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
     color: #fff;
     width: 40px;
@@ -4492,39 +4561,40 @@ footer {
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 18px;
+    font-size: 16px;
     border: 4px solid #6366f1;
     box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
-    z-index: 2;
-}
-
-.podium-position.rank-2 .rank-badge,
-.podium-position.rank-3 .rank-badge {
-    top: 80px;
+    z-index: 3;
 }
 
 .podium-name {
     color: #fff;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
-    margin-top: 0;
-    margin-bottom: 8px;
+    margin-top: 4px;
+    margin-bottom: 6px;
 }
 
 .podium-score {
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    margin-top: 0;
 }
 
 .score-icon {
     font-size: 18px;
+    filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.5));
+}
+
+.score-icon-img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
     filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.5));
 }
 
@@ -4731,6 +4801,13 @@ footer {
     filter: drop-shadow(0 1px 2px rgba(245, 158, 11, 0.3));
 }
 
+.score-display .score-icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(245, 158, 11, 0.3));
+}
+
 .time-cell {
     text-align: right;
     color: #6c757d;
@@ -4885,13 +4962,20 @@ footer {
     }
 
     .top-three-podium {
-        gap: 12px;
+        gap: 16px;
         flex-wrap: nowrap;
         padding: 0;
+        align-items: flex-end;
+    }
+
+    .podium-position {
+        flex: 1;
+        max-width: 110px;
     }
 
     .podium-position.rank-1 {
         order: 2;
+        max-width: 120px;
     }
 
     .podium-position.rank-2 {
@@ -4902,14 +4986,72 @@ footer {
         order: 3;
     }
 
+    .podium-avatar-wrapper {
+        margin-bottom: 4px;
+    }
+
     .podium-avatar {
-        width: 64px;
-        height: 64px;
+        width: 80px;
+        height: 80px;
+        border: 3px solid rgba(255, 255, 255, 0.5);
     }
 
     .podium-position.rank-1 .podium-avatar {
-        width: 72px;
-        height: 72px;
+        width: 90px;
+        height: 90px;
+        border: 4px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .rank-badge {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+        border: 3px solid #6366f1;
+        margin-top: -12px;
+    }
+
+    .podium-position.rank-1 .rank-badge {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
+        margin-top: -14px;
+    }
+
+    .podium-name {
+        font-size: 13px;
+        margin-top: 2px;
+        margin-bottom: 3px;
+    }
+
+    .podium-position.rank-1 .podium-name {
+        font-size: 14px;
+    }
+
+    .podium-score {
+        font-size: 12px;
+        gap: 3px;
+    }
+
+    .podium-position.rank-1 .podium-score {
+        font-size: 13px;
+    }
+
+    .podium-score .score-icon {
+        font-size: 13px;
+    }
+
+    .podium-score .score-icon-img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .podium-position.rank-1 .podium-score .score-icon {
+        font-size: 14px;
+    }
+
+    .podium-position.rank-1 .podium-score .score-icon-img {
+        width: 18px;
+        height: 18px;
     }
 
     .action-banner {
@@ -5173,5 +5315,205 @@ footer {
     }
     to {
         opacity: 1;
+    }
+}
+
+
+.demo-booking-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 80px 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.demo-container {
+    max-width: 600px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.demo-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.demo-header h1 {
+    font-size: 32px;
+    color: #1a237e;
+    margin-bottom: 10px;
+}
+
+.demo-header p {
+    font-size: 16px;
+    color: #666;
+}
+
+.demo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modern-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.modern-input {
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.modern-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.required {
+    color: #dc3545;
+}
+
+.submit-btn {
+    margin-top: 10px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.demo-success-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 80px 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-card {
+    max-width: 500px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.success-icon {
+    font-size: 80px;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.success-card h2 {
+    font-size: 28px;
+    color: #1a237e;
+    margin-bottom: 15px;
+}
+
+.success-card p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.contact-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.contact-info strong {
+    color: #667eea;
+}
+
+.phone-link {
+    color: #667eea;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.phone-link:hover {
+    text-decoration: underline;
+}
+
+.btn-contacted {
+    background-color: #17a2b8;
+}
+
+.btn-contacted:hover {
+    background-color: #138496;
+}
+
+.btn-confirm {
+    background-color: #28a745;
+}
+
+.btn-confirm:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #ffc107;
+}
+
+.btn-cancel:hover {
+    background-color: #e0a800;
+}
+
+@media (max-width: 768px) {
+    .demo-container {
+        padding: 30px 20px;
+    }
+
+    .demo-header h1 {
+        font-size: 24px;
+    }
+
+    .demo-header p {
+        font-size: 14px;
+    }
+
+    .success-card {
+        padding: 40px 30px;
+    }
+
+    .success-icon {
+        font-size: 60px;
+    }
+
+    .success-card h2 {
+        font-size: 22px;
+    }
+
+    .success-card p {
+        font-size: 14px;
     }
 }

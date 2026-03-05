@@ -24,8 +24,8 @@ const About = () => {
         },
         {
             icon: 'fa-chart-line',
-            title: 'Regular Testing',
-            text: 'Weekly tests and performance analysis to track progress and identify weak areas.',
+            title: 'Regular Contests',
+            text: 'Weekly contests and performance analysis to track progress and identify weak areas.',
             delay: '0.3s'
         }
     ];
@@ -95,6 +95,22 @@ const About = () => {
                                 We are committed to helping every student realize their full potential.
                             </p>
                         </div>
+                    </div>
+                </div>
+
+                <div className="achievement-note">
+                    <div className="note-icon">
+                        <i className="fas fa-certificate"></i>
+                    </div>
+                    <div className="note-content">
+                        <h4>Our Real Achievements</h4>
+                        <p>
+                            All statistics and achievements displayed on this website represent genuine milestones accomplished through our offline coaching programs. 
+                            Every number - from student enrollments to government job selections - reflects the hard work and dedication of our Success Mantra team 
+                            and our students over the past decade. These are not inflated figures, but real results achieved through quality education, 
+                            personalized mentoring, and consistent effort at our physical institute. We take pride in our authentic track record and remain 
+                            committed to maintaining transparency with our students and their families.
+                        </p>
                     </div>
                 </div>
             </div>
