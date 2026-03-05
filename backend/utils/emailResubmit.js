@@ -64,7 +64,7 @@ export async function sendResubmitConfirmation(user, enrollment) {
         <div class="container">
             <div class="header">
                 <div class="logo-title">
-                    <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 60px; height: auto; display: block; border: 0; filter: brightness(0) invert(1);" />
+                    <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/browser.png" alt="Success Mantra Institute" style="width: 60px; height: auto; display: block; border: 0;" />
                     <h1>Success Mantra Institute</h1>
                 </div>
                 <p>Form Resubmitted Successfully</p>
@@ -135,7 +135,7 @@ export async function sendResubmitConfirmation(user, enrollment) {
         <div class="container">
             <div class="header">
                 <div class="logo-title">
-                    <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 60px; height: auto; display: block; border: 0; filter: brightness(0) invert(1);" />
+                    <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/browser.png" alt="Success Mantra Institute" style="width: 60px; height: auto; display: block; border: 0;" />
                     <h1 style="margin: 0;">Success Mantra Institute</h1>
                 </div>
                 <p style="margin: 10px 0 0 0;">Form Resubmitted - Requires Review</p>

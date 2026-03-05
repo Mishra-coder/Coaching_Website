@@ -69,7 +69,7 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0; filter: brightness(0) invert(1);" />
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/browser.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -216,7 +216,7 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0; filter: brightness(0) invert(1);" />
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/browser.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -380,7 +380,7 @@ export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStat
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                                     <tr>
                                         <td align="center" style="padding-bottom: 15px;">
-                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/logo.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0; filter: brightness(0) invert(1);" />
+                                            <img src="${process.env.FRONTEND_URL || 'https://success-mantra-dm.vercel.app'}/browser.png" alt="Success Mantra Institute" style="width: 80px; height: auto; display: block; border: 0;" />
                                         </td>
                                     </tr>
                                     <tr>

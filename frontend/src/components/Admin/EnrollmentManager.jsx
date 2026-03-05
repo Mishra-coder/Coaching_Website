@@ -294,15 +294,18 @@ const EnrollmentManager = () => {
                                 <p style={{ color: '#64748b', marginBottom: '15px', wordBreak: 'break-all' }}>Application ID: <br /><small>{selectedEnrollment._id}</small></p>
 
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                                    <select
-                                        value={selectedEnrollment.status}
-                                        onChange={(e) => handleStatusUpdate(selectedEnrollment._id, e.target.value, selectedEnrollment.adminRemarks)}
-                                        className="form-input"
-                                    >
-                                        <option value="pending">Pending</option>
-                                        <option value="active">Active (Approve)</option>
-                                        <option value="cancelled">Cancel (Reject)</option>
-                                    </select>
+                                    <div>
+                                        <label className="detail-label">Status</label>
+                                        <select
+                                            value={selectedEnrollment.status}
+                                            onChange={(e) => setSelectedEnrollment({ ...selectedEnrollment, status: e.target.value })}
+                                            className="form-input"
+                                        >
+                                            <option value="pending">Pending</option>
+                                            <option value="active">Active (Approve)</option>
+                                            <option value="cancelled">Cancel (Reject)</option>
+                                        </select>
+                                    </div>
 
                                     <div>
                                         <label className="detail-label">Admin Remarks / Reason</label>
