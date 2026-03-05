@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { authAPI, enrollmentsAPI } from '../services/api';
+import { authAPI, enrollmentsAPI, contestsAPI } from '../services/api';
 import { Link } from 'react-router-dom';
 
 const Profile = () => {
     const { user, updateUser } = useAuth();
     const [view, setView] = useState('profile');
     const [myCourses, setMyCourses] = useState([]);
+    const [contests, setContests] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [selectedForm, setSelectedForm] = useState(null);
@@ -29,8 +30,12 @@ const Profile = () => {
     const loadData = async () => {
         try {
             setIsFetching(true);
-            const data = await enrollmentsAPI.getUserEnrollments(user.id);
-            setMyCourses(data.enrollments);
+            const [enrollmentData, contestData] = await Promise.all([
+                enrollmentsAPI.getUserEnrollments(user.id),
+                contestsAPI.getActive()
+            ]);
+            setMyCourses(enrollmentData.enrollments);
+            setContests(contestData.contests || []);
         } catch (err) {
         } finally {
             setIsFetching(false);
@@ -96,6 +101,12 @@ const Profile = () => {
                                     onClick={() => setView('test')}
                                 >
                                     <i className="fas fa-calendar-alt me-3" /> Schedule
+                                </button>
+                                <button
+                                    className={`profile-nav-item ${view === 'contests' ? 'active' : ''}`}
+                                    onClick={() => setView('contests')}
+                                >
+                                    <i className="fas fa-trophy me-3" /> Contests
                                 </button>
                             </div>
                         </div>
@@ -222,6 +233,104 @@ const Profile = () => {
                                             <span className="schedule-time">10:00 AM</span>
                                         </div>
                                     </div>
+                                </div>
+                            )}
+
+                            {view === 'contests' && (
+                                <div className="fade-in">
+                                    <h3>Available Contests</h3>
+                                    {contests.length === 0 ? (
+                                        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748b' }}>
+                                            <i className="fas fa-trophy" style={{ fontSize: '3rem', marginBottom: '20px', opacity: 0.3 }}></i>
+                                            <p style={{ fontSize: '1.1rem', fontWeight: '500' }}>No active contests available</p>
+                                            <p style={{ fontSize: '0.9rem' }}>Check back later for upcoming contests</p>
+                                        </div>
+                                    ) : (
+                                        <div className="row g-4">
+                                            {contests.map((contest) => {
+                                                const now = new Date();
+                                                const start = new Date(contest.startTime);
+                                                const end = contest.endTime ? new Date(contest.endTime) : new Date(start.getTime() + contest.duration * 60000);
+                                                const isActive = contest.isActive || (now >= start && now <= end);
+                                                const isUpcoming = now < start;
+                                                const isCompleted = now > end;
+
+                                                return (
+                                                    <div key={contest._id} className="col-md-6">
+                                                        <div className="enrollment-card" style={{ position: 'relative' }}>
+                                                            <div className="enrollment-header">
+                                                                <span className={`status-badge ${isActive ? 'active' : isUpcoming ? 'scheduled' : 'completed'}`}>
+                                                                    {isActive ? 'LIVE NOW' : isUpcoming ? 'UPCOMING' : 'COMPLETED'}
+                                                                </span>
+                                                                <small style={{ color: '#64748b' }}>
+                                                                    {contest.questions.length} Questions
+                                                                </small>
+                                                            </div>
+                                                            <h5 className="enrollment-title">{contest.title}</h5>
+                                                            {contest.description && (
+                                                                <p style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '8px' }}>
+                                                                    {contest.description}
+                                                                </p>
+                                                            )}
+                                                            <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#64748b', fontSize: '0.9rem' }}>
+                                                                    <i className="fas fa-play-circle"></i>
+                                                                    <span>
+                                                                        <strong>Start:</strong> {new Date(contest.startTime).toLocaleString('en-IN', {
+                                                                            day: '2-digit',
+                                                                            month: 'short',
+                                                                            hour: '2-digit',
+                                                                            minute: '2-digit'
+                                                                        })}
+                                                                    </span>
+                                                                </div>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#64748b', fontSize: '0.9rem' }}>
+                                                                    <i className="fas fa-stop-circle"></i>
+                                                                    <span>
+                                                                        <strong>End:</strong> {new Date(contest.endTime || new Date(contest.startTime).getTime() + contest.duration * 60000).toLocaleString('en-IN', {
+                                                                            day: '2-digit',
+                                                                            month: 'short',
+                                                                            hour: '2-digit',
+                                                                            minute: '2-digit'
+                                                                        })}
+                                                                    </span>
+                                                                </div>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#64748b', fontSize: '0.9rem' }}>
+                                                                    <i className="fas fa-hourglass-half"></i>
+                                                                    <span><strong>Duration:</strong> {contest.duration} minutes</span>
+                                                                </div>
+                                                            </div>
+                                                            {isActive ? (
+                                                                <Link 
+                                                                    to={`/contest/${contest._id}`}
+                                                                    className="btn-primary mt-3" 
+                                                                    style={{ width: '100%', textDecoration: 'none', display: 'block', textAlign: 'center' }}
+                                                                >
+                                                                    Start Contest
+                                                                </Link>
+                                                            ) : isUpcoming ? (
+                                                                <button 
+                                                                    className="btn-secondary mt-3" 
+                                                                    style={{ width: '100%' }}
+                                                                    disabled
+                                                                >
+                                                                    Starts Soon
+                                                                </button>
+                                                            ) : (
+                                                                <Link 
+                                                                    to={`/contest/${contest._id}/result`}
+                                                                    className="btn-secondary mt-3" 
+                                                                    style={{ width: '100%', textDecoration: 'none', display: 'block', textAlign: 'center' }}
+                                                                >
+                                                                    View Leaderboard
+                                                                </Link>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

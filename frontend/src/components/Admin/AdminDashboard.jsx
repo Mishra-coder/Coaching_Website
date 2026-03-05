@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { questionsAPI, coursesAPI, enrollmentsAPI, demoBookingsAPI } from '../../services/api';
+import { questionsAPI, coursesAPI, enrollmentsAPI, demoBookingsAPI, contestsAPI } from '../../services/api';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -9,7 +9,8 @@ const AdminDashboard = () => {
         totalQuestions: 0,
         totalCourses: 0,
         totalEnrolled: 0,
-        totalDemoBookings: 0
+        totalDemoBookings: 0,
+        totalContests: 0
     });
     const [loading, setLoading] = useState(true);
 
@@ -25,17 +26,19 @@ const AdminDashboard = () => {
         const fetchStats = async () => {
             try {
                 setLoading(true);
-                const [questions, courses, enrollments, demoBookings] = await Promise.all([
+                const [questions, courses, enrollments, demoBookings, contests] = await Promise.all([
                     questionsAPI.getStats(),
                     coursesAPI.getStats(),
                     enrollmentsAPI.getStats(),
-                    demoBookingsAPI.getAll()
+                    demoBookingsAPI.getAll(),
+                    contestsAPI.getAll()
                 ]);
                 setStats({
                     totalQuestions: questions.count || 0,
                     totalCourses: courses.count || 0,
                     totalEnrolled: enrollments.count || 0,
-                    totalDemoBookings: demoBookings.count || 0
+                    totalDemoBookings: demoBookings.count || 0,
+                    totalContests: contests.contests?.length || 0
                 });
             } catch (error) {
             } finally {
@@ -83,6 +86,15 @@ const AdminDashboard = () => {
                     <p className="stat-label">Demo Bookings</p>
                     <Link to="/admin/demo-bookings" className="btn-primary">
                         Manage Demo Bookings
+                    </Link>
+                </div>
+                <div className="stat-card">
+                    <h1 className="stat-number" style={{ color: '#9c27b0' }}>
+                        {loading ? '...' : stats.totalContests}
+                    </h1>
+                    <p className="stat-label">Contests</p>
+                    <Link to="/admin/contests" className="btn-primary">
+                        Manage Contests
                     </Link>
                 </div>
             </div>

@@ -21,6 +21,9 @@ import StudentManager from './components/Admin/StudentManager';
 import EnrollmentManager from './components/Admin/EnrollmentManager';
 import DemoBooking from './components/DemoBooking';
 import DemoBookingManager from './components/Admin/DemoBookingManager';
+import ContestManager from './components/Admin/ContestManager';
+import ContestQuiz from './components/ContestQuiz';
+import ContestResult from './components/ContestResult';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
@@ -103,6 +106,24 @@ function App() {
                             <AdminRoute>
                                 <DemoBookingManager />
                             </AdminRoute>
+                        } />
+
+                        <Route path="/admin/contests" element={
+                            <AdminRoute>
+                                <ContestManager />
+                            </AdminRoute>
+                        } />
+
+                        <Route path="/contest/:id" element={
+                            <ProtectedRoute>
+                                <ContestQuiz />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/contest/:id/result" element={
+                            <ProtectedRoute>
+                                <ContestResult />
+                            </ProtectedRoute>
                         } />
                     </Routes>
                     <Footer />

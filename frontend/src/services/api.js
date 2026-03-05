@@ -188,4 +188,47 @@ export const demoBookingsAPI = {
     }
 };
 
+export const contestsAPI = {
+    getAll: async () => {
+        const res = await api.get('/contests');
+        return res.data;
+    },
+    getActive: async () => {
+        const res = await api.get('/contests/active');
+        return res.data;
+    },
+    getById: async (id) => {
+        const res = await api.get(`/contests/${id}`);
+        return res.data;
+    },
+    create: async (data) => {
+        const res = await api.post('/contests', data);
+        return res.data;
+    },
+    bulkUpload: async (fileData, contestDetails = {}) => {
+        const res = await api.post('/contests/bulk-upload', { fileData, ...contestDetails });
+        return res.data;
+    },
+    update: async (id, data) => {
+        const res = await api.put(`/contests/${id}`, data);
+        return res.data;
+    },
+    delete: async (id) => {
+        const res = await api.delete(`/contests/${id}`);
+        return res.data;
+    },
+    submit: async (id, answers) => {
+        const res = await api.post(`/contests/${id}/submit`, { answers });
+        return res.data;
+    },
+    getLeaderboard: async (id) => {
+        const res = await api.get(`/contests/${id}/leaderboard`);
+        return res.data;
+    },
+    getMyResult: async (id) => {
+        const res = await api.get(`/contests/${id}/my-result`);
+        return res.data;
+    }
+};
+
 export default api;

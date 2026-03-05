@@ -12,6 +12,7 @@ import googleAuthRoutes from './routes/google.js';
 import questionRoutes from './routes/questionRoutes.js';
 import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import demoBookingRoutes from './routes/demoBookingRoutes.js';
+import contestRoutes from './routes/contestRoutes.js';
 
 dotenv.config();
 connectDB();
@@ -60,6 +61,7 @@ app.use('/api/quiz', quizRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/demo-bookings', demoBookingRoutes);
+app.use('/api/contests', contestRoutes);
 
 app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'active', timestamp: new Date() });
