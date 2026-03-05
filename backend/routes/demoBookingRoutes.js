@@ -9,7 +9,7 @@ router.post('/', protect, async (req, res) => {
     try {
         const { name, phone, preferredDate, preferredTime } = req.body;
 
-        const demoBooking = await DemoBooking.create({
+        const newBooking = await DemoBooking.create({
             name,
             phone,
             preferredDate,
@@ -17,38 +17,39 @@ router.post('/', protect, async (req, res) => {
             user: req.user.id
         });
 
-        sendDemoBookingNotification(demoBooking).catch(err => {
-            console.error('Failed to send demo booking email:', err.message);
+        sendDemoBookingNotification(newBooking).catch(error => {
+            console.error('Failed to send demo booking email:', error.message);
         });
 
         res.status(201).json({ 
             success: true, 
             message: 'Demo booking submitted successfully', 
-            booking: demoBooking 
+            booking: newBooking 
         });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 
 router.get('/', protect, async (req, res) => {
     try {
-        if (req.user.role !== 'admin') {
+        const isAdmin = req.user.role === 'admin';
+        if (!isAdmin) {
             return res.status(403).json({ success: false, message: 'Admin access required' });
         }
 
-        const bookings = await DemoBooking.find()
+        const allBookings = await DemoBooking.find()
             .populate('user', 'name email phone')
             .sort({ createdAt: -1 })
             .lean();
 
         res.status(200).json({ 
             success: true, 
-            count: bookings.length, 
-            bookings 
+            count: allBookings.length, 
+            bookings: allBookings 
         });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 

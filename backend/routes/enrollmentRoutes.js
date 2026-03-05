@@ -14,159 +14,291 @@ router.post('/', protect, async (req, res) => {
         const { courseId, ...enrollmentData } = req.body;
 
         if (courseId) {
-            const course = await Course.findById(courseId);
-            if (!course) return res.status(404).json({ success: false, message: 'Course not found' });
+            const selectedCourse = await Course.findById(courseId);
+            if (!selectedCourse) {
+                return res.status(404).json({ 
+                    success: false, 
+                    message: 'Course not found' 
+                });
+            }
         }
 
-        const enrollment = await Enrollment.create({
+        const newEnrollment = await Enrollment.create({
             user: req.user.id,
             course: courseId,
             ...enrollmentData
         });
 
-        await User.findByIdAndUpdate(req.user.id, { $push: { enrollments: enrollment._id } });
-        await enrollment.populate('course');
-
-        const user = await User.findById(req.user.id);
+        await User.findByIdAndUpdate(
+            req.user.id, 
+            { $push: { enrollments: newEnrollment._id } }
+        );
         
-        sendEnrollmentConfirmation(user, enrollment).catch(err => {
-            console.error('Failed to send enrollment email:', err.message);
+        await newEnrollment.populate('course');
+
+        const currentUser = await User.findById(req.user.id);
+        
+        sendEnrollmentConfirmation(currentUser, newEnrollment).catch(error => {
+            console.error('Failed to send enrollment email:', error.message);
         });
 
-        addEnrollmentToSheet(enrollment, user).catch(err => {
-            console.error('Failed to add enrollment to Google Sheet:', err.message);
+        addEnrollmentToSheet(newEnrollment, currentUser).catch(error => {
+            console.error('Failed to add enrollment to Google Sheet:', error.message);
         });
 
-        res.status(201).json({ success: true, message: 'Enrollment submitted', enrollment });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        res.status(201).json({ 
+            success: true, 
+            message: 'Enrollment submitted', 
+            enrollment: newEnrollment 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.put('/:id', protect, async (req, res) => {
     try {
-        const enrollment = await Enrollment.findById(req.params.id);
-        if (!enrollment) return res.status(404).json({ success: false, message: 'Not found' });
-
-        if (enrollment.user.toString() !== req.user.id) {
-            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        const enrollmentId = req.params.id;
+        const existingEnrollment = await Enrollment.findById(enrollmentId);
+        
+        if (!existingEnrollment) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Enrollment not found' 
+            });
         }
 
-        const data = { ...req.body, status: 'pending', adminRemarks: '' };
-        const updated = await Enrollment.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true });
+        const isOwner = existingEnrollment.user.toString() === req.user.id;
+        if (!isOwner) {
+            return res.status(401).json({ 
+                success: false, 
+                message: 'Unauthorized access' 
+            });
+        }
 
-        const user = await User.findById(req.user.id);
+        const updatedData = { 
+            ...req.body, 
+            status: 'pending', 
+            adminRemarks: '' 
+        };
         
-        sendResubmitConfirmation(user, updated).catch(err => {
-            console.error('Failed to send resubmit email:', err.message);
+        const updatedEnrollment = await Enrollment.findByIdAndUpdate(
+            enrollmentId, 
+            updatedData, 
+            { new: true, runValidators: true }
+        );
+
+        const currentUser = await User.findById(req.user.id);
+        
+        sendResubmitConfirmation(currentUser, updatedEnrollment).catch(error => {
+            console.error('Failed to send resubmit email:', error.message);
         });
 
-        res.status(200).json({ success: true, message: 'Enrollment resubmitted', enrollment: updated });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        res.status(200).json({ 
+            success: true, 
+            message: 'Enrollment resubmitted', 
+            enrollment: updatedEnrollment 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.get('/', protect, async (req, res) => {
     try {
-        const list = await Enrollment.find()
+        const allEnrollments = await Enrollment.find()
             .select('studentName fatherName motherName dateOfBirth gender aadharNumber mobileNumber address status adminRemarks createdAt class board')
             .sort({ createdAt: -1 })
             .lean();
 
-        res.status(200).json({ success: true, count: list.length, enrollments: list });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        res.status(200).json({ 
+            success: true, 
+            count: allEnrollments.length, 
+            enrollments: allEnrollments 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.get('/stats/count', protect, async (req, res) => {
     try {
-        const count = await Enrollment.countDocuments();
-        res.status(200).json({ success: true, count });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        const totalEnrollments = await Enrollment.countDocuments();
+        
+        res.status(200).json({ 
+            success: true, 
+            count: totalEnrollments 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.get('/user/:userId', protect, async (req, res) => {
     try {
-        if (req.user.id !== req.params.userId && req.user.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Unauthorized' });
+        const requestedUserId = req.params.userId;
+        const isOwnProfile = req.user.id === requestedUserId;
+        const isAdmin = req.user.role === 'admin';
+        
+        if (!isOwnProfile && !isAdmin) {
+            return res.status(403).json({ 
+                success: false, 
+                message: 'Unauthorized access' 
+            });
         }
 
-        const list = await Enrollment.find({ user: req.params.userId })
+        const userEnrollments = await Enrollment.find({ user: requestedUserId })
             .populate('course')
             .sort({ createdAt: -1 });
 
-        res.status(200).json({ success: true, count: list.length, enrollments: list });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        res.status(200).json({ 
+            success: true, 
+            count: userEnrollments.length, 
+            enrollments: userEnrollments 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.get('/:id', protect, async (req, res) => {
     try {
-        const record = await Enrollment.findById(req.params.id)
+        const enrollmentId = req.params.id;
+        const enrollmentRecord = await Enrollment.findById(enrollmentId)
             .populate('user', 'name email phone')
             .populate('course');
 
-        if (!record) return res.status(404).json({ success: false, message: 'Not found' });
-
-        if (record.user._id.toString() !== req.user.id && req.user.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Unauthorized' });
+        if (!enrollmentRecord) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Enrollment not found' 
+            });
         }
 
-        res.status(200).json({ success: true, enrollment: record });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        const isOwner = enrollmentRecord.user._id.toString() === req.user.id;
+        const isAdmin = req.user.role === 'admin';
+        
+        if (!isOwner && !isAdmin) {
+            return res.status(403).json({ 
+                success: false, 
+                message: 'Unauthorized access' 
+            });
+        }
+
+        res.status(200).json({ 
+            success: true, 
+            enrollment: enrollmentRecord 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.put('/:id/status', protect, async (req, res) => {
     try {
         const { status, adminRemarks } = req.body;
-        const record = await Enrollment.findById(req.params.id).populate('user');
+        const enrollmentId = req.params.id;
+        
+        const enrollmentRecord = await Enrollment.findById(enrollmentId).populate('user');
 
-        if (!record) return res.status(404).json({ success: false, message: 'Not found' });
-
-        const oldStatus = record.status;
-        record.status = status;
-        if (adminRemarks !== undefined) record.adminRemarks = adminRemarks;
-
-        await record.save();
-
-        if (oldStatus !== status) {
-            sendStatusUpdateEmail(record.user, record, oldStatus, status).catch(err => {
-                console.error('Failed to send status update email:', err.message);
-            });
-            
-            updateEnrollmentStatusInSheet(record._id, status, adminRemarks).catch(err => {
-                console.error('Failed to update enrollment in Google Sheet:', err.message);
+        if (!enrollmentRecord) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Enrollment not found' 
             });
         }
 
-        res.status(200).json({ success: true, message: 'Status updated', enrollment: record });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        const previousStatus = enrollmentRecord.status;
+        enrollmentRecord.status = status;
+        
+        if (adminRemarks !== undefined) {
+            enrollmentRecord.adminRemarks = adminRemarks;
+        }
+
+        await enrollmentRecord.save();
+
+        const statusChanged = previousStatus !== status;
+        if (statusChanged) {
+            sendStatusUpdateEmail(
+                enrollmentRecord.user, 
+                enrollmentRecord, 
+                previousStatus, 
+                status
+            ).catch(error => {
+                console.error('Failed to send status update email:', error.message);
+            });
+            
+            updateEnrollmentStatusInSheet(
+                enrollmentRecord._id, 
+                status, 
+                adminRemarks
+            ).catch(error => {
+                console.error('Failed to update enrollment in Google Sheet:', error.message);
+            });
+        }
+
+        res.status(200).json({ 
+            success: true, 
+            message: 'Status updated', 
+            enrollment: enrollmentRecord 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.delete('/:id', protect, async (req, res) => {
     try {
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Only admins can delete enrollments' });
+        const isAdmin = req.user.role === 'admin';
+        if (!isAdmin) {
+            return res.status(403).json({ 
+                success: false, 
+                message: 'Only admins can delete enrollments' 
+            });
         }
 
-        const enrollment = await Enrollment.findById(req.params.id);
-        if (!enrollment) {
-            return res.status(404).json({ success: false, message: 'Enrollment not found' });
+        const enrollmentId = req.params.id;
+        const enrollmentToDelete = await Enrollment.findById(enrollmentId);
+        
+        if (!enrollmentToDelete) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Enrollment not found' 
+            });
         }
 
-        await Enrollment.findByIdAndDelete(req.params.id);
-        res.status(200).json({ success: true, message: 'Enrollment deleted successfully' });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        await Enrollment.findByIdAndDelete(enrollmentId);
+        
+        res.status(200).json({ 
+            success: true, 
+            message: 'Enrollment deleted successfully' 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 

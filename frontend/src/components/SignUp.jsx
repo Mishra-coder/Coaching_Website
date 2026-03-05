@@ -30,24 +30,30 @@ const SignUp = () => {
         e.preventDefault();
         setError('');
 
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
-        if (!emailRegex.test(formData.email)) {
+        const validEmailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+        const isValidEmail = validEmailPattern.test(formData.email);
+        
+        if (!isValidEmail) {
             setError('Please enter a valid email address with proper domain (.com, .in, .org, etc.)');
             return;
         }
 
-        if (formData.password.length < 8) {
+        const minimumPasswordLength = 8;
+        if (formData.password.length < minimumPasswordLength) {
             setError('Password must be at least 8 characters long');
             return;
         }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-        if (!passwordRegex.test(formData.password)) {
+        const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+        const isStrongPassword = strongPasswordPattern.test(formData.password);
+        
+        if (!isStrongPassword) {
             setError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
             return;
         }
 
-        if (formData.password !== formData.confirmPassword) {
+        const passwordsMatch = formData.password === formData.confirmPassword;
+        if (!passwordsMatch) {
             setError('Passwords do not match');
             return;
         }
@@ -55,20 +61,22 @@ const SignUp = () => {
         setLoading(true);
 
         try {
-            if (role === 'admin') {
-                const response = await authAPI.adminRegister({
+            const isAdminSignup = role === 'admin';
+            
+            if (isAdminSignup) {
+                const adminData = {
                     email: formData.email,
                     password: formData.password,
                     secretKey: formData.secretKey
-                });
+                };
+                
+                const response = await authAPI.adminRegister(adminData);
 
                 if (response.success) {
                     setAuth(response.user, response.token);
-                    if (response.user.role === 'admin') {
-                        navigate('/admin');
-                    } else {
-                        navigate('/');
-                    }
+                    
+                    const redirectPath = response.user.role === 'admin' ? '/admin' : '/';
+                    navigate(redirectPath);
                 } else {
                     setError(response.message || 'SignUp failed');
                 }
@@ -77,17 +85,15 @@ const SignUp = () => {
                 const result = await register(userData);
 
                 if (result.success) {
-                    if (result.user.role === 'admin') {
-                        navigate('/admin');
-                    } else {
-                        navigate('/');
-                    }
+                    const redirectPath = result.user.role === 'admin' ? '/admin' : '/';
+                    navigate(redirectPath);
                 } else {
                     setError(result.message);
                 }
             }
-        } catch (err) {
-            setError(err.response?.data?.message || 'SignUp failed. Please try again.');
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || 'SignUp failed. Please try again.';
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }

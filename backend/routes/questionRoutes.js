@@ -8,24 +8,36 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const { class: classLevel, chapter } = req.query;
-        let query = { isActive: true };
-        if (classLevel) query.class = classLevel;
-        if (chapter) query.chapter = chapter.trim();
+        let searchQuery = { isActive: true };
+        
+        if (classLevel) {
+            searchQuery.class = classLevel;
+        }
+        if (chapter) {
+            searchQuery.chapter = chapter.trim();
+        }
 
-        const questions = await Question.find(query);
+        const foundQuestions = await Question.find(searchQuery);
 
-        const shuffledQuestions = questions.map(q => {
-            const qObj = q.toObject();
-            if (qObj.options && Array.isArray(qObj.options)) {
-                for (let i = qObj.options.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [qObj.options[i], qObj.options[j]] = [qObj.options[j], qObj.options[i]];
+        const shuffledQuestions = foundQuestions.map(question => {
+            const questionObject = question.toObject();
+            
+            if (questionObject.options && Array.isArray(questionObject.options)) {
+                for (let i = questionObject.options.length - 1; i > 0; i--) {
+                    const randomIndex = Math.floor(Math.random() * (i + 1));
+                    [questionObject.options[i], questionObject.options[randomIndex]] = 
+                    [questionObject.options[randomIndex], questionObject.options[i]];
                 }
             }
-            return qObj;
+            
+            return questionObject;
         });
 
-        res.status(200).json({ success: true, count: shuffledQuestions.length, questions: shuffledQuestions });
+        res.status(200).json({ 
+            success: true, 
+            count: shuffledQuestions.length, 
+            questions: shuffledQuestions 
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

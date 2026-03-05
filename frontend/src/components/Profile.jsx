@@ -36,7 +36,7 @@ const Profile = () => {
             ]);
             setMyCourses(enrollmentData.enrollments);
             setContests(contestData.contests || []);
-        } catch (err) {
+        } catch (error) {
         } finally {
             setIsFetching(false);
         }
@@ -45,13 +45,13 @@ const Profile = () => {
     const onProfileUpdate = async (e) => {
         e.preventDefault();
         try {
-            const res = await authAPI.updateProfile(profileData);
-            if (res.success) {
-                updateUser(res.user);
+            const updateResponse = await authAPI.updateProfile(profileData);
+            if (updateResponse.success) {
+                updateUser(updateResponse.user);
             }
             setIsEditing(false);
-        } catch (err) {
-            console.error('Update failed:', err);
+        } catch (error) {
+            console.error('Update failed:', error);
         }
     };
 

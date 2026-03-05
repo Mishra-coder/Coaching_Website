@@ -11,29 +11,33 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-async function sendEmail(to, subject, html) {
+async function sendEmail(recipientEmail, emailSubject, emailHtml) {
     try {
-        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+        const emailConfigured = process.env.EMAIL_USER && process.env.EMAIL_PASSWORD;
+        if (!emailConfigured) {
             console.log('Email credentials not configured');
             return { success: false, error: 'Email not configured' };
         }
 
         const mailOptions = {
             from: `"Success Mantra Institute" <${process.env.EMAIL_USER}>`,
-            to: to,
-            subject: subject,
-            html: html
+            to: recipientEmail,
+            subject: emailSubject,
+            html: emailHtml
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Resubmit email sent successfully to:', to, '- Message ID:', info.messageId);
-        return { success: true, messageId: info.messageId };
+        const emailInfo = await transporter.sendMail(mailOptions);
+        console.log('Resubmit email sent successfully to:', recipientEmail, '- Message ID:', emailInfo.messageId);
+        return { success: true, messageId: emailInfo.messageId };
     } catch (error) {
-        console.error('Resubmit email send failed to:', to);
+        console.error('Resubmit email send failed to:', recipientEmail);
         console.error('Error details:', error.message);
-        if (error.code === 'EAUTH') {
+        
+        const isAuthError = error.code === 'EAUTH';
+        if (isAuthError) {
             console.error('Authentication failed - Check EMAIL_USER and EMAIL_PASSWORD in .env');
         }
+        
         return { success: false, error: error.message };
     }
 }

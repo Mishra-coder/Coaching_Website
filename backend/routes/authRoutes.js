@@ -17,8 +17,8 @@ router.post('/register', async (req, res) => {
         const { name, email, password, phone } = req.body;
         console.log('Registration attempt:', { name, email, phone });
 
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
-        if (!emailRegex.test(email)) {
+        const validEmailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+        if (!validEmailPattern.test(email)) {
             return res.status(400).json({ 
                 success: false, 
                 message: 'Please enter a valid email address with proper domain (.com, .in, .org, etc.)' 
@@ -32,36 +32,55 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-        if (!passwordRegex.test(password)) {
+        const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+        if (!strongPasswordPattern.test(password)) {
             return res.status(400).json({ 
                 success: false, 
                 message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number' 
             });
         }
 
-        if (await User.findOne({ email })) {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
             console.log('Registration failed: Email already exists', email);
-            return res.status(400).json({ success: false, message: 'Email already registered' });
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Email already registered' 
+            });
         }
 
-        const user = await User.create({ name, email, password, phone });
-        console.log('User created successfully:', user._id);
-        
-        addUserToSheet(user).catch(err => {
-            console.error('Failed to add user to Google Sheet:', err.message);
+        const newUser = await User.create({ 
+            name, 
+            email, 
+            password, 
+            phone 
         });
         
-        const token = signToken(user._id);
+        console.log('User created successfully:', newUser._id);
+        
+        addUserToSheet(newUser).catch(error => {
+            console.error('Failed to add user to Google Sheet:', error.message);
+        });
+        
+        const authToken = signToken(newUser._id);
 
         res.status(201).json({
             success: true,
-            token,
-            user: { id: user._id, name: user.name, email: user.email, phone: user.phone, role: user.role }
+            token: authToken,
+            user: { 
+                id: newUser._id, 
+                name: newUser.name, 
+                email: newUser.email, 
+                phone: newUser.phone, 
+                role: newUser.role 
+            }
         });
-    } catch (err) {
-        console.error('Registration error:', err);
-        res.status(500).json({ success: false, message: err.message });
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
@@ -69,8 +88,8 @@ router.post('/admin-register', async (req, res) => {
     try {
         const { name, email, password, secretKey } = req.body;
 
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
-        if (!emailRegex.test(email)) {
+        const validEmailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+        if (!validEmailPattern.test(email)) {
             return res.status(400).json({ 
                 success: false, 
                 message: 'Please enter a valid email address with proper domain (.com, .in, .org, etc.)' 
@@ -84,38 +103,55 @@ router.post('/admin-register', async (req, res) => {
             });
         }
 
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-        if (!passwordRegex.test(password)) {
+        const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+        if (!strongPasswordPattern.test(password)) {
             return res.status(400).json({ 
                 success: false, 
                 message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number' 
             });
         }
 
-        if (secretKey !== 'admin123') {
-            return res.status(401).json({ success: false, message: 'Invalid admin secret key' });
+        const correctSecretKey = 'admin123';
+        if (secretKey !== correctSecretKey) {
+            return res.status(401).json({ 
+                success: false, 
+                message: 'Invalid admin secret key' 
+            });
         }
 
-        if (await User.findOne({ email })) {
-            return res.status(400).json({ success: false, message: 'Email already registered' });
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Email already registered' 
+            });
         }
 
-        const user = await User.create({
+        const adminUser = await User.create({
             name: name || 'Admin',
-            email,
-            password,
+            email: email,
+            password: password,
             role: 'admin',
             phone: 'N/A'
         });
-        const token = signToken(user._id);
+        
+        const authToken = signToken(adminUser._id);
 
         res.status(201).json({
             success: true,
-            token,
-            user: { id: user._id, name: user.name, email: user.email, role: user.role }
+            token: authToken,
+            user: { 
+                id: adminUser._id, 
+                name: adminUser.name, 
+                email: adminUser.email, 
+                role: adminUser.role 
+            }
         });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
@@ -124,16 +160,31 @@ router.post('/login', async (req, res) => {
         const { email, password, secretKey } = req.body;
 
         if (!email || !password) {
-            return res.status(400).json({ success: false, message: 'Please provide email and password' });
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Please provide email and password' 
+            });
         }
 
         const user = await User.findOne({ email }).select('+password');
 
-        if (!user || !(await user.comparePassword(password))) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+        if (!user) {
+            return res.status(401).json({ 
+                success: false, 
+                message: 'Invalid credentials' 
+            });
         }
 
-        if (secretKey === 'admin123') {
+        const isPasswordCorrect = await user.comparePassword(password);
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ 
+                success: false, 
+                message: 'Invalid credentials' 
+            });
+        }
+
+        const correctSecretKey = 'admin123';
+        if (secretKey === correctSecretKey) {
             if (user.role !== 'admin') {
                 user.role = 'admin';
                 await user.save();
@@ -145,46 +196,86 @@ router.post('/login', async (req, res) => {
             }
         }
 
-        const token = signToken(user._id);
+        const authToken = signToken(user._id);
 
         res.status(200).json({
             success: true,
-            token,
-            user: { id: user._id, name: user.name, email: user.email, phone: user.phone, role: user.role }
+            token: authToken,
+            user: { 
+                id: user._id, 
+                name: user.name, 
+                email: user.email, 
+                phone: user.phone, 
+                role: user.role 
+            }
         });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.get('/me', protect, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).populate('enrollments');
-        res.status(200).json({ success: true, user });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        const currentUser = await User.findById(req.user.id).populate('enrollments');
+        
+        res.status(200).json({ 
+            success: true, 
+            user: currentUser 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.put('/profile', protect, async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(
+        const updatedFields = {
+            name: req.body.name,
+            phone: req.body.phone,
+            address: req.body.address
+        };
+
+        const updatedUser = await User.findByIdAndUpdate(
             req.user.id,
-            { $set: { name: req.body.name, phone: req.body.phone, address: req.body.address } },
+            { $set: updatedFields },
             { new: true, runValidators: true }
         );
-        res.status(200).json({ success: true, message: 'Profile updated', user });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        
+        res.status(200).json({ 
+            success: true, 
+            message: 'Profile updated', 
+            user: updatedUser 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
 router.get('/all-students', protect, authorize('admin'), async (req, res) => {
     try {
-        const students = await User.find({ role: 'student' }).select('-password').sort({ createdAt: -1 });
-        res.status(200).json({ success: true, count: students.length, students });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        const allStudents = await User.find({ role: 'student' })
+            .select('-password')
+            .sort({ createdAt: -1 });
+        
+        res.status(200).json({ 
+            success: true, 
+            count: allStudents.length, 
+            students: allStudents 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 

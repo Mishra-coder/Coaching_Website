@@ -33,201 +33,201 @@ api.interceptors.response.use(
 
 export const authAPI = {
     register: async (userData) => {
-        const res = await api.post('/auth/register', userData);
-        return res.data;
+        const response = await api.post('/auth/register', userData);
+        return response.data;
     },
     adminRegister: async (adminData) => {
-        const res = await api.post('/auth/admin-register', adminData);
-        return res.data;
+        const response = await api.post('/auth/admin-register', adminData);
+        return response.data;
     },
     login: async (credentials) => {
-        const res = await api.post('/auth/login', credentials);
-        return res.data;
+        const response = await api.post('/auth/login', credentials);
+        return response.data;
     },
     getMe: async () => {
-        const res = await api.get('/auth/me');
-        return res.data;
+        const response = await api.get('/auth/me');
+        return response.data;
     },
     updateProfile: async (userData) => {
-        const res = await api.put('/auth/profile', userData);
-        return res.data;
+        const response = await api.put('/auth/profile', userData);
+        return response.data;
     },
     googleLogin: async (accessToken, isAdmin = false) => {
-        const res = await api.post('/auth/google/token', { access_token: accessToken, isAdmin });
-        return res.data;
+        const response = await api.post('/auth/google/token', { access_token: accessToken, isAdmin });
+        return response.data;
     },
     getAllStudents: async () => {
-        const res = await api.get('/auth/all-students');
-        return res.data;
+        const response = await api.get('/auth/all-students');
+        return response.data;
     }
 };
 
 export const leaderboardAPI = {
     getLeaderboard: async () => {
-        const res = await api.get('/leaderboard');
-        return res.data;
+        const response = await api.get('/leaderboard');
+        return response.data;
     }
 };
 
 export const quizAPI = {
     submit: async (resultData) => {
-        const res = await api.post('/quiz/submit', resultData);
-        return res.data;
+        const response = await api.post('/quiz/submit', resultData);
+        return response.data;
     },
     getHistory: async () => {
-        const res = await api.get('/quiz/history');
-        return res.data;
+        const response = await api.get('/quiz/history');
+        return response.data;
     }
 };
 
 export const questionsAPI = {
     getAll: async (filters = {}) => {
-        const res = await api.get('/questions', { params: filters });
-        return res.data;
+        const response = await api.get('/questions', { params: filters });
+        return response.data;
     },
     getStats: async () => {
-        const res = await api.get('/questions/stats');
-        return res.data;
+        const response = await api.get('/questions/stats');
+        return response.data;
     },
     create: async (data) => {
-        const res = await api.post('/questions', data);
-        return res.data;
+        const response = await api.post('/questions', data);
+        return response.data;
     },
     bulkUpload: async (fileData) => {
-        const res = await api.post('/questions/bulk-upload', { fileData });
-        return res.data;
+        const response = await api.post('/questions/bulk-upload', { fileData });
+        return response.data;
     },
     update: async (id, data) => {
-        const res = await api.put(`/questions/${id}`, data);
-        return res.data;
+        const response = await api.put(`/questions/${id}`, data);
+        return response.data;
     },
     delete: async (id) => {
-        const res = await api.delete(`/questions/${id}`);
-        return res.data;
+        const response = await api.delete(`/questions/${id}`);
+        return response.data;
     }
 };
 
 export const coursesAPI = {
     getAll: async (filters = {}) => {
-        const res = await api.get('/courses', { params: filters });
-        return res.data;
+        const response = await api.get('/courses', { params: filters });
+        return response.data;
     },
     getStats: async () => {
-        const res = await api.get('/courses/stats/count');
-        return res.data;
+        const response = await api.get('/courses/stats/count');
+        return response.data;
     },
     getById: async (id) => {
-        const res = await api.get(`/courses/${id}`);
-        return res.data;
+        const response = await api.get(`/courses/${id}`);
+        return response.data;
     },
     create: async (data) => {
-        const res = await api.post('/courses', data);
-        return res.data;
+        const response = await api.post('/courses', data);
+        return response.data;
     },
     update: async (id, data) => {
-        const res = await api.put(`/courses/${id}`, data);
-        return res.data;
+        const response = await api.put(`/courses/${id}`, data);
+        return response.data;
     },
     delete: async (id) => {
-        const res = await api.delete(`/courses/${id}`);
-        return res.data;
+        const response = await api.delete(`/courses/${id}`);
+        return response.data;
     }
 };
 
 export const enrollmentsAPI = {
     create: async (data) => {
-        const res = await api.post('/enrollments', data);
-        return res.data;
+        const response = await api.post('/enrollments', data);
+        return response.data;
     },
     getAll: async () => {
-        const res = await api.get('/enrollments');
-        return res.data;
+        const response = await api.get('/enrollments');
+        return response.data;
     },
     getStats: async () => {
-        const res = await api.get('/enrollments/stats/count');
-        return res.data;
+        const response = await api.get('/enrollments/stats/count');
+        return response.data;
     },
     getUserEnrollments: async (userId) => {
-        const res = await api.get(`/enrollments/user/${userId}`);
-        return res.data;
+        const response = await api.get(`/enrollments/user/${userId}`);
+        return response.data;
     },
     getById: async (id) => {
-        const res = await api.get(`/enrollments/${id}`);
-        return res.data;
+        const response = await api.get(`/enrollments/${id}`);
+        return response.data;
     },
     update: async (id, data) => {
-        const res = await api.put(`/enrollments/${id}`, data);
-        return res.data;
+        const response = await api.put(`/enrollments/${id}`, data);
+        return response.data;
     },
     updateStatus: async (id, statusData) => {
-        const res = await api.put(`/enrollments/${id}/status`, statusData);
-        return res.data;
+        const response = await api.put(`/enrollments/${id}/status`, statusData);
+        return response.data;
     },
     delete: async (id) => {
-        const res = await api.delete(`/enrollments/${id}`);
-        return res.data;
+        const response = await api.delete(`/enrollments/${id}`);
+        return response.data;
     }
 };
 
 export const demoBookingsAPI = {
     create: async (data) => {
-        const res = await api.post('/demo-bookings', data);
-        return res.data;
+        const response = await api.post('/demo-bookings', data);
+        return response.data;
     },
     getAll: async () => {
-        const res = await api.get('/demo-bookings');
-        return res.data;
+        const response = await api.get('/demo-bookings');
+        return response.data;
     },
     updateStatus: async (id, statusData) => {
-        const res = await api.put(`/demo-bookings/${id}/status`, statusData);
-        return res.data;
+        const response = await api.put(`/demo-bookings/${id}/status`, statusData);
+        return response.data;
     },
     delete: async (id) => {
-        const res = await api.delete(`/demo-bookings/${id}`);
-        return res.data;
+        const response = await api.delete(`/demo-bookings/${id}`);
+        return response.data;
     }
 };
 
 export const contestsAPI = {
     getAll: async () => {
-        const res = await api.get('/contests');
-        return res.data;
+        const response = await api.get('/contests');
+        return response.data;
     },
     getActive: async () => {
-        const res = await api.get('/contests/active');
-        return res.data;
+        const response = await api.get('/contests/active');
+        return response.data;
     },
     getById: async (id) => {
-        const res = await api.get(`/contests/${id}`);
-        return res.data;
+        const response = await api.get(`/contests/${id}`);
+        return response.data;
     },
     create: async (data) => {
-        const res = await api.post('/contests', data);
-        return res.data;
+        const response = await api.post('/contests', data);
+        return response.data;
     },
     bulkUpload: async (fileData, contestDetails = {}) => {
-        const res = await api.post('/contests/bulk-upload', { fileData, ...contestDetails });
-        return res.data;
+        const response = await api.post('/contests/bulk-upload', { fileData, ...contestDetails });
+        return response.data;
     },
     update: async (id, data) => {
-        const res = await api.put(`/contests/${id}`, data);
-        return res.data;
+        const response = await api.put(`/contests/${id}`, data);
+        return response.data;
     },
     delete: async (id) => {
-        const res = await api.delete(`/contests/${id}`);
-        return res.data;
+        const response = await api.delete(`/contests/${id}`);
+        return response.data;
     },
     submit: async (id, answers) => {
-        const res = await api.post(`/contests/${id}/submit`, { answers });
-        return res.data;
+        const response = await api.post(`/contests/${id}/submit`, { answers });
+        return response.data;
     },
     getLeaderboard: async (id) => {
-        const res = await api.get(`/contests/${id}/leaderboard`);
-        return res.data;
+        const response = await api.get(`/contests/${id}/leaderboard`);
+        return response.data;
     },
     getMyResult: async (id) => {
-        const res = await api.get(`/contests/${id}/my-result`);
-        return res.data;
+        const response = await api.get(`/contests/${id}/my-result`);
+        return response.data;
     }
 };
 

@@ -27,29 +27,30 @@ const Login = () => {
         e.preventDefault();
         setError('');
 
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
-        if (!emailRegex.test(formData.email)) {
+        const validEmailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+        const isValidEmail = validEmailPattern.test(formData.email);
+        
+        if (!isValidEmail) {
             setError('Please enter a valid email address with proper domain (.com, .in, .org, etc.)');
             return;
         }
 
-        if (formData.password.length < 8) {
+        const minimumPasswordLength = 8;
+        if (formData.password.length < minimumPasswordLength) {
             setError('Password must be at least 8 characters long');
             return;
         }
 
         setLoading(true);
 
-        const result = await login(formData);
+        const loginResult = await login(formData);
 
-        if (result.success) {
-            if (result.user.role === 'admin') {
-                navigate('/admin');
-            } else {
-                navigate('/');
-            }
+        if (loginResult.success) {
+            const isAdmin = loginResult.user.role === 'admin';
+            const redirectPath = isAdmin ? '/admin' : '/';
+            navigate(redirectPath);
         } else {
-            setError(result.message);
+            setError(loginResult.message);
             setLoading(false);
         }
     };

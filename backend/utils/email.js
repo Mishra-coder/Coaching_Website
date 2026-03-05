@@ -20,29 +20,33 @@ transporter.verify((error, success) => {
     }
 });
 
-async function sendEmail(to, subject, html) {
+async function sendEmail(recipientEmail, emailSubject, emailHtml) {
     try {
-        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+        const emailConfigured = process.env.EMAIL_USER && process.env.EMAIL_PASSWORD;
+        if (!emailConfigured) {
             console.log('Email credentials not configured');
             return { success: false, error: 'Email not configured' };
         }
 
         const mailOptions = {
             from: `"Success Mantra Institute" <${process.env.EMAIL_USER}>`,
-            to: to,
-            subject: subject,
-            html: html
+            to: recipientEmail,
+            subject: emailSubject,
+            html: emailHtml
         };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully to:', to, '- Message ID:', info.messageId);
-        return { success: true, messageId: info.messageId };
+        const emailInfo = await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully to:', recipientEmail, '- Message ID:', emailInfo.messageId);
+        return { success: true, messageId: emailInfo.messageId };
     } catch (error) {
-        console.error('Email send failed to:', to);
+        console.error('Email send failed to:', recipientEmail);
         console.error('Error details:', error.message);
-        if (error.code === 'EAUTH') {
+        
+        const isAuthError = error.code === 'EAUTH';
+        if (isAuthError) {
             console.error('Authentication failed - Check EMAIL_USER and EMAIL_PASSWORD in .env');
         }
+        
         return { success: false, error: error.message };
     }
 }
@@ -343,20 +347,23 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
 }
 
 export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStatus) {
-    let subject = '';
+    let emailSubject = '';
     let statusMessage = '';
     let statusColor = '';
     
-    if (newStatus === 'active') {
-        subject = 'Admission Approved - Success Mantra Institute';
+    const isApproved = newStatus === 'active';
+    const isCancelled = newStatus === 'cancelled';
+    
+    if (isApproved) {
+        emailSubject = 'Admission Approved - Success Mantra Institute';
         statusMessage = 'Congratulations! Your admission has been approved.';
         statusColor = '#28a745';
-    } else if (newStatus === 'cancelled') {
-        subject = 'Admission Status Update - Success Mantra Institute';
+    } else if (isCancelled) {
+        emailSubject = 'Admission Status Update - Success Mantra Institute';
         statusMessage = 'Your admission application requires attention.';
         statusColor = '#dc3545';
     } else {
-        subject = 'Admission Status Update - Success Mantra Institute';
+        emailSubject = 'Admission Status Update - Success Mantra Institute';
         statusMessage = 'Your admission application status has been updated.';
         statusColor = '#ffc107';
     }
@@ -472,7 +479,7 @@ export async function sendStatusUpdateEmail(user, enrollment, oldStatus, newStat
     </html>
     `;
     
-    await sendEmail(user.email, subject, html);
+    await sendEmail(user.email, emailSubject, html);
 };
 
 export async function sendDemoBookingNotification(booking) {

@@ -22,7 +22,8 @@ const Navbar = () => {
     }, []);
 
     useEffect(() => {
-        if (isAuthenticated() && user) {
+        const isUserLoggedIn = isAuthenticated() && user;
+        if (isUserLoggedIn) {
             updateXP();
         }
         window.addEventListener('quizCompleted', updateXP);
@@ -31,9 +32,9 @@ const Navbar = () => {
 
     const updateXP = async () => {
         try {
-            const data = await quizAPI.getHistory();
-            const total = data.history.reduce((acc, curr) => acc + curr.score, 0);
-            setXpBalance(total);
+            const quizData = await quizAPI.getHistory();
+            const totalXP = quizData.history.reduce((accumulator, current) => accumulator + current.score, 0);
+            setXpBalance(totalXP);
         } catch (error) {
         }
     };

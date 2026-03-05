@@ -8,34 +8,35 @@ const router = express.Router();
 
 router.get('/', protect, async (req, res) => {
     try {
-        const contests = await Contest.find().sort({ startTime: -1 });
-        res.status(200).json({ success: true, contests });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        const allContests = await Contest.find().sort({ startTime: -1 });
+        res.status(200).json({ success: true, contests: allContests });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 
 router.get('/active', protect, async (req, res) => {
     try {
-        const now = new Date();
-        const contests = await Contest.find({
-            startTime: { $lte: now },
+        const currentTime = new Date();
+        const scheduledContests = await Contest.find({
+            startTime: { $lte: currentTime },
             status: { $in: ['scheduled', 'active'] }
         }).sort({ startTime: -1 });
 
-        const activeContests = contests.map(contest => {
-            const endTime = new Date(contest.startTime.getTime() + contest.duration * 60000);
-            const isActive = now >= contest.startTime && now <= endTime;
+        const activeContestsList = scheduledContests.map(contest => {
+            const contestEndTime = new Date(contest.startTime.getTime() + contest.duration * 60000);
+            const isCurrentlyActive = currentTime >= contest.startTime && currentTime <= contestEndTime;
+            
             return {
                 ...contest.toObject(),
-                isActive,
-                endTime
+                isActive: isCurrentlyActive,
+                endTime: contestEndTime
             };
         });
 
-        res.status(200).json({ success: true, contests: activeContests });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+        res.status(200).json({ success: true, contests: activeContestsList });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 
@@ -222,51 +223,54 @@ router.post('/:id/submit', protect, async (req, res) => {
         const contestId = req.params.id;
         const userId = req.user._id;
 
-        const contest = await Contest.findById(contestId);
-        if (!contest) {
+        const selectedContest = await Contest.findById(contestId);
+        if (!selectedContest) {
             return res.status(404).json({ success: false, message: 'Contest not found' });
         }
 
-        const existingResult = await ContestResult.findOne({ contest: contestId, user: userId });
-        if (existingResult) {
+        const alreadySubmitted = await ContestResult.findOne({ contest: contestId, user: userId });
+        if (alreadySubmitted) {
             return res.status(400).json({ success: false, message: 'You have already submitted this contest' });
         }
 
-        let correctCount = 0;
-        const processedAnswers = answers.map((answer, index) => {
-            const question = contest.questions[index];
-            const isCorrect = question && answer.selectedAnswer === question.correctAnswer;
-            if (isCorrect) correctCount++;
+        let correctAnswersCount = 0;
+        const userAnswers = answers.map((answer, index) => {
+            const currentQuestion = selectedContest.questions[index];
+            const isAnswerCorrect = currentQuestion && answer.selectedAnswer === currentQuestion.correctAnswer;
+            
+            if (isAnswerCorrect) {
+                correctAnswersCount++;
+            }
             
             return {
                 questionIndex: index,
                 selectedAnswer: answer.selectedAnswer,
-                isCorrect
+                isCorrect: isAnswerCorrect
             };
         });
 
-        const xpEarned = correctCount * 3;
+        const xpPoints = correctAnswersCount * 3;
 
-        const result = await ContestResult.create({
+        const contestResult = await ContestResult.create({
             contest: contestId,
             user: userId,
-            answers: processedAnswers,
-            score: correctCount,
-            xpEarned,
-            totalQuestions: contest.questions.length
+            answers: userAnswers,
+            score: correctAnswersCount,
+            xpEarned: xpPoints,
+            totalQuestions: selectedContest.questions.length
         });
 
         res.status(201).json({ 
             success: true, 
             result: {
-                score: correctCount,
-                totalQuestions: contest.questions.length,
-                xpEarned,
-                answers: processedAnswers
+                score: correctAnswersCount,
+                totalQuestions: selectedContest.questions.length,
+                xpEarned: xpPoints,
+                answers: userAnswers
             }
         });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 

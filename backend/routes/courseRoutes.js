@@ -7,13 +7,21 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const { class: classLevel, medium } = req.query;
-        let query = { isActive: true };
+        let searchQuery = { isActive: true };
 
-        if (classLevel) query.class = parseInt(classLevel);
-        if (medium) query.medium = medium;
+        if (classLevel) {
+            searchQuery.class = parseInt(classLevel);
+        }
+        if (medium) {
+            searchQuery.medium = medium;
+        }
 
-        const courses = await Course.find(query).sort({ class: 1 });
-        res.status(200).json({ success: true, count: courses.length, courses });
+        const availableCourses = await Course.find(searchQuery).sort({ class: 1 });
+        res.status(200).json({ 
+            success: true, 
+            count: availableCourses.length, 
+            courses: availableCourses 
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
