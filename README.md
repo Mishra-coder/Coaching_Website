@@ -60,12 +60,14 @@ Success Mantra Institute is a comprehensive coaching platform designed for Class
 
 ### Core Features
 - **Unified Authentication** - Single login/signup pages for both Students and Admins with role selection
+- **Google Sheets Integration** - Automatic data backup to Google Sheets (optional)
 - **Admin Security** - Protected Admin registration and login with Secret Key (`admin123`)
 - **Email Notifications** - Automated confirmation and status update emails to students
 - **Course Catalog** - Foundation, Board, and Competitive exam courses with detailed information
 - **Online Enrollment** - Digital admission form with photo upload capability
+- **Contest System** - XP-based contests with leaderboards and time limits
 - **Interactive Quiz System** - Dynamic chapter-wise practice questions for Class 10 & 12
-- **Admin Panel** - Comprehensive dashboard for managing enrollments, students, courses, and quizzes
+- **Admin Panel** - Comprehensive dashboard for managing enrollments, students, courses, quizzes, and contests
 - **User Profile** - Personal dashboard with enrollment history and quiz performance
 - **Fully Responsive** - Seamless experience across all devices (mobile, tablet, desktop)
 
@@ -149,6 +151,32 @@ success-mantra-react/
 ```
 
 ## Recent Updates & Bug Fixes
+
+### Version 2.5.0 (March 6, 2026)
+**Google Sheets Integration & UI Updates**
+- **Google Sheets Auto-Sync**: Automatic data backup to Google Sheets
+  - User signups automatically added to "Users" sheet
+  - Enrollment submissions automatically added to "Enrollments" sheet
+  - Status updates automatically synced to Google Sheets
+  - Real-time data backup for easy viewing and analysis
+- **UI Consistency**: Renamed "Register" to "SignUp" across entire application
+  - Updated component names and file structure
+  - Changed routes from `/register` to `/signup`
+  - Maintained backward compatibility with old routes
+- **Email System Enhancement**: 
+  - Unified email logo (browser.png) across all emails
+  - Improved enrollment status update workflow
+  - Admin remarks now properly displayed in user profile and emails
+- **Admin Panel Improvements**:
+  - Fixed enrollment status update - now requires button click instead of auto-update
+  - Admin remarks field for providing feedback to students
+  - Better status management workflow
+
+**Google Sheets Setup**
+- Optional feature - can be enabled by configuring Google Cloud credentials
+- Provides real-time backup of user and enrollment data
+- Easy data export and analysis capabilities
+- See setup guide in project documentation
 
 ### Version 2.4.0 (March 4, 2026)
 **Performance Optimization & Bug Fixes**
@@ -267,6 +295,12 @@ FRONTEND_URL=http://localhost:5173
 # Email Configuration (Gmail SMTP)
 EMAIL_USER=your_gmail@gmail.com
 EMAIL_PASSWORD=your_gmail_app_password
+ADMIN_EMAIL=your_gmail@gmail.com
+
+# Google Sheets Integration (Optional)
+GOOGLE_SERVICE_ACCOUNT_EMAIL=
+GOOGLE_PRIVATE_KEY=
+GOOGLE_SPREADSHEET_ID=
 
 # Google OAuth Credentials
 GOOGLE_CLIENT_ID=your-google-client-id
