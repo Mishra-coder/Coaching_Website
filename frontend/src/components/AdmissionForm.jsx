@@ -166,6 +166,15 @@ const AdmissionForm = () => {
         }
     };
 
+    if (isSubmitting && isEditing) {
+        return (
+            <div className="loading-container">
+                <div className="loading-spinner"></div>
+                <p style={{ marginTop: '20px', color: '#64748b' }}>Loading form data...</p>
+            </div>
+        );
+    }
+
     return (
         <section className="admission-page">
             <div className="container" style={{ maxWidth: '900px' }}>

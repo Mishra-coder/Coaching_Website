@@ -1,262 +1,73 @@
-# Success Mantra Institute - Full-Stack Coaching WebSite
+# Success Mantra Institute - Coaching Website
 
-A modern, full-stack web application for Success Mantra coaching institute featuring student enrollment, quiz system, course management, and a beautiful responsive UI.
+A modern, full-stack web application for Success Mantra coaching institute featuring student enrollment, quiz system, contest management, and comprehensive admin panel.
 
-![Success Mantra](https://img.shields.io/badge/Status-Production%20Ready-success)
 ![React](https://img.shields.io/badge/React-18.2.0-blue)
-![Vite](https://img.shields.io/badge/Vite-4.4.5-646CFF)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-green)
-![Express](https://img.shields.io/badge/Express-4.18.2-000000)
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
-![Mongoose](https://img.shields.io/badge/Mongoose-8.0.3-880000)
 ![JWT](https://img.shields.io/badge/Auth-JWT-orange)
-![Passport](https://img.shields.io/badge/Auth-Passport-blue)
-![Razorpay](https://img.shields.io/badge/Payments-Razorpay-020425)
 
-ADMIN_SECRET_KEY=admin123
+## Features
 
-## About The Project
+### Student Features
+- **User Authentication** - Secure signup and login with JWT
+- **Course Catalog** - Browse Foundation, Board, and Competitive exam courses
+- **Online Enrollment** - Digital admission form with photo upload
+- **Interactive Quizzes** - Chapter-wise practice questions for Class 10 & 12
+- **Contest System** - Participate in timed contests with XP rewards and leaderboards
+- **Demo Booking** - Schedule free demo classes
+- **User Profile** - Track enrollments, quiz history, and contest performance
+- **Email Notifications** - Receive confirmation and status update emails
 
-Success Mantra Institute is a comprehensive coaching platform designed for Class 10th and 12th students. The platform provides:
-- **Interactive Quiz System** with board-level mathematics questions
-- **Online Enrollment** with photo upload capability
-- **Course Management** for Foundation, Board, and Competitive exam preparation
-- **User Authentication** with JWT-based security
-- **Responsive Design** optimized for all devices (mobile, tablet, desktop)
+### Admin Features
+- **Admin Dashboard** - Overview of all platform statistics
+- **Student Management** - View and manage all registered students
+- **Enrollment Management** - Review, approve, or reject admission forms with remarks
+- **Question Bank** - Add, edit, and manage quiz questions (supports bulk CSV/Excel upload)
+- **Contest Management** - Create and manage contests with bulk question upload
+- **Demo Booking Management** - Handle demo class requests
+- **Email System** - Automated notifications to students
+- **Google Sheets Integration** - Automatic data backup (optional)
+
+### Technical Features
+- **Responsive Design** - Works seamlessly on mobile, tablet, and desktop
+- **Real-time Updates** - Dynamic content loading
+- **Secure Authentication** - Password hashing and JWT tokens
+- **File Upload** - Photo upload for enrollments
+- **Email Integration** - Gmail SMTP for notifications
+- **Data Backup** - Optional Google Sheets auto-sync
 
 ## Tech Stack
 
 ### Frontend
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **React** | 18.2.0 | UI framework |
-| **React Router DOM** | 7.9.6 | Client-side routing |
-| **Vite** | 4.4.5 | Build tool & dev server |
-| **Axios** | 1.6.2 | HTTP client for API calls |
-| **FontAwesome** | 6.4.0 | Icons library |
-| **Context API** | Built-in | State management |
+- React 18.2.0
+- React Router DOM 7.9.6
+- Vite 4.4.5
+- Axios 1.6.2
+- FontAwesome 6.4.0
+- Custom CSS with modern design
 
 ### Backend
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Node.js** | - | Runtime environment |
-| **Express** | 4.18.2 | Web framework |
-| **MongoDB** | - | NoSQL database |
-| **Mongoose** | 8.0.3 | MongoDB ODM |
-| **JWT** | 9.0.2 | Authentication tokens |
-| **bcryptjs** | 2.4.3 | Password hashing |
-| **Multer** | 1.4.5 | File upload handling |
-| **CORS** | 2.8.5 | Cross-origin requests |
-| **Nodemon** | 3.0.2 | Development auto-reload |
+- Node.js with Express 4.18.2
+- MongoDB with Mongoose 8.0.3
+- JWT 9.0.2 for authentication
+- bcryptjs 2.4.3 for password hashing
+- Nodemailer 8.0.1 for emails
+- Multer for file uploads
+- XLSX for Excel file processing
+- Google Sheets API (optional)
 
-### Styling
-- **Custom CSS** with modern design patterns
-- **Glassmorphism** effects
-- **Gradient backgrounds**
-- **Smooth animations** and transitions
-- **Google Fonts** (Outfit family)
-
-## Features
-
-### Core Features
-- **Unified Authentication** - Single login/signup pages for both Students and Admins with role selection
-- **Google Sheets Integration** - Automatic data backup to Google Sheets (optional)
-- **Admin Security** - Protected Admin registration and login with Secret Key (`admin123`)
-- **Email Notifications** - Automated confirmation and status update emails to students
-- **Course Catalog** - Foundation, Board, and Competitive exam courses with detailed information
-- **Online Enrollment** - Digital admission form with photo upload capability
-- **Contest System** - XP-based contests with leaderboards and time limits
-- **Interactive Quiz System** - Dynamic chapter-wise practice questions for Class 10 & 12
-- **Admin Panel** - Comprehensive dashboard for managing enrollments, students, courses, quizzes, and contests
-- **User Profile** - Personal dashboard with enrollment history and quiz performance
-- **Fully Responsive** - Seamless experience across all devices (mobile, tablet, desktop)
-
-### UI/UX Features
-- Modern vibrant color scheme (Indigo & Amber)
-- Smooth page transitions and micro-animations
-- Touch-optimized for mobile devices
-- Glassmorphism card designs with depth
-- Interactive hover effects and visual feedback
-- Mobile-first responsive design approach
-- Accessibility-focused interface
-
-### Quiz Features
-- **Dynamic Question Management** - Admin can add, edit, and delete questions
-- Class 10 & 12 Mathematics questions organized by chapters
-- Real-time score calculation and instant feedback
-- Answer review with correct answer highlighting
-- XP rewards system for gamified learning
-- Progress tracking and quiz history
-- Chapter-wise question count display
-
-### Admin Panel Features
-- **Student Management** - View all registered students with detailed information
-- **Enrollment Management** - Review and manage student enrollments
-- **Course Management** - Add, edit, and manage course offerings
-- **Question Bank** - Create and manage quiz questions by class and chapter
-- **Dashboard Analytics** - Overview of platform statistics
-- Role-based access control with secure authentication
-
-
-## Project Structure
-
-```
-success-mantra-react/
-├── frontend/
-│   ├── src/
-│   │   ├── components/       # React components
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Hero.jsx
-│   │   │   ├── Quiz.jsx
-│   │   │   ├── Profile.jsx
-│   │   │   └── ...
-│   │   ├── context/          # React Context
-│   │   │   └── AuthContext.jsx
-│   │   ├── services/         # API services
-│   │   │   └── api.js
-│   │   ├── data/             # Static data
-│   │   │   └── quizData.js
-│   │   ├── assets/           # Images, logos
-│   │   ├── index.css         # Global styles
-│   │   ├── App.jsx           # Main app component
-│   │   └── main.jsx          # Entry point
-│   ├── index.html
-│   ├── vite.config.js
-│   └── package.json
-│
-├── backend/
-│   ├── config/
-│   │   └── db.js             # MongoDB connection
-│   ├── models/
-│   │   ├── User.js           # User schema
-│   │   ├── Course.js         # Course schema
-│   │   ├── Enrollment.js     # Enrollment schema
-│   │   └── QuizResult.js     # Quiz result schema
-│   ├── routes/
-│   │   ├── authRoutes.js     # Auth endpoints
-│   │   ├── courseRoutes.js   # Course endpoints
-│   │   ├── enrollmentRoutes.js
-│   │   └── quizRoutes.js     # Quiz endpoints
-│   ├── middleware/
-│   │   └── auth.js           # JWT verification
-│   ├── scripts/
-│   │   └── seedCourses.js    # Database seeding
-│   ├── server.js             # Express server
-│   ├── .env                  # Environment variables
-│   └── package.json
-│
-├── start-backend.sh          # Backend startup script
-├── start-frontend.sh         # Frontend startup script
-└── README.md
-```
-
-## Recent Updates & Bug Fixes
-
-### Version 2.5.0 (March 6, 2026)
-**Google Sheets Integration & UI Updates**
-- **Google Sheets Auto-Sync**: Automatic data backup to Google Sheets
-  - User signups automatically added to "Users" sheet
-  - Enrollment submissions automatically added to "Enrollments" sheet
-  - Status updates automatically synced to Google Sheets
-  - Real-time data backup for easy viewing and analysis
-- **UI Consistency**: Renamed "Register" to "SignUp" across entire application
-  - Updated component names and file structure
-  - Changed routes from `/register` to `/signup`
-  - Maintained backward compatibility with old routes
-- **Email System Enhancement**: 
-  - Unified email logo (browser.png) across all emails
-  - Improved enrollment status update workflow
-  - Admin remarks now properly displayed in user profile and emails
-- **Admin Panel Improvements**:
-  - Fixed enrollment status update - now requires button click instead of auto-update
-  - Admin remarks field for providing feedback to students
-  - Better status management workflow
-
-**Google Sheets Setup**
-- Optional feature - can be enabled by configuring Google Cloud credentials
-- Provides real-time backup of user and enrollment data
-- Easy data export and analysis capabilities
-- See setup guide in project documentation
-
-### Version 2.4.0 (March 4, 2026)
-**Performance Optimization & Bug Fixes**
-- Fixed backend constantly restarting issue by adding nodemon.json configuration
-- Fixed form submission hanging with blank page - now shows success message and redirects
-- Improved email error handling - emails no longer block form submission
-- Added email transporter verification on startup
-- Better error logging for email authentication failures
-- Form submission now works even if email fails to send
-- Added 1.5 second delay before redirect to show success message
-
-**Email System Improvements**
-- Non-blocking email sending - form submission completes immediately
-- Better error messages for email authentication failures
-- Email verification runs on server startup
-- Detailed logging for troubleshooting email issues
-
-### Version 2.3.0 (March 4, 2026)
-**Email Notification System**
-- Added automated email notifications for admission form submissions
-- Students receive confirmation email with application details and next steps
-- Status update emails sent when admin approves or rejects applications
-- Professional HTML email templates with Success Mantra branding
-- Gmail SMTP integration using Nodemailer
-- Email includes application ID, student details, and status updates
-
-**Testimonials Update**
-- Added new student testimonial (Anuj Kumar)
-- Removed outdated testimonial
-- Updated admission year to 2026-27
-
-**Code Quality Improvements**
-- Refactored email utility for better readability
-- Improved code structure and maintainability
-- Removed unnecessary dependencies
-
-### Version 2.2.0 (February 4, 2026)
-**Strict Project Refactoring & Cleanup**
-- **Deep Code Optimization**: Removed all unused variables, functions, and dead logic across frontend and backend.
-- **Zero Comment Policy**: Stripped every single comment (inline and block) from all project files for a clean look.
-- **Zero Log Policy**: Removed all `console.log` and debugging statements.
-- **CSS Architecture**: Consolidated all styles into a single, optimized `index.css` file.
-- **Performance Polish**: Deleted all redundant CSS files and unused components.
-- **Structure Cleanup**: Organized project files to be more beginner-friendly and maintainable.
-
-### Version 2.1.0 (January 2026)
-**Fixed Admin Login Issue**
-- Resolved authentication bug where login button would get stuck on "Logging in..."
-- Fixed `AuthContext.jsx` to properly return user object after successful login
-- Admin role verification now works correctly
-
-**Code Cleanup**
-- Removed unused files (`quizData.js`, test scripts)
-- Cleaned up unused imports (removed `quizAPI` from `StudentManager.jsx`)
-- Improved code organization and maintainability
-
-**Authentication Improvements**
-- Fixed admin account creation to support local password authentication
-- Ensured signup and login work with same credentials
-- Added proper error handling for authentication failures
-
-### Version 2.0.0 (December 2025)
-- Unified authentication pages for students and admins
-- Added admin secret key security layer
-- Implemented dynamic quiz question management
-- Enhanced admin panel with comprehensive management features
-- Improved responsive design across all pages
-
-## Installation & Setup
-
+## Installation
 
 ### Prerequisites
 - Node.js (v16 or higher)
-- MongoDB (local installation or MongoDB Atlas account)
-- npm or yarn package manager
+- MongoDB (local or MongoDB Atlas)
+- Gmail account (for email notifications)
 
-### 1. Clone the Repository
+### 1. Clone Repository
 ```bash
 git clone <repository-url>
-cd success-mantra-react
+cd Coaching_Website
 ```
 
 ### 2. Install Dependencies
@@ -273,79 +84,45 @@ cd frontend
 npm install
 ```
 
-### 3. Configure Environment Variables
+### 3. Environment Configuration
 
-Create `backend/.env` file:
-
+Create `backend/.env`:
 ```env
-# Server Configuration
 PORT=5001
 NODE_ENV=development
 
-# MongoDB Connection
-MONGODB_URI=mongodb+srv://your-username:your-password@cluster.mongodb.net/success-mantra
+MONGODB_URI=mongodb://localhost:27017/success-mantra
 
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-change-this
+JWT_SECRET=your-secret-key-here
 JWT_EXPIRE=7d
 
-# Frontend URL (for CORS)
-FRONTEND_URL=http://localhost:5173
-
-# Email Configuration (Gmail SMTP)
 EMAIL_USER=your_gmail@gmail.com
 EMAIL_PASSWORD=your_gmail_app_password
 ADMIN_EMAIL=your_gmail@gmail.com
 
-# Google Sheets Integration (Optional)
-GOOGLE_SERVICE_ACCOUNT_EMAIL=
-GOOGLE_PRIVATE_KEY=
-GOOGLE_SPREADSHEET_ID=
-
-# Google OAuth Credentials
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_CALLBACK_URL=http://localhost:5001/api/auth/google/callback
-ADMIN_SECRET_KEY=admin123
 
-### 4. Setup Google Cloud Console
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project
-3. Enable "Google+ API" and "Google Identity Services"
-4. Configure OAuth Consent Screen
-5. Create OAuth 2.0 Client ID (Web Application)
-6. Add Authorized JavaScript Origins: `http://localhost:5173`
-7. Add Authorized Redirect URIs: `http://localhost:5001/api/auth/google/callback`
-8. Copy Client ID and Client Secret to `.env` files
-
-### 5. Setup Gmail for Email Notifications
-1. Go to Google Account Security: https://myaccount.google.com/security
-2. Enable 2-Step Verification
-3. Generate App Password:
-   - Go to App Passwords section
-   - Select "Mail" and "Other (Custom name)"
-   - Copy the 16-digit password
-4. Update EMAIL_USER and EMAIL_PASSWORD in backend/.env
-
-> [!IMPORTANT]
-> **Email Troubleshooting:**
-> If you see "App password removed" or authentication errors:
-> 1. Gmail may have revoked your app password for security reasons
-> 2. Generate a new app password from Google Account settings
-> 3. Update EMAIL_PASSWORD in backend/.env with the new 16-digit password
-> 4. Restart the backend server
-> 5. Check backend logs for "Email server is ready to send messages"
+# Optional: Google Sheets Integration
+GOOGLE_SERVICE_ACCOUNT_EMAIL=
+GOOGLE_PRIVATE_KEY=
+GOOGLE_SPREADSHEET_ID=
 ```
 
-### 4. Setup Database
+Create `frontend/.env.local`:
+```env
+VITE_API_URL=http://localhost:5001
+VITE_GOOGLE_CLIENT_ID=your-google-client-id
+```
 
-**Option A: MongoDB Atlas (Recommended)**
-1. Create account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Create a new cluster
-3. Get connection string
-4. Update `MONGODB_URI` in `.env`
+### 4. Setup Gmail for Emails
+1. Enable 2-Step Verification in Google Account
+2. Generate App Password: https://myaccount.google.com/apppasswords
+3. Use the 16-digit password in `EMAIL_PASSWORD`
 
-**Option B: Local MongoDB**
+### 5. Setup MongoDB
+**Option A: Local MongoDB**
 ```bash
 # macOS
 brew services start mongodb-community
@@ -354,174 +131,216 @@ brew services start mongodb-community
 sudo systemctl start mongod
 ```
 
-### 6. Seed Database with Sample Courses
-```bash
-cd backend
-npm run seed
-```
+**Option B: MongoDB Atlas**
+1. Create account at mongodb.com/cloud/atlas
+2. Create cluster and get connection string
+3. Update `MONGODB_URI` in `.env`
 
 ## Running the Application
 
-### Using Startup Scripts (Recommended)
-
 **Terminal 1 - Backend:**
-```bash
-./start-backend.sh
-```
-Backend runs on: `http://localhost:5001`
-
-**Terminal 2 - Frontend:**
-```bash
-./start-frontend.sh
-```
-Frontend runs on: `http://localhost:5173`
-
-### Manual Start
-
-**Backend:**
 ```bash
 cd backend
 npm run dev
 ```
+Backend runs on: http://localhost:5001
 
-**Frontend:**
+**Terminal 2 - Frontend:**
 ```bash
 cd frontend
 npm run dev
 ```
+Frontend runs on: http://localhost:5173
+
+## Default Admin Credentials
+
+**Admin Secret Key:** `admin123`
+
+Use this key when signing up or logging in as admin.
 
 ## API Endpoints
 
-### Authentication (`/api/auth`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/register` | SignUp new student | No |
-| POST | `/admin-register`| SignUp new admin (requires Secret Key) | No |
-| POST | `/login` | Login user (Admins require Secret Key) | No |
-| GET | `/me` | Get current user | Yes |
-| PUT | `/profile` | Update profile | Yes |
+### Authentication
+- `POST /api/auth/signup` - Student signup
+- `POST /api/auth/admin-register` - Admin signup (requires secret key)
+- `POST /api/auth/login` - Login (admin requires secret key)
+- `GET /api/auth/me` - Get current user
+- `PUT /api/auth/profile` - Update profile
 
-> [!IMPORTANT]
-> **Admin Secret Key:** `admin123`
-> This key is required for both Admin SignUp and Admin Login.
+### Courses
+- `GET /api/courses` - Get all courses
+- `GET /api/courses/:id` - Get single course
 
-### Courses (`/api/courses`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/` | Get all courses | No |
-| GET | `/:id` | Get single course | No |
+### Enrollments
+- `POST /api/enrollments` - Submit enrollment
+- `GET /api/enrollments/user/:userId` - Get user enrollments
+- `PUT /api/enrollments/:id/status` - Update enrollment status (admin)
 
-### Enrollments (`/api/enrollments`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/` | Create enrollment | Yes |
-| GET | `/user/:userId` | Get user enrollments | Yes |
-| GET | `/:id` | Get single enrollment | Yes |
+### Quizzes
+- `GET /api/quiz/questions` - Get quiz questions
+- `POST /api/quiz/submit` - Submit quiz result
+- `GET /api/quiz/history` - Get quiz history
 
-### Quiz (`/api/quiz`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/submit` | Submit quiz result | Yes |
-| GET | `/history` | Get quiz history | Yes |
+### Contests
+- `GET /api/contests` - Get all contests
+- `POST /api/contests` - Create contest (admin)
+- `POST /api/contests/:id/submit` - Submit contest
+- `GET /api/contests/:id/leaderboard` - Get leaderboard
 
-## Key Components
+### Demo Bookings
+- `POST /api/demo-bookings` - Book demo class
+- `GET /api/demo-bookings` - Get all bookings (admin)
 
-### Frontend Components
-- **Navbar** - Navigation with XP display
-- **Hero** - Landing page hero section
-- **Quiz** - Interactive quiz system
-- **Profile** - User dashboard
-- **Enrollment** - Admission form
-- **Courses** - Course catalog
-- **Faculty** - Faculty information
-- **About** - About page
-- **Footer** - Site footer
+## Project Structure
 
-### Backend Models
-- **User** - User authentication & profile
-- **Course** - Course information
-- **Enrollment** - Student enrollments
-- **QuizResult** - Quiz scores & history
-
-## Usage Guide
-
-### For Students
-1. **Register** - Create an account
-2. **Browse Courses** - Explore available courses
-3. **Enroll** - Fill admission form with photo
-4. **Take Quizzes** - Practice chapter-wise questions
-5. **Track Progress** - View XP and quiz history in profile
-
-### For Administrators
-- Access enrollment data via API
-- View all student enrollments
-- Monitor quiz performance
-
-## Security Features
-- Password hashing with bcrypt
-- JWT token-based authentication
-- Protected routes and API endpoints
-- CORS configuration
-- Input validation
-- Secure file upload handling
+```
+Coaching_Website/
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Admin/          # Admin panel components
+│   │   │   ├── SignUp.jsx      # Signup page
+│   │   │   ├── Login.jsx       # Login page
+│   │   │   ├── Home.jsx        # Landing page
+│   │   │   ├── Courses.jsx     # Course catalog
+│   │   │   ├── Enrollment.jsx  # Admission form
+│   │   │   ├── Quiz.jsx        # Quiz system
+│   │   │   ├── ContestQuiz.jsx # Contest page
+│   │   │   ├── Profile.jsx     # User profile
+│   │   │   └── ...
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx # Authentication state
+│   │   ├── services/
+│   │   │   └── api.js          # API calls
+│   │   ├── App.jsx
+│   │   └── index.css
+│   └── package.json
+│
+├── backend/
+│   ├── config/
+│   │   ├── db.js               # MongoDB connection
+│   │   └── googleAuth.js       # Google OAuth
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Course.js
+│   │   ├── Enrollment.js
+│   │   ├── Question.js
+│   │   ├── QuizResult.js
+│   │   ├── Contest.js
+│   │   ├── ContestResult.js
+│   │   └── DemoBooking.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── courseRoutes.js
+│   │   ├── enrollmentRoutes.js
+│   │   ├── questionRoutes.js
+│   │   ├── quizRoutes.js
+│   │   ├── contestRoutes.js
+│   │   └── demoBookingRoutes.js
+│   ├── middleware/
+│   │   └── auth.js             # JWT verification
+│   ├── utils/
+│   │   ├── email.js            # Email notifications
+│   │   ├── emailResubmit.js    # Resubmit emails
+│   │   └── googleSheets.js     # Google Sheets sync
+│   ├── server.js
+│   └── package.json
+│
+└── README.md
+```
 
 ## Database Schema
 
-### User Collection
+### User
 ```javascript
 {
   name: String,
   email: String (unique),
   password: String (hashed),
-  phone: String,
   role: String (student/admin),
-  enrollments: [ObjectId],
+  isVerified: Boolean,
   createdAt: Date
 }
 ```
 
-### Enrollment Collection
+### Enrollment
 ```javascript
 {
   user: ObjectId,
-  course: ObjectId,
   studentName: String,
   fatherName: String,
   motherName: String,
   dateOfBirth: { day, month, year },
   gender: String,
-  address: String,
   aadharNumber: String,
   mobileNumber: String,
+  address: String,
   photo: String (base64),
-  status: String,
-  enrollmentDate: Date
+  status: String (pending/active/cancelled),
+  adminRemarks: String,
+  createdAt: Date
 }
 ```
+
+### Contest
+```javascript
+{
+  title: String,
+  description: String,
+  questions: [ObjectId],
+FRONTEND_URL=http://localhost:3000
+  startTime: Date,
+  endTime: Date,
+  isActive: Boolean,
+  createdAt: Date
+}
+```
+
+## Optional: Google Sheets Integration
+
+Automatically backup user signups and enrollments to Google Sheets.
+
+### Setup Steps:
+1. Create Google Cloud project
+2. Enable Google Sheets API
+3. Create Service Account and download JSON key
+4. Create Google Sheet with "Users" and "Enrollments" tabs
+5. Share sheet with service account email
+6. Add credentials to `.env` file
+
+See `backend/GOOGLE_SHEETS_SETUP.md` for detailed instructions.
 
 ## Design System
 
 ### Colors
-- **Primary**: Vibrant Indigo (#4f46e5)
-- **Secondary**: Amber/Gold (#f59e0b)
-- **Accent**: Cyan (#06b6d4)
-- **Background**: Slate (#f8fafc)
+- Primary: Indigo (#4f46e5)
+- Secondary: Amber (#f59e0b)
+- Accent: Cyan (#06b6d4)
+- Background: Slate (#f8fafc)
 
 ### Typography
-- **Font Family**: Outfit (Google Fonts)
-- **Weights**: 300, 400, 500, 600, 700, 800
+- Font: Outfit (Google Fonts)
+- Weights: 300, 400, 500, 600, 700, 800
 
-## Contributing
-This is an educational project. Feel free to fork and modify for learning purposes.
+## Security Features
+- Password hashing with bcrypt
+- JWT token authentication
+- Protected routes
+- CORS configuration
+- Input validation
+- Secure file uploads
+- Admin secret key protection
+
+## Browser Support
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers
 
 ## License
 Educational purposes only.
 
-## Developer
-Developed as a full-stack coaching platform project.
-
 ---
 
 **Made with for Success Mantra Institute**
-
-**Happy Learning! **

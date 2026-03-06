@@ -1,17 +1,17 @@
 import React from 'react';
-import student1 from '../assets/testimonials/student1.png';
-import anujKumar from '../assets/testimonials/anuj_kumar.png';
-import student2 from '../assets/testimonials/student2.png';
-import student3 from '../assets/testimonials/student3.png';
+import supriya from '../assets/testimonials/supriyaAg.png';
+import anujKumar from '../assets/testimonials/anuj.png';
+import laxmi from '../assets/testimonials/Laxmi.png';
+import vinayak from '../assets/testimonials/Vinayak.png';
 
 const Testimonials = () => {
     const stories = [
         {
-            user: 'Rahul Sharma',
-            target: 'SSC CGL 2023',
-            achievement: 'AIR 45',
-            feedback: "Success Mantra's structured approach and regular mock tests were the key to my success. The faculty is incredibly supportive.",
-            avatar: student1
+            user: 'Supriya Agrahari',
+            target: 'Class 12th 2024',
+            achievement: '85%',
+            feedback: "The teachers at Success Mantra are amazing! They made difficult subjects easy to understand and helped me score excellent marks in my board exams.",
+            avatar: supriya
         },
         {
             user: 'Anuj Kumar',
@@ -21,18 +21,18 @@ const Testimonials = () => {
             avatar: anujKumar
         },
         {
-            user: 'Priya Patel',
-            target: 'IBPS PO',
-            achievement: 'Selected',
-            feedback: "I was weak in Maths, but Vikas Sir's unique teaching style made it my strongest subject. Highly recommended!",
-            avatar: student2
+            user: 'Laxmi Agrahari',
+            target: 'Class 10th 2024',
+            achievement: '89%',
+            feedback: "I was weak in Science, but the teachers here made it my strongest subject. The regular tests and doubt sessions really helped me improve.",
+            avatar: laxmi
         },
         {
-            user: 'Amit Kumar',
-            target: 'NDA',
-            achievement: 'Recommended',
-            feedback: "The discipline and competitive environment at Success Mantra helped me crack NDA in my first attempt.",
-            avatar: student3
+            user: 'Vinayak Agrahari',
+            target: 'Class 10th 2024',
+            achievement: '84%',
+            feedback: "The supportive environment and excellent teaching methods at Success Mantra helped me achieve great results in my board exams.",
+            avatar: vinayak
         }
     ];
 

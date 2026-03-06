@@ -1110,13 +1110,15 @@ footer {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .stat-card {
     text-align: center;
-    padding: 45px 30px;
+    padding: 50px 35px;
     border-radius: 30px;
     background: #ffffff;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
@@ -1126,6 +1128,7 @@ footer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 280px;
 }
 
 .stat-card:hover {
@@ -1134,29 +1137,29 @@ footer {
 }
 
 .stat-icon-box {
-    width: 70px;
-    height: 70px;
-    border-radius: 22px;
+    width: 85px;
+    height: 85px;
+    border-radius: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
-    margin-bottom: 25px;
+    font-size: 2.2rem;
+    margin-bottom: 28px;
     transition: all 0.3s ease;
 }
 
 .stat-number {
-    font-size: 2.8rem;
+    font-size: 3.2rem;
     font-weight: 850;
     color: #1e293b;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     letter-spacing: -1px;
 }
 
 .stat-label {
     color: #64748b;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.05rem;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -3204,34 +3207,6 @@ footer .footer-logo-img {
     font-weight: 700;
 }
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-}
-
-.stat-card {
-    background: #fff;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    text-align: center;
-    flex: 1;
-    min-width: 200px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.stat-number {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    font-weight: 800;
-}
-
-.stat-label {
-    color: #64748b;
-    margin-bottom: 20px;
-}
-
 .admin-manager-layout {
     display: grid;
     gap: 30px;
@@ -4085,6 +4060,39 @@ footer .footer-logo-img {
 
     .profile-card {
         margin-bottom: 20px !important;
+    }
+
+    .stat-card {
+        padding: 40px 25px !important;
+        min-height: auto !important;
+    }
+
+    .stat-icon-box {
+        width: 75px !important;
+        height: 75px !important;
+        font-size: 2rem !important;
+        margin-bottom: 20px !important;
+    }
+
+    .stat-number {
+        font-size: 2.8rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .stat-label {
+        font-size: 0.95rem !important;
+    }
+
+    .stats-section {
+        padding: 60px 0 !important;
+    }
+
+    .testimonial-card {
+        padding: 30px 25px !important;
+    }
+
+    .testimonial-grid {
+        gap: 20px !important;
     }
 }
 
