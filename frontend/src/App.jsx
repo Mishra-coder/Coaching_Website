@@ -24,6 +24,10 @@ import DemoBookingManager from './components/Admin/DemoBookingManager';
 import ContestManager from './components/Admin/ContestManager';
 import ContestQuiz from './components/ContestQuiz';
 import ContestResult from './components/ContestResult';
+import VideoManager from './components/Admin/VideoManager';
+import Videos from './components/Videos';
+import VideoPlayer from './components/VideoPlayer';
+import Contests from './components/Contests';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
@@ -64,6 +68,24 @@ function App() {
                         <Route path="/quiz" element={
                             <ProtectedRoute>
                                 <Quiz />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/contests" element={
+                            <ProtectedRoute>
+                                <Contests />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/videos" element={
+                            <ProtectedRoute>
+                                <Videos />
+                            </ProtectedRoute>
+                        } />
+
+                        <Route path="/video/:id" element={
+                            <ProtectedRoute>
+                                <VideoPlayer />
                             </ProtectedRoute>
                         } />
 
@@ -112,6 +134,12 @@ function App() {
                         <Route path="/admin/contests" element={
                             <AdminRoute>
                                 <ContestManager />
+                            </AdminRoute>
+                        } />
+
+                        <Route path="/admin/videos" element={
+                            <AdminRoute>
+                                <VideoManager />
                             </AdminRoute>
                         } />
 

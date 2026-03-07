@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
 
-const GoogleSignInButton = ({ mode = 'signin', isAdmin = false }) => {
+const GoogleSignInButton = ({ mode = 'signin', isAdmin = false, onError }) => {
     const navigate = useNavigate();
     const { setAuth } = useAuth();
 
@@ -20,14 +20,14 @@ const GoogleSignInButton = ({ mode = 'signin', isAdmin = false }) => {
                     }
                 }
                 else {
-                    alert('Login failed: ' + (data.message || 'Unknown error'));
+                    if (onError) onError('Login failed: ' + (data.message || 'Unknown error'));
                 }
             } catch (error) {
-                alert('Failed to authenticate with Google API. Check console for details.');
+                if (onError) onError('Failed to authenticate with Google API. Check console for details.');
             }
         },
         onError: (error) => {
-            alert('Failed to login with Google. Check console for details.');
+            if (onError) onError('Failed to login with Google. Check console for details.');
         },
     });
 

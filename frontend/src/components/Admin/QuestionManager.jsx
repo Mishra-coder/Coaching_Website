@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { questionsAPI } from '../../services/api';
 import ConfirmDialog from '../ConfirmDialog';
+import Toast from '../Toast';
 
 const CHAPTERS = {
     '10': [
@@ -44,6 +45,7 @@ const QuestionManager = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [showBulkUpload, setShowBulkUpload] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, id: null });
+    const [toast, setToast] = useState(null);
     const [currentQuestion, setCurrentQuestion] = useState({
         question: '',
         options: ['', '', '', ''],
@@ -63,8 +65,6 @@ const QuestionManager = () => {
             setFilteredQuestions(questions.filter(q => q.class === selectedClassFilter));
         }
     }, [selectedClassFilter, questions]);
-
-    const [statusMessage, setStatusMessage] = useState({ text: '', type: '' });
 
     const fetchQuestions = async () => {
         try {
@@ -94,11 +94,9 @@ const QuestionManager = () => {
         try {
             await questionsAPI.delete(id);
             fetchQuestions();
-            setStatusMessage({ text: 'Question deleted successfully!', type: 'success' });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+            setToast({ message: 'Question deleted successfully!', type: 'success' });
         } catch (error) {
-            setStatusMessage({ text: 'Error deleting question.', type: 'error' });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+            setToast({ message: 'Error deleting question.', type: 'error' });
         } finally {
             setDeleteDialog({ isOpen: false, id: null });
         }
@@ -113,13 +111,11 @@ const QuestionManager = () => {
         try {
             if (isEditing) {
                 await questionsAPI.update(currentQuestion._id, currentQuestion);
-                setStatusMessage({ text: 'Question updated successfully!', type: 'success' });
+                setToast({ message: 'Question updated successfully!', type: 'success' });
             } else {
                 await questionsAPI.create(currentQuestion);
-                setStatusMessage({ text: 'Question added successfully!', type: 'success' });
+                setToast({ message: 'Question added successfully!', type: 'success' });
             }
-
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
 
             setIsEditing(false);
             setCurrentQuestion({
@@ -131,8 +127,7 @@ const QuestionManager = () => {
             });
             fetchQuestions();
         } catch (error) {
-            setStatusMessage({ text: 'Error saving question. Please try again.', type: 'error' });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+            setToast({ message: 'Error saving question. Please try again.', type: 'error' });
         }
     };
 
@@ -147,21 +142,19 @@ const QuestionManager = () => {
         ];
 
         if (!validTypes.includes(file.type) && !file.name.match(/\.(xlsx|xls|csv)$/i)) {
-            setStatusMessage({ 
-                text: 'Invalid file type. Please upload .xlsx, .xls, or .csv file only.', 
+            setToast({ 
+                message: 'Invalid file type. Please upload .xlsx, .xls, or .csv file only.', 
                 type: 'error' 
             });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
             e.target.value = '';
             return;
         }
 
         if (file.size > 10 * 1024 * 1024) {
-            setStatusMessage({ 
-                text: 'File too large. Maximum size is 10MB.', 
+            setToast({ 
+                message: 'File too large. Maximum size is 10MB.', 
                 type: 'error' 
             });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
             e.target.value = '';
             return;
         }
@@ -169,53 +162,41 @@ const QuestionManager = () => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
-                setStatusMessage({ text: 'Processing file... Please wait.', type: 'info' });
+                setToast({ message: 'Processing file... Please wait.', type: 'info' });
                 const result = await questionsAPI.bulkUpload(event.target.result);
                 
                 if (result.errors > 0 && result.uploaded === 0) {
-                    let errorMsg = `Upload failed! ${result.errors} errors found:\n\n`;
-                    result.errorDetails.slice(0, 5).forEach(err => {
-                        errorMsg += `Row ${err.row}: ${err.message}\n`;
-                    });
-                    if (result.errors > 5) errorMsg += `\n...and ${result.errors - 5} more errors. Check console for details.`;
+                    let errorMsg = `Upload failed! ${result.errors} errors found. Check console for details.`;
                     console.error('All upload errors:', result.errorDetails);
-                    setStatusMessage({ text: errorMsg, type: 'error' });
+                    setToast({ message: errorMsg, type: 'error' });
                 } else if (result.errors > 0 && result.uploaded > 0) {
-                    let warnMsg = `Partially uploaded ${result.uploaded} questions. ${result.errors} rows skipped:\n\n`;
-                    result.errorDetails.slice(0, 3).forEach(err => {
-                        warnMsg += `Row ${err.row}: ${err.message}\n`;
-                    });
-                    if (result.errors > 3) warnMsg += `\n...and ${result.errors - 3} more. Check console for details.`;
+                    let warnMsg = `Partially uploaded ${result.uploaded} questions. ${result.errors} rows skipped. Check console for details.`;
                     console.warn('Upload warnings:', result.errorDetails);
-                    setStatusMessage({ text: warnMsg, type: 'warning' });
+                    setToast({ message: warnMsg, type: 'warning' });
                     fetchQuestions();
                 } else {
-                    setStatusMessage({ 
-                        text: `Success! Uploaded ${result.uploaded} questions successfully!`, 
+                    setToast({ 
+                        message: `Success! Uploaded ${result.uploaded} questions successfully!`, 
                         type: 'success' 
                     });
                     fetchQuestions();
                     setShowBulkUpload(false);
                 }
-                
-                setTimeout(() => setStatusMessage({ text: '', type: '' }), 10000);
             } catch (error) {
                 console.error('Upload error:', error);
                 const errorMsg = error.response?.data?.message || error.message || 'Upload failed. Please try again.';
-                setStatusMessage({ 
-                    text: `Upload failed: ${errorMsg}\n\nPlease check your file format and try again.`, 
+                setToast({ 
+                    message: `Upload failed: ${errorMsg}`, 
                     type: 'error' 
                 });
-                setTimeout(() => setStatusMessage({ text: '', type: '' }), 8000);
             }
         };
 
         reader.onerror = () => {
-            setStatusMessage({ 
-                text: 'Failed to read file. Please try again.', 
+            setToast({ 
+                message: 'Failed to read file. Please try again.', 
                 type: 'error' 
             });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
         };
 
         reader.readAsDataURL(file);
@@ -224,6 +205,14 @@ const QuestionManager = () => {
 
     return (
         <div className="admin-container">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="question-manager-header">
                 <h2 className="admin-header-title">Question Manager</h2>
                 <button 
@@ -234,12 +223,6 @@ const QuestionManager = () => {
                     {showBulkUpload ? 'Hide' : 'Bulk Upload'}
                 </button>
             </div>
-
-            {statusMessage.text && (
-                <div className={`status-message ${statusMessage.type === 'success' ? 'status-success' : statusMessage.type === 'info' ? 'status-info' : statusMessage.type === 'warning' ? 'status-warning' : 'status-error'}`}>
-                    <pre>{statusMessage.text}</pre>
-                </div>
-            )}
 
             {showBulkUpload && (
                 <div className="admin-card bulk-upload-card">

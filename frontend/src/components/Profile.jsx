@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { authAPI, enrollmentsAPI, contestsAPI } from '../services/api';
+import { authAPI, enrollmentsAPI } from '../services/api';
 import { Link } from 'react-router-dom';
+import Toast from './Toast';
 
 const Profile = () => {
     const { user, updateUser } = useAuth();
     const [view, setView] = useState('profile');
     const [myCourses, setMyCourses] = useState([]);
-    const [contests, setContests] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [selectedForm, setSelectedForm] = useState(null);
+    const [toast, setToast] = useState(null);
 
     const [profileData, setProfileData] = useState({
         name: '',
@@ -30,12 +31,8 @@ const Profile = () => {
     const loadData = async () => {
         try {
             setIsFetching(true);
-            const [enrollmentData, contestData] = await Promise.all([
-                enrollmentsAPI.getUserEnrollments(user.id),
-                contestsAPI.getActive()
-            ]);
+            const enrollmentData = await enrollmentsAPI.getUserEnrollments(user.id);
             setMyCourses(enrollmentData.enrollments);
-            setContests(contestData.contests || []);
         } catch (error) {
         } finally {
             setIsFetching(false);
@@ -48,17 +45,13 @@ const Profile = () => {
             const updateResponse = await authAPI.updateProfile(profileData);
             if (updateResponse.success) {
                 updateUser(updateResponse.user);
+                setToast({ message: 'Profile updated successfully!', type: 'success' });
             }
             setIsEditing(false);
         } catch (error) {
             console.error('Update failed:', error);
+            setToast({ message: 'Failed to update profile. Please try again.', type: 'error' });
         }
-    };
-
-    const nextTestDate = () => {
-        const date = new Date();
-        date.setDate(date.getDate() + (7 - date.getDay()) % 7);
-        return date.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     };
 
     if (isFetching) return (
@@ -69,6 +62,14 @@ const Profile = () => {
 
     return (
         <div className="profile-page">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="container">
                 <div className="row g-4">
                     <div className="col-lg-3">
@@ -95,18 +96,6 @@ const Profile = () => {
                                     onClick={() => setView('courses')}
                                 >
                                     <i className="fas fa-graduation-cap me-3" /> My Courses
-                                </button>
-                                <button
-                                    className={`profile-nav-item ${view === 'test' ? 'active' : ''}`}
-                                    onClick={() => setView('test')}
-                                >
-                                    <i className="fas fa-calendar-alt me-3" /> Schedule
-                                </button>
-                                <button
-                                    className={`profile-nav-item ${view === 'contests' ? 'active' : ''}`}
-                                    onClick={() => setView('contests')}
-                                >
-                                    <i className="fas fa-trophy me-3" /> Contests
                                 </button>
                             </div>
                         </div>
@@ -186,7 +175,7 @@ const Profile = () => {
 
                                                 {selectedForm.adminRemarks && (
                                                     <div className="form-alert" style={{ marginBottom: '20px' }}>
-                                                        <strong>Admin Feedback:</strong> {selectedForm.adminRemarks}
+                                                        <strong>Feedback:</strong> {selectedForm.adminRemarks}
                                                     </div>
                                                 )}
 
@@ -215,120 +204,6 @@ const Profile = () => {
                                                     </div>
                                                 )}
                                             </div>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {view === 'test' && (
-                                <div className="fade-in">
-                                    <h3>Weekly Contest</h3>
-                                    <div className="test-schedule-banner">
-                                        <h4 style={{ opacity: 0.9, marginBottom: '10px' }}>Next Sunday Contest</h4>
-                                        <h2 style={{ fontSize: '2.5rem', fontWeight: '800' }}>{nextTestDate()}</h2>
-                                    </div>
-                                    <div className="info-display-card" style={{ padding: 0, overflow: 'hidden' }}>
-                                        <div className="schedule-list-item">
-                                            <span>Maths</span>
-                                            <span className="schedule-time">10:00 AM</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {view === 'contests' && (
-                                <div className="fade-in">
-                                    <h3>Available Contests</h3>
-                                    {contests.length === 0 ? (
-                                        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748b' }}>
-                                            <i className="fas fa-trophy" style={{ fontSize: '3rem', marginBottom: '20px', opacity: 0.3 }}></i>
-                                            <p style={{ fontSize: '1.1rem', fontWeight: '500' }}>No active contests available</p>
-                                            <p style={{ fontSize: '0.9rem' }}>Check back later for upcoming contests</p>
-                                        </div>
-                                    ) : (
-                                        <div className="row g-4">
-                                            {contests.map((contest) => {
-                                                const now = new Date();
-                                                const start = new Date(contest.startTime);
-                                                const end = contest.endTime ? new Date(contest.endTime) : new Date(start.getTime() + contest.duration * 60000);
-                                                const isActive = contest.isActive || (now >= start && now <= end);
-                                                const isUpcoming = now < start;
-                                                const isCompleted = now > end;
-
-                                                return (
-                                                    <div key={contest._id} className="col-md-6">
-                                                        <div className="enrollment-card" style={{ position: 'relative' }}>
-                                                            <div className="enrollment-header">
-                                                                <span className={`status-badge ${isActive ? 'active' : isUpcoming ? 'scheduled' : 'completed'}`}>
-                                                                    {isActive ? 'LIVE NOW' : isUpcoming ? 'UPCOMING' : 'COMPLETED'}
-                                                                </span>
-                                                                <small style={{ color: '#64748b' }}>
-                                                                    {contest.questions.length} Questions
-                                                                </small>
-                                                            </div>
-                                                            <h5 className="enrollment-title">{contest.title}</h5>
-                                                            {contest.description && (
-                                                                <p style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '8px' }}>
-                                                                    {contest.description}
-                                                                </p>
-                                                            )}
-                                                            <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#64748b', fontSize: '0.9rem' }}>
-                                                                    <i className="fas fa-play-circle"></i>
-                                                                    <span>
-                                                                        <strong>Start:</strong> {new Date(contest.startTime).toLocaleString('en-IN', {
-                                                                            day: '2-digit',
-                                                                            month: 'short',
-                                                                            hour: '2-digit',
-                                                                            minute: '2-digit'
-                                                                        })}
-                                                                    </span>
-                                                                </div>
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#64748b', fontSize: '0.9rem' }}>
-                                                                    <i className="fas fa-stop-circle"></i>
-                                                                    <span>
-                                                                        <strong>End:</strong> {new Date(contest.endTime || new Date(contest.startTime).getTime() + contest.duration * 60000).toLocaleString('en-IN', {
-                                                                            day: '2-digit',
-                                                                            month: 'short',
-                                                                            hour: '2-digit',
-                                                                            minute: '2-digit'
-                                                                        })}
-                                                                    </span>
-                                                                </div>
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#64748b', fontSize: '0.9rem' }}>
-                                                                    <i className="fas fa-hourglass-half"></i>
-                                                                    <span><strong>Duration:</strong> {contest.duration} minutes</span>
-                                                                </div>
-                                                            </div>
-                                                            {isActive ? (
-                                                                <Link 
-                                                                    to={`/contest/${contest._id}`}
-                                                                    className="btn-primary mt-3" 
-                                                                    style={{ width: '100%', textDecoration: 'none', display: 'block', textAlign: 'center' }}
-                                                                >
-                                                                    Start Contest
-                                                                </Link>
-                                                            ) : isUpcoming ? (
-                                                                <button 
-                                                                    className="btn-secondary mt-3" 
-                                                                    style={{ width: '100%' }}
-                                                                    disabled
-                                                                >
-                                                                    Starts Soon
-                                                                </button>
-                                                            ) : (
-                                                                <Link 
-                                                                    to={`/contest/${contest._id}/result`}
-                                                                    className="btn-secondary mt-3" 
-                                                                    style={{ width: '100%', textDecoration: 'none', display: 'block', textAlign: 'center' }}
-                                                                >
-                                                                    View Leaderboard
-                                                                </Link>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
                                         </div>
                                     )}
                                 </div>

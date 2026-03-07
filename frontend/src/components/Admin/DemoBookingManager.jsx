@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { demoBookingsAPI } from '../../services/api';
 import ConfirmDialog from '../ConfirmDialog';
+import Toast from '../Toast';
 
 const DemoBookingManager = () => {
     const [bookings, setBookings] = useState([]);
@@ -9,6 +10,7 @@ const DemoBookingManager = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, id: null, name: '' });
+    const [toast, setToast] = useState(null);
     const detailsPanelRef = useRef(null);
 
     useEffect(() => {
@@ -40,8 +42,10 @@ const DemoBookingManager = () => {
             await demoBookingsAPI.updateStatus(id, { status: newStatus, adminRemarks: remarks });
             fetchBookings();
             setSelectedBooking(prev => ({ ...prev, status: newStatus, adminRemarks: remarks }));
+            setToast({ message: 'Status updated successfully!', type: 'success' });
         } catch (error) {
             console.error('Failed to update status:', error);
+            setToast({ message: 'Failed to update status. Please try again.', type: 'error' });
         }
     };
 
@@ -57,8 +61,10 @@ const DemoBookingManager = () => {
                 setSelectedBooking(null);
             }
             setBookings(prev => prev.filter(b => b._id !== id));
+            setToast({ message: 'Demo booking deleted successfully!', type: 'success' });
         } catch (error) {
             console.error('Delete failed:', error);
+            setToast({ message: 'Failed to delete booking. Please try again.', type: 'error' });
         } finally {
             setDeleteDialog({ isOpen: false, id: null, name: '' });
         }
@@ -104,6 +110,14 @@ const DemoBookingManager = () => {
 
     return (
         <div className="admin-container">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <h2 className="admin-header-title">Demo Booking Manager</h2>
 
             <div className="admin-card" style={{ marginBottom: '20px' }}>
@@ -265,7 +279,7 @@ const DemoBookingManager = () => {
                                 </div>
 
                                 <div>
-                                    <label className="detail-label">Admin Remarks</label>
+                                    <label className="detail-label">Feedback</label>
                                     <textarea
                                         value={selectedBooking.adminRemarks || ''}
                                         onChange={(e) => setSelectedBooking({ ...selectedBooking, adminRemarks: e.target.value })}

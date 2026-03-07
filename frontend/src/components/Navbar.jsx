@@ -70,7 +70,9 @@ const Navbar = () => {
                     <Link to="/about" className={location.pathname === '/about' ? 'active' : ''} onClick={closeNav}>About</Link>
                     <Link to="/courses" className={location.pathname === '/courses' ? 'active' : ''} onClick={closeNav}>Courses</Link>
                     <Link to="/faculty" className={location.pathname === '/faculty' ? 'active' : ''} onClick={closeNav}>Faculty</Link>
+                    <Link to="/videos" className={location.pathname === '/videos' ? 'active' : ''} onClick={closeNav}>Lectures</Link>
                     <Link to="/quiz" className={location.pathname === '/quiz' ? 'active' : ''} onClick={closeNav}>Quiz</Link>
+                    <Link to="/contests" className={location.pathname === '/contests' ? 'active' : ''} onClick={closeNav}>Contest</Link>
 
                     {isAuthenticated() && user?.role === 'admin' && (
                         <Link to="/admin" className={location.pathname.startsWith('/admin') ? 'active' : ''} onClick={closeNav}>Admin Panel</Link>

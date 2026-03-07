@@ -13,6 +13,7 @@ import questionRoutes from './routes/questionRoutes.js';
 import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import demoBookingRoutes from './routes/demoBookingRoutes.js';
 import contestRoutes from './routes/contestRoutes.js';
+import videoRoutes from './routes/videoRoutes.js';
 
 dotenv.config();
 connectDB();
@@ -32,6 +33,7 @@ app.use(cors({
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use('/uploads', express.static('uploads'));
 
 app.set('trust proxy', 1);
 app.use((req, res, next) => {
@@ -62,6 +64,7 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/demo-bookings', demoBookingRoutes);
 app.use('/api/contests', contestRoutes);
+app.use('/api/videos', videoRoutes);
 
 app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'active', timestamp: new Date() });

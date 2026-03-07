@@ -97,6 +97,15 @@ const AdminDashboard = () => {
                         Manage Contests
                     </Link>
                 </div>
+                <div className="stat-card">
+                    <h1 className="stat-number" style={{ color: '#00bcd4' }}>
+                        0
+                    </h1>
+                    <p className="stat-label">Videos</p>
+                    <Link to="/admin/videos" className="btn-primary">
+                        Manage Videos
+                    </Link>
+                </div>
             </div>
         </div>
     );

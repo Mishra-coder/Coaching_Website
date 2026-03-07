@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { demoBookingsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import Toast from './Toast';
 
 const DemoBooking = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [toast, setToast] = useState(null);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -38,12 +40,14 @@ const DemoBooking = () => {
 
         try {
             await demoBookingsAPI.create(formData);
+            setToast({ message: 'Demo booked successfully! Our team will contact you soon.', type: 'success' });
             setShowSuccess(true);
             setTimeout(() => {
                 navigate('/');
             }, 3000);
         } catch (error) {
             console.error('Demo booking failed:', error);
+            setToast({ message: error.response?.data?.message || 'Booking failed. Please try again.', type: 'error' });
             setIsSubmitting(false);
         }
     };
@@ -65,6 +69,14 @@ const DemoBooking = () => {
 
     return (
         <div className="demo-booking-page">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="demo-container">
                 <div className="demo-header">
                     <h1>Book Your Free Demo</h1>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { enrollmentsAPI } from '../services/api';
+import Toast from './Toast';
 
 const AdmissionForm = () => {
     const navigate = useNavigate();
@@ -11,6 +12,7 @@ const AdmissionForm = () => {
     const [studentPhoto, setStudentPhoto] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
+    const [toast, setToast] = useState(null);
 
     const [details, setDetails] = useState({
         studentName: '',
@@ -71,7 +73,7 @@ const AdmissionForm = () => {
         const file = e.target.files[0];
         if (file) {
             if (file.size > 2 * 1024 * 1024) {
-                setStatusMessage({ type: 'error', text: 'Photo size should be less than 2MB' });
+                setToast({ message: 'Photo size should be less than 2MB', type: 'error' });
                 return;
             }
             
@@ -114,7 +116,7 @@ const AdmissionForm = () => {
         e.preventDefault();
 
         if (!studentPhoto) {
-            setStatusMessage({ type: 'error', text: 'Please upload the student photo' });
+            setToast({ message: 'Please upload the student photo', type: 'error' });
             window.scrollTo(0, 0);
             return;
         }
@@ -147,18 +149,18 @@ const AdmissionForm = () => {
                 : await enrollmentsAPI.create(submission);
 
             if (response.success) {
-                setStatusMessage({ 
-                    type: 'success', 
-                    text: isEditing ? 'Form updated successfully! Redirecting...' : 'Enrollment successful! Redirecting...' 
+                setToast({ 
+                    message: isEditing ? 'Form updated successfully! Redirecting...' : 'Enrollment successful! Redirecting...', 
+                    type: 'success' 
                 });
                 window.scrollTo(0, 0);
-                navigate('/profile');
+                setTimeout(() => navigate('/profile'), 2000);
             }
         } catch (err) {
             console.error('Form submission error:', err);
-            setStatusMessage({ 
-                type: 'error', 
-                text: err.response?.data?.message || 'Submission failed. Please try again.' 
+            setToast({ 
+                message: err.response?.data?.message || 'Submission failed. Please try again.', 
+                type: 'error' 
             });
             window.scrollTo(0, 0);
         } finally {
@@ -177,6 +179,14 @@ const AdmissionForm = () => {
 
     return (
         <section className="admission-page">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="container" style={{ maxWidth: '900px' }}>
                 <div className="admission-form-wrapper">
                     <div className="admission-form-header">

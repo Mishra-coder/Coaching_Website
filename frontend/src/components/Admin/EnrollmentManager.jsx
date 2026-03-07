@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { enrollmentsAPI } from '../../services/api';
 import ConfirmDialog from '../ConfirmDialog';
+import Toast from '../Toast';
 
 const EnrollmentManager = () => {
     const [enrollments, setEnrollments] = useState([]);
@@ -11,6 +12,7 @@ const EnrollmentManager = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, id: null, name: '' });
+    const [toast, setToast] = useState(null);
     const detailsPanelRef = useRef(null);
 
     useEffect(() => {
@@ -56,8 +58,10 @@ const EnrollmentManager = () => {
                 setSelectedEnrollment(null);
             }
             setEnrollments(prev => prev.filter(en => en._id !== id));
+            setToast({ message: 'Enrollment deleted successfully!', type: 'success' });
         } catch (error) {
             console.error('Delete failed:', error);
+            setToast({ message: 'Failed to delete enrollment. Please try again.', type: 'error' });
         } finally {
             setDeleteDialog({ isOpen: false, id: null, name: '' });
         }
@@ -93,8 +97,10 @@ const EnrollmentManager = () => {
             await enrollmentsAPI.updateStatus(id, { status: newStatus, adminRemarks: remarks });
             fetchEnrollments();
             setSelectedEnrollment(prev => ({ ...prev, status: newStatus, adminRemarks: remarks }));
+            setToast({ message: 'Status updated successfully!', type: 'success' });
         } catch (error) {
             console.error('Failed to update status:', error);
+            setToast({ message: 'Failed to update status. Please try again.', type: 'error' });
         }
     };
 
@@ -144,6 +150,14 @@ const EnrollmentManager = () => {
 
     return (
         <div className="admin-container">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <h2 className="admin-header-title">Enrollment Manager</h2>
 
             <div className="admin-card" style={{ marginBottom: '20px' }}>
@@ -308,7 +322,7 @@ const EnrollmentManager = () => {
                                     </div>
 
                                     <div>
-                                        <label className="detail-label">Admin Remarks / Reason</label>
+                                        <label className="detail-label">Feedback / Reason</label>
                                         <textarea
                                             value={selectedEnrollment.adminRemarks || ''}
                                             onChange={(e) => setSelectedEnrollment({ ...selectedEnrollment, adminRemarks: e.target.value })}

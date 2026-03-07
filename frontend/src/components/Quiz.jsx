@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { questionsAPI, quizAPI } from '../services/api';
+import Toast from './Toast';
 
 const Quiz = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Quiz = () => {
     const [questions, setQuestions] = useState([]);
     const [chapters, setChapters] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState(null);
 
     useEffect(() => {
         const handleVisibilityChange = () => {
@@ -187,11 +189,10 @@ const Quiz = () => {
                 percentage
             });
 
-            if (res.isRevise) {
-            }
-
+            setToast({ message: `Quiz submitted! You scored ${correct}/${total} (${percentage}%)`, type: 'success' });
             window.dispatchEvent(new Event('quizCompleted'));
         } catch (error) {
+            setToast({ message: 'Failed to submit quiz. Please try again.', type: 'error' });
         }
         setView('result');
         window.scrollTo(0, 0);
@@ -437,6 +438,14 @@ const Quiz = () => {
 
     return (
         <section className="quiz-page">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="container">
                 <div className="section-header text-center" style={{ marginBottom: '40px' }}>
                     <div className="quiz-badge">

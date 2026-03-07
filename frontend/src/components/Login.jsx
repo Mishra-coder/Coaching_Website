@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import GoogleSignInButton from './GoogleSignInButton';
+import Toast from './Toast';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Login = () => {
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState(null);
 
     const handleChange = (e) => {
         setFormData({
@@ -46,17 +48,27 @@ const Login = () => {
         const loginResult = await login(formData);
 
         if (loginResult.success) {
+            setToast({ message: 'Login successful! Redirecting...', type: 'success' });
             const isAdmin = loginResult.user.role === 'admin';
             const redirectPath = isAdmin ? '/admin' : '/';
-            navigate(redirectPath);
+            setTimeout(() => navigate(redirectPath), 1000);
         } else {
             setError(loginResult.message);
+            setToast({ message: loginResult.message, type: 'error' });
             setLoading(false);
         }
     };
 
     return (
         <section className="auth-page">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="container">
                 <div className="auth-header">
                     <h2 className="auth-title">
@@ -145,7 +157,11 @@ const Login = () => {
                             <div className="divider-line"></div>
                         </div>
 
-                        <GoogleSignInButton mode="signin" isAdmin={role === 'admin'} />
+                        <GoogleSignInButton 
+                            mode="signin" 
+                            isAdmin={role === 'admin'} 
+                            onError={(msg) => setToast({ message: msg, type: 'error' })}
+                        />
 
                         <div className="auth-footer">
                             Don't have an account?{' '}

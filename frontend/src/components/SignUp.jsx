@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
 import GoogleSignInButton from './GoogleSignInButton';
+import Toast from './Toast';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -13,11 +14,11 @@ const SignUp = () => {
         name: '',
         email: '',
         password: '',
-        confirmPassword: '',
         secretKey: ''
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState(null);
 
     const handleChange = (e) => {
         setFormData({
@@ -52,12 +53,6 @@ const SignUp = () => {
             return;
         }
 
-        const passwordsMatch = formData.password === formData.confirmPassword;
-        if (!passwordsMatch) {
-            setError('Passwords do not match');
-            return;
-        }
-
         setLoading(true);
 
         try {
@@ -74,26 +69,30 @@ const SignUp = () => {
 
                 if (response.success) {
                     setAuth(response.user, response.token);
-                    
+                    setToast({ message: 'Account created successfully! Redirecting...', type: 'success' });
                     const redirectPath = response.user.role === 'admin' ? '/admin' : '/';
-                    navigate(redirectPath);
+                    setTimeout(() => navigate(redirectPath), 1000);
                 } else {
                     setError(response.message || 'SignUp failed');
+                    setToast({ message: response.message || 'SignUp failed', type: 'error' });
                 }
             } else {
-                const { confirmPassword, secretKey, ...userData } = formData;
+                const { secretKey, ...userData } = formData;
                 const result = await register(userData);
 
                 if (result.success) {
+                    setToast({ message: 'Account created successfully! Redirecting...', type: 'success' });
                     const redirectPath = result.user.role === 'admin' ? '/admin' : '/';
-                    navigate(redirectPath);
+                    setTimeout(() => navigate(redirectPath), 1000);
                 } else {
                     setError(result.message);
+                    setToast({ message: result.message, type: 'error' });
                 }
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || 'SignUp failed. Please try again.';
             setError(errorMessage);
+            setToast({ message: errorMessage, type: 'error' });
         } finally {
             setLoading(false);
         }
@@ -101,6 +100,14 @@ const SignUp = () => {
 
     return (
         <section className="auth-page">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="container">
                 <div className="auth-header">
                     <h2 className="auth-title">
@@ -178,19 +185,6 @@ const SignUp = () => {
                             </p>
                         </div>
 
-                        <div className="form-group">
-                            <label className="form-label">Confirm Password</label>
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                placeholder="Re-enter your password"
-                                required
-                                className="form-input"
-                            />
-                        </div>
-
                         {role === 'admin' && (
                             <div className="form-group">
                                 <label className="form-label form-label-admin">Admin Secret Key</label>
@@ -223,7 +217,11 @@ const SignUp = () => {
                             <div className="divider-line"></div>
                         </div>
 
-                        <GoogleSignInButton mode="signup" isAdmin={role === 'admin'} />
+                        <GoogleSignInButton 
+                            mode="signup" 
+                            isAdmin={role === 'admin'} 
+                            onError={(msg) => setToast({ message: msg, type: 'error' })}
+                        />
 
                         <div className="auth-footer">
                             Already have an account?{' '}

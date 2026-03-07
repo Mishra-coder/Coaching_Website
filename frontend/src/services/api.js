@@ -231,4 +231,26 @@ export const contestsAPI = {
     }
 };
 
+export const videosAPI = {
+    getAll: async () => {
+        const response = await api.get('/videos');
+        return response.data;
+    },
+    getById: async (id) => {
+        const response = await api.get(`/videos/${id}`);
+        return response.data;
+    },
+    upload: async (formData, onProgress) => {
+        const response = await api.post('/videos/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            onUploadProgress: onProgress
+        });
+        return response.data;
+    },
+    delete: async (id) => {
+        const response = await api.delete(`/videos/${id}`);
+        return response.data;
+    }
+};
+
 export default api;

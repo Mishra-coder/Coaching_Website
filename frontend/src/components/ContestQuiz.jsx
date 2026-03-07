@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { contestsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import Toast from './Toast';
 
 const ContestQuiz = () => {
     const { id } = useParams();
@@ -14,6 +15,7 @@ const ContestQuiz = () => {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const [toast, setToast] = useState(null);
 
     useEffect(() => {
         loadContest();
@@ -66,9 +68,11 @@ const ContestQuiz = () => {
         try {
             setSubmitting(true);
             await contestsAPI.submit(id, answers);
-            navigate(`/contest/${id}/result`);
+            setToast({ message: 'Contest submitted successfully!', type: 'success' });
+            setTimeout(() => navigate(`/contest/${id}/result`), 1000);
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to submit contest');
+            setToast({ message: err.response?.data?.message || 'Failed to submit contest', type: 'error' });
             setSubmitting(false);
         }
     };
@@ -107,6 +111,14 @@ const ContestQuiz = () => {
 
     return (
         <div className="quiz-container">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="quiz-card">
                 <div className="quiz-header">
                     <div className="quiz-header-left">

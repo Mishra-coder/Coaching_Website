@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { contestsAPI } from '../../services/api';
 import ConfirmDialog from '../ConfirmDialog';
+import Toast from '../Toast';
 
 const ContestManager = () => {
     const [contests, setContests] = useState([]);
@@ -8,6 +9,7 @@ const ContestManager = () => {
     const [showBulkUpload, setShowBulkUpload] = useState(false);
     const [showContestDetailsModal, setShowContestDetailsModal] = useState(false);
     const [bulkFile, setBulkFile] = useState(null);
+    const [toast, setToast] = useState(null);
     const [contestDetails, setContestDetails] = useState({
         title: '',
         description: '',
@@ -75,13 +77,12 @@ const ContestManager = () => {
         try {
             if (isEditing) {
                 await contestsAPI.update(currentContest._id, currentContest);
-                setStatusMessage({ text: 'Contest updated successfully!', type: 'success' });
+                setToast({ message: 'Contest updated successfully!', type: 'success' });
             } else {
                 await contestsAPI.create(currentContest);
-                setStatusMessage({ text: 'Contest created successfully!', type: 'success' });
+                setToast({ message: 'Contest created successfully!', type: 'success' });
             }
 
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
             setIsEditing(false);
             setCurrentContest({
                 title: '',
@@ -93,8 +94,7 @@ const ContestManager = () => {
             });
             fetchContests();
         } catch (error) {
-            setStatusMessage({ text: 'Error saving contest. Please try again.', type: 'error' });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+            setToast({ message: 'Error saving contest. Please try again.', type: 'error' });
         }
     };
 
@@ -109,21 +109,19 @@ const ContestManager = () => {
         ];
 
         if (!validTypes.includes(file.type) && !file.name.match(/\.(xlsx|xls|csv)$/i)) {
-            setStatusMessage({ 
-                text: 'Invalid file type. Please upload .xlsx, .xls, or .csv file only.', 
+            setToast({ 
+                message: 'Invalid file type. Please upload .xlsx, .xls, or .csv file only.', 
                 type: 'error' 
             });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
             e.target.value = '';
             return;
         }
 
         if (file.size > 10 * 1024 * 1024) {
-            setStatusMessage({ 
-                text: 'File too large. Maximum size is 10MB.', 
+            setToast({ 
+                message: 'File too large. Maximum size is 10MB.', 
                 type: 'error' 
             });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
             e.target.value = '';
             return;
         }
@@ -139,38 +137,34 @@ const ContestManager = () => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
-                setStatusMessage({ text: 'Processing file... Please wait.', type: 'info' });
+                setToast({ message: 'Processing file... Please wait.', type: 'info' });
                 setShowContestDetailsModal(false);
                 
                 const result = await contestsAPI.bulkUpload(event.target.result, contestDetails);
                 
-                setStatusMessage({ 
-                    text: `Success! Contest uploaded successfully!`, 
+                setToast({ 
+                    message: 'Success! Contest uploaded successfully!', 
                     type: 'success' 
                 });
                 fetchContests();
                 setShowBulkUpload(false);
                 setBulkFile(null);
                 setContestDetails({ title: '', description: '', startTime: '', endTime: '', duration: 60 });
-                
-                setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
             } catch (error) {
                 console.error('Upload error:', error);
                 const errorMsg = error.response?.data?.message || error.message || 'Upload failed. Please try again.';
-                setStatusMessage({ 
-                    text: `Upload failed: ${errorMsg}`, 
+                setToast({ 
+                    message: `Upload failed: ${errorMsg}`, 
                     type: 'error' 
                 });
-                setTimeout(() => setStatusMessage({ text: '', type: '' }), 8000);
             }
         };
 
         reader.onerror = () => {
-            setStatusMessage({ 
-                text: 'Failed to read file. Please try again.', 
+            setToast({ 
+                message: 'Failed to read file. Please try again.', 
                 type: 'error' 
             });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 5000);
         };
 
         reader.readAsDataURL(bulkFile);
@@ -187,11 +181,9 @@ const ContestManager = () => {
         try {
             await contestsAPI.delete(id);
             fetchContests();
-            setStatusMessage({ text: 'Contest deleted successfully!', type: 'success' });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+            setToast({ message: 'Contest deleted successfully!', type: 'success' });
         } catch (error) {
-            setStatusMessage({ text: 'Error deleting contest.', type: 'error' });
-            setTimeout(() => setStatusMessage({ text: '', type: '' }), 3000);
+            setToast({ message: 'Error deleting contest.', type: 'error' });
         } finally {
             setDeleteDialog({ isOpen: false, id: null });
         }
@@ -223,6 +215,14 @@ const ContestManager = () => {
 
     return (
         <div className="admin-container">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+            
             <div className="question-manager-header">
                 <h2 className="admin-header-title">Contest Manager</h2>
                 <button 
@@ -233,12 +233,6 @@ const ContestManager = () => {
                     {showBulkUpload ? 'Hide' : 'Bulk Upload'}
                 </button>
             </div>
-
-            {statusMessage.text && (
-                <div className={`status-message ${statusMessage.type === 'success' ? 'status-success' : statusMessage.type === 'info' ? 'status-info' : statusMessage.type === 'warning' ? 'status-warning' : 'status-error'}`}>
-                    <pre>{statusMessage.text}</pre>
-                </div>
-            )}
 
             {showBulkUpload && (
                 <div className="admin-card bulk-upload-card">
