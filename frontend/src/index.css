@@ -840,7 +840,7 @@ footer {
 
   .footer-logo-link {
     justify-content: flex-start;
-    margin-left: 0;
+    margin-left: -50px;
   }
 
   .contact-list {
@@ -1545,7 +1545,7 @@ footer {
   align-items: center;
   margin-bottom: 15px;
   text-decoration: none;
-  margin-left: -20px;
+  margin-left: -60px;
 }
 
 .footer-logo-img {
