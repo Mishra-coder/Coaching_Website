@@ -21,15 +21,20 @@ connectDB();
 const app = express();
 
 app.use((req, res, next) => {
-    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
-    res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
-    next();
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  next();
 });
 
-app.use(cors({
-    origin: [process.env.FRONTEND_URL || 'http://localhost:5173', 'http://localhost:3000'],
-    credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      process.env.FRONTEND_URL || 'http://localhost:5173',
+      'http://localhost:3000',
+    ],
+    credentials: true,
+  })
+);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -37,20 +42,22 @@ app.use('/uploads', express.static('uploads'));
 
 app.set('trust proxy', 1);
 app.use((req, res, next) => {
-    req.setTimeout(60000);
-    res.setTimeout(60000);
-    next();
+  req.setTimeout(60000);
+  res.setTimeout(60000);
+  next();
 });
 
-app.use(session({
+app.use(
+  session({
     secret: process.env.JWT_SECRET || 'dev-secret-key',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 * 1000
-    }
-}));
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -67,19 +74,19 @@ app.use('/api/contests', contestRoutes);
 app.use('/api/videos', videoRoutes);
 
 app.get('/api/health', (req, res) => {
-    res.status(200).json({ status: 'active', timestamp: new Date() });
+  res.status(200).json({ status: 'active', timestamp: new Date() });
 });
 
 app.use((err, req, res, next) => {
-    res.status(500).json({
-        success: false,
-        message: err.message || 'Internal Server Error'
-    });
+  res.status(500).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+  });
 });
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log(`MongoDB URI: ${process.env.MONGODB_URI}`);
-    console.log(`Frontend URL: ${process.env.FRONTEND_URL}`);
+  console.log(`Server is running on port ${PORT}`);
+  console.log(`MongoDB URI: ${process.env.MONGODB_URI}`);
+  console.log(`Frontend URL: ${process.env.FRONTEND_URL}`);
 });

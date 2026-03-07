@@ -1,51 +1,59 @@
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
 });
 
 async function sendEmail(recipientEmail, emailSubject, emailHtml) {
-    try {
-        const emailConfigured = process.env.EMAIL_USER && process.env.EMAIL_PASSWORD;
-        if (!emailConfigured) {
-            console.log('Email credentials not configured');
-            return { success: false, error: 'Email not configured' };
-        }
-
-        const mailOptions = {
-            from: `"Success Mantra Institute" <${process.env.EMAIL_USER}>`,
-            to: recipientEmail,
-            subject: emailSubject,
-            html: emailHtml
-        };
-
-        const emailInfo = await transporter.sendMail(mailOptions);
-        console.log('Resubmit email sent successfully to:', recipientEmail, '- Message ID:', emailInfo.messageId);
-        return { success: true, messageId: emailInfo.messageId };
-    } catch (error) {
-        console.error('Resubmit email send failed to:', recipientEmail);
-        console.error('Error details:', error.message);
-        
-        const isAuthError = error.code === 'EAUTH';
-        if (isAuthError) {
-            console.error('Authentication failed - Check EMAIL_USER and EMAIL_PASSWORD in .env');
-        }
-        
-        return { success: false, error: error.message };
+  try {
+    const emailConfigured =
+      process.env.EMAIL_USER && process.env.EMAIL_PASSWORD;
+    if (!emailConfigured) {
+      console.log('Email credentials not configured');
+      return { success: false, error: 'Email not configured' };
     }
+
+    const mailOptions = {
+      from: `"Success Mantra Institute" <${process.env.EMAIL_USER}>`,
+      to: recipientEmail,
+      subject: emailSubject,
+      html: emailHtml,
+    };
+
+    const emailInfo = await transporter.sendMail(mailOptions);
+    console.log(
+      'Resubmit email sent successfully to:',
+      recipientEmail,
+      '- Message ID:',
+      emailInfo.messageId
+    );
+    return { success: true, messageId: emailInfo.messageId };
+  } catch (error) {
+    console.error('Resubmit email send failed to:', recipientEmail);
+    console.error('Error details:', error.message);
+
+    const isAuthError = error.code === 'EAUTH';
+    if (isAuthError) {
+      console.error(
+        'Authentication failed - Check EMAIL_USER and EMAIL_PASSWORD in .env'
+      );
+    }
+
+    return { success: false, error: error.message };
+  }
 }
 
 export async function sendResubmitConfirmation(user, enrollment) {
-    const subject = 'Form Resubmitted Successfully - Success Mantra Institute';
-    
-    const emailStyles = `
+  const subject = 'Form Resubmitted Successfully - Success Mantra Institute';
+
+  const emailStyles = `
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
@@ -57,8 +65,8 @@ export async function sendResubmitConfirmation(user, enrollment) {
         .footer { text-align: center; padding: 20px; color: #6c757d; font-size: 14px; }
         .success-badge { display: inline-block; padding: 8px 20px; background: #28a745; color: white; border-radius: 20px; font-size: 14px; font-weight: bold; }
     `;
-    
-    const html = `
+
+  const html = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -108,13 +116,14 @@ export async function sendResubmitConfirmation(user, enrollment) {
     </body>
     </html>
     `;
-    
-    await sendEmail(user.email, subject, html);
-    
-    const adminEmail = process.env.ADMIN_EMAIL || 'mysuccessmantrainstitute@gmail.com';
-    const adminSubject = 'Form Resubmitted - Requires Review';
-    
-    const adminEmailStyles = `
+
+  await sendEmail(user.email, subject, html);
+
+  const adminEmail =
+    process.env.ADMIN_EMAIL || 'mysuccessmantrainstitute@gmail.com';
+  const adminSubject = 'Form Resubmitted - Requires Review';
+
+  const adminEmailStyles = `
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
@@ -128,8 +137,8 @@ export async function sendResubmitConfirmation(user, enrollment) {
         .footer { text-align: center; padding: 20px; color: #6c757d; font-size: 14px; }
         .success-badge { display: inline-block; padding: 8px 20px; background: #28a745; color: white; border-radius: 20px; font-size: 14px; font-weight: bold; }
     `;
-    
-    const adminHtml = `
+
+  const adminHtml = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -184,6 +193,6 @@ export async function sendResubmitConfirmation(user, enrollment) {
     </body>
     </html>
     `;
-    
-    await sendEmail(adminEmail, adminSubject, adminHtml);
+
+  await sendEmail(adminEmail, adminSubject, adminHtml);
 }

@@ -6,234 +6,258 @@ import GoogleSignInButton from './GoogleSignInButton';
 import Toast from './Toast';
 
 const SignUp = () => {
-    const navigate = useNavigate();
-    const { register, setAuth } = useAuth();
+  const navigate = useNavigate();
+  const { register, setAuth } = useAuth();
 
-    const [role, setRole] = useState('student');
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        secretKey: ''
+  const [role, setRole] = useState('student');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    secretKey: '',
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [toast, setToast] = useState(null);
+  };
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
+    const validEmailPattern =
+      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
+    const isValidEmail = validEmailPattern.test(formData.email);
 
-        const validEmailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
-        const isValidEmail = validEmailPattern.test(formData.email);
-        
-        if (!isValidEmail) {
-            setError('Please enter a valid email address with proper domain (.com, .in, .org, etc.)');
-            return;
+    if (!isValidEmail) {
+      setError(
+        'Please enter a valid email address with proper domain (.com, .in, .org, etc.)'
+      );
+      return;
+    }
+
+    const minimumPasswordLength = 8;
+    if (formData.password.length < minimumPasswordLength) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
+
+    const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+    const isStrongPassword = strongPasswordPattern.test(formData.password);
+
+    if (!isStrongPassword) {
+      setError(
+        'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      );
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const isAdminSignup = role === 'admin';
+
+      if (isAdminSignup) {
+        const adminData = {
+          email: formData.email,
+          password: formData.password,
+          secretKey: formData.secretKey,
+        };
+
+        const response = await authAPI.adminRegister(adminData);
+
+        if (response.success) {
+          setAuth(response.user, response.token);
+          setToast({
+            message: 'Account created successfully! Redirecting...',
+            type: 'success',
+          });
+          const redirectPath = response.user.role === 'admin' ? '/admin' : '/';
+          setTimeout(() => navigate(redirectPath), 1000);
+        } else {
+          setError(response.message || 'SignUp failed');
+          setToast({
+            message: response.message || 'SignUp failed',
+            type: 'error',
+          });
         }
+      } else {
+        const { secretKey, ...userData } = formData;
+        const result = await register(userData);
 
-        const minimumPasswordLength = 8;
-        if (formData.password.length < minimumPasswordLength) {
-            setError('Password must be at least 8 characters long');
-            return;
+        if (result.success) {
+          setToast({
+            message: 'Account created successfully! Redirecting...',
+            type: 'success',
+          });
+          const redirectPath = result.user.role === 'admin' ? '/admin' : '/';
+          setTimeout(() => navigate(redirectPath), 1000);
+        } else {
+          setError(result.message);
+          setToast({ message: result.message, type: 'error' });
         }
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || 'SignUp failed. Please try again.';
+      setError(errorMessage);
+      setToast({ message: errorMessage, type: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-        const isStrongPassword = strongPasswordPattern.test(formData.password);
-        
-        if (!isStrongPassword) {
-            setError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
-            return;
-        }
+  return (
+    <section className="auth-page">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
 
-        setLoading(true);
+      <div className="container">
+        <div className="auth-header">
+          <h2 className="auth-title">
+            {role === 'admin' ? (
+              <span style={{ color: '#3949ab' }}>Admin</span>
+            ) : (
+              'Student'
+            )}{' '}
+            <span className="highlight">SignUp</span>
+          </h2>
+          <p className="auth-subtitle">
+            {role === 'admin'
+              ? 'Create your admin account'
+              : 'Create your account to get started'}
+          </p>
+        </div>
 
-        try {
-            const isAdminSignup = role === 'admin';
-            
-            if (isAdminSignup) {
-                const adminData = {
-                    email: formData.email,
-                    password: formData.password,
-                    secretKey: formData.secretKey
-                };
-                
-                const response = await authAPI.adminRegister(adminData);
+        <div className="auth-card auth-card-lg">
+          <div className="role-switcher">
+            <button
+              onClick={() => setRole('student')}
+              className={`role-btn ${role === 'student' ? 'active-student' : ''}`}
+            >
+              Student
+            </button>
+            <button
+              onClick={() => setRole('admin')}
+              className={`role-btn ${role === 'admin' ? 'active-admin' : ''}`}
+            >
+              Admin
+            </button>
+          </div>
 
-                if (response.success) {
-                    setAuth(response.user, response.token);
-                    setToast({ message: 'Account created successfully! Redirecting...', type: 'success' });
-                    const redirectPath = response.user.role === 'admin' ? '/admin' : '/';
-                    setTimeout(() => navigate(redirectPath), 1000);
-                } else {
-                    setError(response.message || 'SignUp failed');
-                    setToast({ message: response.message || 'SignUp failed', type: 'error' });
-                }
-            } else {
-                const { secretKey, ...userData } = formData;
-                const result = await register(userData);
+          <form onSubmit={handleSubmit}>
+            {error && <div className="form-alert">{error}</div>}
 
-                if (result.success) {
-                    setToast({ message: 'Account created successfully! Redirecting...', type: 'success' });
-                    const redirectPath = result.user.role === 'admin' ? '/admin' : '/';
-                    setTimeout(() => navigate(redirectPath), 1000);
-                } else {
-                    setError(result.message);
-                    setToast({ message: result.message, type: 'error' });
-                }
-            }
-        } catch (error) {
-            const errorMessage = error.response?.data?.message || 'SignUp failed. Please try again.';
-            setError(errorMessage);
-            setToast({ message: errorMessage, type: 'error' });
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <section className="auth-page">
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={() => setToast(null)}
+            {role === 'student' && (
+              <div className="form-group">
+                <label className="form-label">Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  required={role === 'student'}
+                  className="form-input"
                 />
+              </div>
             )}
-            
-            <div className="container">
-                <div className="auth-header">
-                    <h2 className="auth-title">
-                        {role === 'admin' ? <span style={{ color: '#3949ab' }}>Admin</span> : 'Student'}{' '}
-                        <span className="highlight">SignUp</span>
-                    </h2>
-                    <p className="auth-subtitle">
-                        {role === 'admin' ? 'Create your admin account' : 'Create your account to get started'}
-                    </p>
-                </div>
 
-                <div className="auth-card auth-card-lg">
-                    <div className="role-switcher">
-                        <button
-                            onClick={() => setRole('student')}
-                            className={`role-btn ${role === 'student' ? 'active-student' : ''}`}
-                        >
-                            Student
-                        </button>
-                        <button
-                            onClick={() => setRole('admin')}
-                            className={`role-btn ${role === 'admin' ? 'active-admin' : ''}`}
-                        >
-                            Admin
-                        </button>
-                    </div>
-
-                    <form onSubmit={handleSubmit}>
-                        {error && (
-                            <div className="form-alert">{error}</div>
-                        )}
-
-                        {role === 'student' && (
-                            <div className="form-group">
-                                <label className="form-label">Full Name</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    placeholder="Enter your full name"
-                                    required={role === 'student'}
-                                    className="form-input"
-                                />
-                            </div>
-                        )}
-
-                        <div className="form-group">
-                            <label className="form-label">Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="Enter your email"
-                                required
-                                className="form-input"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Password</label>
-                            <input
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                placeholder="Minimum 8 characters"
-                                required
-                                minLength="8"
-                                className="form-input"
-                            />
-                            <p className="helper-text" style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
-                                Must contain uppercase, lowercase, and number
-                            </p>
-                        </div>
-
-                        {role === 'admin' && (
-                            <div className="form-group">
-                                <label className="form-label form-label-admin">Admin Secret Key</label>
-                                <input
-                                    type="password"
-                                    name="secretKey"
-                                    value={formData.secretKey}
-                                    onChange={handleChange}
-                                    placeholder="••••••••"
-                                    required={role === 'admin'}
-                                    className={`form-input ${!formData.secretKey ? 'form-input-error' : ''}`}
-                                />
-                                <p className="helper-text">
-                                    Contact the administrator to get the secret key
-                                </p>
-                            </div>
-                        )}
-
-                        <button
-                            type="submit"
-                            className={`btn-primary btn-block ${loading ? 'btn-loading' : ''}`}
-                            disabled={loading}
-                        >
-                            {loading ? 'Creating Account...' : 'SignUp'}
-                        </button>
-
-                        <div className="auth-divider">
-                            <div className="divider-line"></div>
-                            <span className="divider-text">OR</span>
-                            <div className="divider-line"></div>
-                        </div>
-
-                        <GoogleSignInButton 
-                            mode="signup" 
-                            isAdmin={role === 'admin'} 
-                            onError={(msg) => setToast({ message: msg, type: 'error' })}
-                        />
-
-                        <div className="auth-footer">
-                            Already have an account?{' '}
-                            <Link to="/login" className="auth-link">
-                                Login here
-                            </Link>
-                        </div>
-                    </form>
-                </div>
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                required
+                className="form-input"
+              />
             </div>
-        </section>
-    );
+
+            <div className="form-group">
+              <label className="form-label">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Minimum 8 characters"
+                required
+                minLength="8"
+                className="form-input"
+              />
+              <p
+                className="helper-text"
+                style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}
+              >
+                Must contain uppercase, lowercase, and number
+              </p>
+            </div>
+
+            {role === 'admin' && (
+              <div className="form-group">
+                <label className="form-label form-label-admin">
+                  Admin Secret Key
+                </label>
+                <input
+                  type="password"
+                  name="secretKey"
+                  value={formData.secretKey}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  required={role === 'admin'}
+                  className={`form-input ${!formData.secretKey ? 'form-input-error' : ''}`}
+                />
+                <p className="helper-text">
+                  Contact the administrator to get the secret key
+                </p>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className={`btn-primary btn-block ${loading ? 'btn-loading' : ''}`}
+              disabled={loading}
+            >
+              {loading ? 'Creating Account...' : 'SignUp'}
+            </button>
+
+            <div className="auth-divider">
+              <div className="divider-line"></div>
+              <span className="divider-text">OR</span>
+              <div className="divider-line"></div>
+            </div>
+
+            <GoogleSignInButton
+              mode="signup"
+              isAdmin={role === 'admin'}
+              onError={(msg) => setToast({ message: msg, type: 'error' })}
+            />
+
+            <div className="auth-footer">
+              Already have an account?{' '}
+              <Link to="/login" className="auth-link">
+                Login here
+              </Link>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default SignUp;

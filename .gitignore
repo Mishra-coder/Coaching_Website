@@ -6,6 +6,10 @@ dist/
 uploads/
 TROUBLESHOOTING.md
 
+# Prettier config
+.prettierrc
+.prettierignore
+
 # OS files
 .DS_Store
 Thumbs.db

@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
@@ -33,133 +38,181 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
 
 function ScrollToTop() {
-    const { pathname } = useLocation();
+  const { pathname } = useLocation();
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-    return null;
+  return null;
 }
 
 function App() {
-    return (
-        <Router>
-            <AuthProvider>
-                <ScrollToTop />
-                <div className="App page-transition">
-                    <Navbar />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/courses" element={<Courses />} />
-                        <Route path="/faculty" element={<Faculty />} />
-                        <Route path="/enroll" element={<Enrollment />} />
-                        <Route path="/admission" element={<Enrollment />} />
-                        <Route path="/demo-booking" element={
-                            <ProtectedRoute>
-                                <DemoBooking />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<SignUp />} />
-                        <Route path="/register" element={<SignUp />} />
+  return (
+    <Router>
+      <AuthProvider>
+        <ScrollToTop />
+        <div className="App page-transition">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/faculty" element={<Faculty />} />
+            <Route path="/enroll" element={<Enrollment />} />
+            <Route path="/admission" element={<Enrollment />} />
+            <Route
+              path="/demo-booking"
+              element={
+                <ProtectedRoute>
+                  <DemoBooking />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/register" element={<SignUp />} />
 
-                        <Route path="/quiz" element={
-                            <ProtectedRoute>
-                                <Quiz />
-                            </ProtectedRoute>
-                        } />
+            <Route
+              path="/quiz"
+              element={
+                <ProtectedRoute>
+                  <Quiz />
+                </ProtectedRoute>
+              }
+            />
 
-                        <Route path="/contests" element={
-                            <ProtectedRoute>
-                                <Contests />
-                            </ProtectedRoute>
-                        } />
+            <Route
+              path="/contests"
+              element={
+                <ProtectedRoute>
+                  <Contests />
+                </ProtectedRoute>
+              }
+            />
 
-                        <Route path="/videos" element={
-                            <ProtectedRoute>
-                                <Videos />
-                            </ProtectedRoute>
-                        } />
+            <Route
+              path="/videos"
+              element={
+                <ProtectedRoute>
+                  <Videos />
+                </ProtectedRoute>
+              }
+            />
 
-                        <Route path="/video/:id" element={
-                            <ProtectedRoute>
-                                <VideoPlayer />
-                            </ProtectedRoute>
-                        } />
+            <Route
+              path="/video/:id"
+              element={
+                <ProtectedRoute>
+                  <VideoPlayer />
+                </ProtectedRoute>
+              }
+            />
 
-                        <Route path="/leaderboard" element={
-                            <ProtectedRoute>
-                                <Leaderboard />
-                            </ProtectedRoute>
-                        } />
+            <Route
+              path="/leaderboard"
+              element={
+                <ProtectedRoute>
+                  <Leaderboard />
+                </ProtectedRoute>
+              }
+            />
 
-                        <Route path="/profile" element={
-                            <ProtectedRoute>
-                                <Profile />
-                            </ProtectedRoute>
-                        } />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
 
-                        <Route path="/admin" element={
-                            <AdminRoute>
-                                <AdminDashboard />
-                            </AdminRoute>
-                        } />
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              }
+            />
 
-                        <Route path="/admin/questions" element={
-                            <AdminRoute>
-                                <QuestionManager />
-                            </AdminRoute>
-                        } />
+            <Route
+              path="/admin/questions"
+              element={
+                <AdminRoute>
+                  <QuestionManager />
+                </AdminRoute>
+              }
+            />
 
-                        <Route path="/admin/students" element={
-                            <AdminRoute>
-                                <StudentManager />
-                            </AdminRoute>
-                        } />
+            <Route
+              path="/admin/students"
+              element={
+                <AdminRoute>
+                  <StudentManager />
+                </AdminRoute>
+              }
+            />
 
-                        <Route path="/admin/enrollments" element={
-                            <AdminRoute>
-                                <EnrollmentManager />
-                            </AdminRoute>
-                        } />
+            <Route
+              path="/admin/enrollments"
+              element={
+                <AdminRoute>
+                  <EnrollmentManager />
+                </AdminRoute>
+              }
+            />
 
-                        <Route path="/admin/demo-bookings" element={
-                            <AdminRoute>
-                                <DemoBookingManager />
-                            </AdminRoute>
-                        } />
+            <Route
+              path="/admin/demo-bookings"
+              element={
+                <AdminRoute>
+                  <DemoBookingManager />
+                </AdminRoute>
+              }
+            />
 
-                        <Route path="/admin/contests" element={
-                            <AdminRoute>
-                                <ContestManager />
-                            </AdminRoute>
-                        } />
+            <Route
+              path="/admin/contests"
+              element={
+                <AdminRoute>
+                  <ContestManager />
+                </AdminRoute>
+              }
+            />
 
-                        <Route path="/admin/videos" element={
-                            <AdminRoute>
-                                <VideoManager />
-                            </AdminRoute>
-                        } />
+            <Route
+              path="/admin/videos"
+              element={
+                <AdminRoute>
+                  <VideoManager />
+                </AdminRoute>
+              }
+            />
 
-                        <Route path="/contest/:id" element={
-                            <ProtectedRoute>
-                                <ContestQuiz />
-                            </ProtectedRoute>
-                        } />
+            <Route
+              path="/contest/:id"
+              element={
+                <ProtectedRoute>
+                  <ContestQuiz />
+                </ProtectedRoute>
+              }
+            />
 
-                        <Route path="/contest/:id/result" element={
-                            <ProtectedRoute>
-                                <ContestResult />
-                            </ProtectedRoute>
-                        } />
-                    </Routes>
-                    <Footer />
-                </div>
-            </AuthProvider>
-        </Router>
-    );
+            <Route
+              path="/contest/:id/result"
+              element={
+                <ProtectedRoute>
+                  <ContestResult />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+          <Footer />
+        </div>
+      </AuthProvider>
+    </Router>
+  );
 }
 
 export default App;
