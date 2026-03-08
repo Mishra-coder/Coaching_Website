@@ -30,7 +30,8 @@ A modern full-stack web application for coaching institute management with video
 
 **Frontend:** React, Vite, React Router, Axios  
 **Backend:** Node.js, Express, MongoDB, JWT  
-**Features:** Video streaming (HLS), Email (Nodemailer), Google OAuth
+**Storage:** Cloudinary (videos & images)  
+**Features:** Video streaming, Email (Nodemailer), Google OAuth, Google Sheets
 
 ## Quick Start
 
@@ -38,7 +39,7 @@ A modern full-stack web application for coaching institute management with video
 - Node.js 16+
 - MongoDB
 - Gmail account (for emails)
-- FFmpeg (for video processing)
+- Cloudinary account (for video/image storage)
 
 ### Installation
 
@@ -71,6 +72,10 @@ JWT_EXPIRE=7d
 EMAIL_USER=your_gmail@gmail.com
 EMAIL_PASSWORD=your_gmail_app_password
 
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
@@ -99,13 +104,45 @@ Backend: http://localhost:5001
 
 Use secret key `admin123` when signing up or logging in as admin.
 
+## Cloudinary Setup
+
+1. Create a free account at [Cloudinary](https://cloudinary.com/)
+2. Go to Dashboard and copy:
+   - Cloud Name
+   - API Key
+   - API Secret
+3. Add these to `backend/.env`:
+```env
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
+4. Videos will automatically upload to Cloudinary with:
+   - Automatic HLS streaming
+   - Thumbnail generation
+   - CDN delivery
+
+## Google Sheets Integration (Optional)
+
+1. Create a Google Cloud project
+2. Enable Google Sheets API
+3. Create a Service Account and download JSON key
+4. Share your Google Sheet with the service account email
+5. Add to `backend/.env`:
+```env
+GOOGLE_SERVICE_ACCOUNT_EMAIL=your-service-account@project.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+GOOGLE_SPREADSHEET_ID=your-spreadsheet-id
+```
+
 ## Key Features Explained
 
 ### Video Lectures
 - Upload videos through admin panel
-- Automatic conversion to HLS format for smooth streaming
+- Automatic Cloudinary upload with HLS streaming
 - Thumbnail generation
 - View count tracking
+- CDN-powered delivery
 
 ### Quiz System
 - Chapter-wise questions for Class 10 & 12

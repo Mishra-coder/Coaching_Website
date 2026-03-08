@@ -221,7 +221,7 @@ const VideoManager = () => {
                   <div className="video-thumbnail">
                     {video.thumbnail ? (
                       <img
-                        src={`${import.meta.env.VITE_API_URL.replace('/api', '')}/${video.thumbnail}`}
+                        src={video.thumbnail}
                         alt={video.title}
                         className="thumbnail-img"
                       />

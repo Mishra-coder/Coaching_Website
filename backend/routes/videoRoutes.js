@@ -1,42 +1,24 @@
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
 import Video from '../models/Video.js';
 import { protect } from '../middleware/auth.js';
-import {
-  convertToHLS,
-  generateThumbnail,
-  getVideoDuration,
-} from '../utils/videoProcessor.js';
+import cloudinary from '../config/cloudinary.js';
+import streamifier from 'streamifier';
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = 'uploads/videos/original';
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${file.originalname}`;
-    cb(null, uniqueName);
-  },
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: { fileSize: 500 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /mp4|avi|mov|mkv|quicktime/;
-    const extname = allowedTypes.test(
-      path.extname(file.originalname).toLowerCase()
+    const ext = allowedTypes.test(
+      file.originalname.toLowerCase().split('.').pop()
     );
-    const mimetype = allowedTypes.test(file.mimetype);
+    const mime = allowedTypes.test(file.mimetype);
 
-    if (extname || mimetype) {
+    if (ext || mime) {
       cb(null, true);
     } else {
       cb(new Error('Only video files allowed'));
@@ -55,41 +37,53 @@ router.post('/upload', protect, upload.single('video'), async (req, res) => {
         .json({ success: false, message: 'No video file uploaded' });
     }
 
-    const video = await Video.create({
+    const newVideo = await Video.create({
       title,
       description,
-      originalFile: videoFile.path,
       uploadedBy: req.user._id,
       status: 'processing',
     });
 
-    const outputFolder = `uploads/videos/hls/${video._id}`;
-    const thumbnailPath = path.join(outputFolder, 'thumbnail.jpg');
+    const uploadToCloudinary = cloudinary.uploader.upload_stream(
+      {
+        resource_type: 'video',
+        folder: 'success-mantra/videos',
+        public_id: `video_${newVideo._id}`,
+        eager: [
+          { streaming_profile: 'hd', format: 'm3u8' },
+          { width: 640, height: 360, crop: 'limit', format: 'jpg' },
+        ],
+        eager_async: true,
+      },
+      async (error, result) => {
+        if (error) {
+          newVideo.status = 'failed';
+          await newVideo.save();
+          console.error('Cloudinary upload failed:', error);
+          return;
+        }
 
-    convertToHLS(videoFile.path, outputFolder, video._id)
-      .then(async (hlsPath) => {
-        const duration = await getVideoDuration(videoFile.path);
-        await generateThumbnail(videoFile.path, thumbnailPath);
+        newVideo.cloudinaryId = result.public_id;
+        newVideo.videoUrl = result.secure_url;
+        newVideo.hlsUrl = result.eager?.[0]?.secure_url || result.secure_url;
+        newVideo.thumbnail = result.eager?.[1]?.secure_url || result.secure_url;
+        newVideo.duration = result.duration || 0;
+        newVideo.status = 'ready';
+        await newVideo.save();
 
-        video.hlsPath = hlsPath;
-        video.duration = duration;
-        video.thumbnail = thumbnailPath;
-        video.status = 'ready';
-        await video.save();
-      })
-      .catch(async (err) => {
-        video.status = 'failed';
-        await video.save();
-        console.error('Processing failed:', err);
-      });
+        console.log('Video uploaded to Cloudinary:', newVideo._id);
+      }
+    );
+
+    streamifier.createReadStream(videoFile.buffer).pipe(uploadToCloudinary);
 
     res.json({
       success: true,
       message: 'Video uploaded and processing started',
       video: {
-        id: video._id,
-        title: video.title,
-        status: video.status,
+        id: newVideo._id,
+        title: newVideo.title,
+        status: newVideo.status,
       },
     });
   } catch (error) {
@@ -99,11 +93,11 @@ router.post('/upload', protect, upload.single('video'), async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const videos = await Video.find({ status: 'ready' })
+    const allVideos = await Video.find({ status: 'ready' })
       .populate('uploadedBy', 'name email')
       .sort({ createdAt: -1 });
 
-    res.json({ success: true, videos });
+    res.json({ success: true, videos: allVideos });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -111,21 +105,21 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const video = await Video.findById(req.params.id).populate(
+    const videoData = await Video.findById(req.params.id).populate(
       'uploadedBy',
       'name email'
     );
 
-    if (!video) {
+    if (!videoData) {
       return res
         .status(404)
         .json({ success: false, message: 'Video not found' });
     }
 
-    video.views += 1;
-    await video.save();
+    videoData.views += 1;
+    await videoData.save();
 
-    res.json({ success: true, video });
+    res.json({ success: true, video: videoData });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -133,33 +127,30 @@ router.get('/:id', async (req, res) => {
 
 router.delete('/:id', protect, async (req, res) => {
   try {
-    const video = await Video.findById(req.params.id);
+    const videoToDelete = await Video.findById(req.params.id);
 
-    if (!video) {
+    if (!videoToDelete) {
       return res
         .status(404)
         .json({ success: false, message: 'Video not found' });
     }
 
-    if (
-      video.uploadedBy.toString() !== req.user._id.toString() &&
-      req.user.role !== 'admin'
-    ) {
+    const isOwner = videoToDelete.uploadedBy.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
       return res
         .status(403)
         .json({ success: false, message: 'Not authorized' });
     }
 
-    if (fs.existsSync(video.originalFile)) {
-      fs.unlinkSync(video.originalFile);
+    if (videoToDelete.cloudinaryId) {
+      await cloudinary.uploader.destroy(videoToDelete.cloudinaryId, {
+        resource_type: 'video',
+      });
     }
 
-    const hlsFolder = path.dirname(video.hlsPath);
-    if (fs.existsSync(hlsFolder)) {
-      fs.rmSync(hlsFolder, { recursive: true });
-    }
-
-    await video.deleteOne();
+    await videoToDelete.deleteOne();
 
     res.json({ success: true, message: 'Video deleted' });
   } catch (error) {

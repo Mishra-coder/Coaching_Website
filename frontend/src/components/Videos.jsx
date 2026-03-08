@@ -37,8 +37,8 @@ const Videos = () => {
     return `${mins}:${String(secs).padStart(2, '0')}`;
   };
 
-  const getImageUrl = (path) => {
-    return `${import.meta.env.VITE_API_URL.replace('/api', '')}/${path}`;
+  const getImageUrl = (url) => {
+    return url;
   };
 
   if (loading) {

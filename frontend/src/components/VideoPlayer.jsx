@@ -37,8 +37,8 @@ const VideoPlayer = () => {
     return `${mins}:${String(secs).padStart(2, '0')}`;
   };
 
-  const getVideoUrl = (path) => {
-    return `${import.meta.env.VITE_API_URL.replace('/api', '')}/${path}`;
+  const getVideoUrl = (url) => {
+    return url;
   };
 
   if (loading) {
@@ -74,12 +74,9 @@ const VideoPlayer = () => {
 
       <div className="video-player-container">
         <div className="video-player-wrapper">
-          {video.hlsPath ? (
+          {video.videoUrl ? (
             <video ref={videoRef} controls>
-              <source
-                src={getVideoUrl(video.hlsPath)}
-                type="application/x-mpegURL"
-              />
+              <source src={video.videoUrl} type="video/mp4" />
               Your browser does not support video playback.
             </video>
           ) : (

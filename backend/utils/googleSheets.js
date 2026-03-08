@@ -1,37 +1,39 @@
 import { google } from 'googleapis';
 
-const SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID;
+const spreadsheetId = process.env.GOOGLE_SPREADSHEET_ID;
+const serviceEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
 const auth = new google.auth.GoogleAuth({
   credentials: {
-    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    client_email: serviceEmail,
+    private_key: privateKey,
   },
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
-const sheets = google.sheets({ version: 'v4', auth });
+const sheetsAPI = google.sheets({ version: 'v4', auth });
 
 export async function addUserToSheet(user) {
-  if (!SPREADSHEET_ID || !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) {
+  if (!spreadsheetId || !serviceEmail) {
     console.log('Google Sheets not configured, skipping...');
     return;
   }
 
   try {
-    const currentDate = new Date().toLocaleString('en-IN');
+    const timestamp = new Date().toLocaleString('en-IN');
     const userId = user._id.toString();
     const userName = user.name || '';
     const userEmail = user.email || '';
     const userRole = user.role || 'student';
-    const verificationStatus = user.isVerified ? 'Yes' : 'No';
+    const isVerified = user.isVerified ? 'Yes' : 'No';
 
     const rowData = [
-      [currentDate, userId, userName, userEmail, userRole, verificationStatus],
+      [timestamp, userId, userName, userEmail, userRole, isVerified],
     ];
 
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
+    await sheetsAPI.spreadsheets.values.append({
+      spreadsheetId: spreadsheetId,
       range: 'Users!A:F',
       valueInputOption: 'USER_ENTERED',
       resource: { values: rowData },
@@ -44,26 +46,25 @@ export async function addUserToSheet(user) {
 }
 
 export async function addEnrollmentToSheet(enrollment, user) {
-  if (!SPREADSHEET_ID || !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) {
+  if (!spreadsheetId || !serviceEmail) {
     console.log('Google Sheets not configured, skipping...');
     return;
   }
 
   try {
-    const submissionDate = new Date().toLocaleString('en-IN');
+    const timestamp = new Date().toLocaleString('en-IN');
     const enrollmentId = enrollment._id.toString();
-
     const dob = enrollment.dateOfBirth;
-    const dateOfBirth = `${dob.day}/${dob.month}/${dob.year}`;
+    const formattedDOB = `${dob.day}/${dob.month}/${dob.year}`;
 
     const rowData = [
       [
-        submissionDate,
+        timestamp,
         enrollmentId,
         enrollment.studentName || '',
         enrollment.fatherName || '',
         enrollment.motherName || '',
-        dateOfBirth,
+        formattedDOB,
         enrollment.gender || '',
         enrollment.aadharNumber || '',
         enrollment.mobileNumber || '',
@@ -77,8 +78,8 @@ export async function addEnrollmentToSheet(enrollment, user) {
       ],
     ];
 
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
+    await sheetsAPI.spreadsheets.values.append({
+      spreadsheetId: spreadsheetId,
       range: 'Enrollments!A:P',
       valueInputOption: 'USER_ENTERED',
       resource: { values: rowData },
@@ -95,14 +96,14 @@ export async function updateEnrollmentStatusInSheet(
   status,
   adminRemarks
 ) {
-  if (!SPREADSHEET_ID || !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) {
+  if (!spreadsheetId || !serviceEmail) {
     console.log('Google Sheets not configured, skipping...');
     return;
   }
 
   try {
-    const response = await sheets.spreadsheets.values.get({
-      spreadsheetId: SPREADSHEET_ID,
+    const response = await sheetsAPI.spreadsheets.values.get({
+      spreadsheetId: spreadsheetId,
       range: 'Enrollments!A:P',
     });
 
@@ -111,22 +112,22 @@ export async function updateEnrollmentStatusInSheet(
       return;
     }
 
-    const targetEnrollmentId = enrollmentId.toString();
-    let foundRowIndex = -1;
+    const targetId = enrollmentId.toString();
+    let rowIndex = -1;
 
     for (let i = 0; i < allRows.length; i++) {
-      if (allRows[i][1] === targetEnrollmentId) {
-        foundRowIndex = i;
+      if (allRows[i][1] === targetId) {
+        rowIndex = i;
         break;
       }
     }
 
-    if (foundRowIndex !== -1) {
-      const rowNumber = foundRowIndex + 1;
+    if (rowIndex !== -1) {
+      const rowNumber = rowIndex + 1;
       const updateRange = `Enrollments!L${rowNumber}:M${rowNumber}`;
 
-      await sheets.spreadsheets.values.update({
-        spreadsheetId: SPREADSHEET_ID,
+      await sheetsAPI.spreadsheets.values.update({
+        spreadsheetId: spreadsheetId,
         range: updateRange,
         valueInputOption: 'USER_ENTERED',
         resource: {

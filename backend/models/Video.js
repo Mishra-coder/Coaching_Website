@@ -10,11 +10,15 @@ const videoSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
-  originalFile: {
+  cloudinaryId: {
     type: String,
-    required: true,
+    default: '',
   },
-  hlsPath: {
+  videoUrl: {
+    type: String,
+    default: '',
+  },
+  hlsUrl: {
     type: String,
     default: '',
   },
@@ -31,12 +35,6 @@ const videoSchema = new mongoose.Schema({
     enum: ['processing', 'ready', 'failed'],
     default: 'processing',
   },
-  qualities: [
-    {
-      quality: String,
-      path: String,
-    },
-  ],
   uploadedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
