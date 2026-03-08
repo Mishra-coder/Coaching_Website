@@ -324,12 +324,12 @@ export async function sendEnrollmentConfirmation(user, enrollment) {
                                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 30px 0;">
                                     <tr>
                                         <td align="center" style="padding: 0 0 15px 0;">
-                                            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=approve" style="display: inline-block; padding: 15px 30px; background-color: #28a745; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 15px rgba(40,167,69,0.3); margin: 5px;">Approve Application</a>
+                                            <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin?id=${enrollment._id}&action=approve" style="display: inline-block; padding: 15px 30px; background-color: #28a745; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 15px rgba(40,167,69,0.3); margin: 5px;">Approve Application</a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align="center">
-                                            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=cancel" style="display: inline-block; padding: 15px 30px; background-color: #dc3545; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 15px rgba(220,53,69,0.3); margin: 5px;">Cancel Application</a>
+                                            <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin?id=${enrollment._id}&action=cancel" style="display: inline-block; padding: 15px 30px; background-color: #dc3545; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 15px rgba(220,53,69,0.3); margin: 5px;">Cancel Application</a>
                                         </td>
                                     </tr>
                                 </table>

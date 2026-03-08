@@ -172,10 +172,10 @@ export async function sendResubmitConfirmation(user, enrollment) {
                 </div>
                 
                 <div class="action-buttons">
-                    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=approve" class="btn btn-approve">
+                    <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin?id=${enrollment._id}&action=approve" class="btn btn-approve">
                         Approve Application
                     </a>
-                    <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin?id=${enrollment._id}&action=cancel" class="btn btn-cancel">
+                    <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin?id=${enrollment._id}&action=cancel" class="btn btn-cancel">
                         Cancel Application
                     </a>
                 </div>

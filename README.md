@@ -1,195 +1,128 @@
 # Success Mantra Institute - Coaching Website
 
-A modern, full-stack web application for Success Mantra coaching institute featuring student enrollment, quiz system, contest management, and comprehensive admin panel.
+A modern full-stack web application for coaching institute management with video lectures, quizzes, contests, and admin panel.
 
-![React](https://img.shields.io/badge/React-18.2.0-blue)
-![Node.js](https://img.shields.io/badge/Node.js-Express-green)
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
-![JWT](https://img.shields.io/badge/Auth-JWT-orange)
+![React](https://img.shields.io/badge/React-18.2.0-blue?logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-8.0.3-brightgreen?logo=mongodb)
+![License](https://img.shields.io/badge/License-Educational-blue)
 
-## Features
+## What's Inside
 
-### Student Features
-- **User Authentication** - Secure signup and login with JWT
-- **Course Catalog** - Browse Foundation, Board, and Competitive exam courses
-- **Online Enrollment** - Digital admission form with photo upload
-- **Interactive Quizzes** - Chapter-wise practice questions for Class 10 & 12
-- **Contest System** - Participate in timed contests with XP rewards and leaderboards
-- **Demo Booking** - Schedule free demo classes
-- **User Profile** - Track enrollments, quiz history, and contest performance
-- **Email Notifications** - Receive confirmation and status update emails
+### For Students
+- Secure login with email or Google account
+- Browse and enroll in courses
+- Watch video lectures with HLS streaming
+- Take chapter-wise quizzes
+- Participate in timed contests
+- Track your progress and XP points
+- Book free demo classes
 
-### Admin Features
-- **Admin Dashboard** - Overview of all platform statistics
-- **Student Management** - View and manage all registered students
-- **Enrollment Management** - Review, approve, or reject admission forms with remarks
-- **Question Bank** - Add, edit, and manage quiz questions (supports bulk CSV/Excel upload)
-- **Contest Management** - Create and manage contests with bulk question upload
-- **Demo Booking Management** - Handle demo class requests
-- **Email System** - Automated notifications to students
-- **Google Sheets Integration** - Automatic data backup (optional)
-
-### Technical Features
-- **Responsive Design** - Works seamlessly on mobile, tablet, and desktop
-- **Real-time Updates** - Dynamic content loading
-- **Secure Authentication** - Password hashing and JWT tokens
-- **File Upload** - Photo upload for enrollments
-- **Email Integration** - Gmail SMTP for notifications
-- **Data Backup** - Optional Google Sheets auto-sync
+### For Admins
+- Manage students and enrollments
+- Upload and manage video lectures
+- Create quizzes and contests
+- Review demo booking requests
+- Send email notifications
+- Export data to Google Sheets
 
 ## Tech Stack
 
-### Frontend
-- React 18.2.0
-- React Router DOM 7.9.6
-- Vite 4.4.5
-- Axios 1.6.2
-- FontAwesome 6.4.0
-- Custom CSS with modern design
+**Frontend:** React, Vite, React Router, Axios  
+**Backend:** Node.js, Express, MongoDB, JWT  
+**Features:** Video streaming (HLS), Email (Nodemailer), Google OAuth
 
-### Backend
-- Node.js with Express 4.18.2
-- MongoDB with Mongoose 8.0.3
-- JWT 9.0.2 for authentication
-- bcryptjs 2.4.3 for password hashing
-- Nodemailer 8.0.1 for emails
-- Multer for file uploads
-- XLSX for Excel file processing
-- Google Sheets API (optional)
-
-## Installation
+## Quick Start
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or MongoDB Atlas)
-- Gmail account (for email notifications)
+- Node.js 16+
+- MongoDB
+- Gmail account (for emails)
+- FFmpeg (for video processing)
 
-### 1. Clone Repository
+### Installation
+
+1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/Mishra-coder/Coaching_Website.git
 cd Coaching_Website
 ```
 
-### 2. Install Dependencies
-
-**Backend:**
+2. Install dependencies
 ```bash
+# Backend
 cd backend
 npm install
-```
 
-**Frontend:**
-```bash
+# Frontend
 cd frontend
 npm install
 ```
 
-### 3. Environment Configuration
+3. Setup environment variables
 
 Create `backend/.env`:
 ```env
 PORT=5001
-NODE_ENV=development
-
 MONGODB_URI=mongodb://localhost:27017/success-mantra
-
-JWT_SECRET=your-secret-key-here
+JWT_SECRET=your-secret-key
 JWT_EXPIRE=7d
 
 EMAIL_USER=your_gmail@gmail.com
 EMAIL_PASSWORD=your_gmail_app_password
-ADMIN_EMAIL=your_gmail@gmail.com
 
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_CALLBACK_URL=http://localhost:5001/api/auth/google/callback
-
-# Optional: Google Sheets Integration
-GOOGLE_SERVICE_ACCOUNT_EMAIL=
-GOOGLE_PRIVATE_KEY=
-GOOGLE_SPREADSHEET_ID=
 ```
 
 Create `frontend/.env.local`:
 ```env
-VITE_API_URL=http://localhost:5001
+VITE_API_URL=http://localhost:5001/api
 VITE_GOOGLE_CLIENT_ID=your-google-client-id
 ```
 
-### 4. Setup Gmail for Emails
-1. Enable 2-Step Verification in Google Account
-2. Generate App Password: https://myaccount.google.com/apppasswords
-3. Use the 16-digit password in `EMAIL_PASSWORD`
-
-### 5. Setup MongoDB
-**Option A: Local MongoDB**
+4. Run the application
 ```bash
-# macOS
-brew services start mongodb-community
-
-# Linux
-sudo systemctl start mongod
-```
-
-**Option B: MongoDB Atlas**
-1. Create account at mongodb.com/cloud/atlas
-2. Create cluster and get connection string
-3. Update `MONGODB_URI` in `.env`
-
-## Running the Application
-
-**Terminal 1 - Backend:**
-```bash
+# Terminal 1 - Backend
 cd backend
 npm run dev
-```
-Backend runs on: http://localhost:5001
 
-**Terminal 2 - Frontend:**
-```bash
+# Terminal 2 - Frontend
 cd frontend
 npm run dev
 ```
-Frontend runs on: http://localhost:5173
 
-## Default Admin Credentials
+Frontend: http://localhost:3000  
+Backend: http://localhost:5001
 
-**Admin Secret Key:** `admin123`
+## Admin Access
 
-Use this key when signing up or logging in as admin.
+Use secret key `admin123` when signing up or logging in as admin.
 
-## API Endpoints
+## Key Features Explained
 
-### Authentication
-- `POST /api/auth/signup` - Student signup
-- `POST /api/auth/admin-register` - Admin signup (requires secret key)
-- `POST /api/auth/login` - Login (admin requires secret key)
-- `GET /api/auth/me` - Get current user
-- `PUT /api/auth/profile` - Update profile
+### Video Lectures
+- Upload videos through admin panel
+- Automatic conversion to HLS format for smooth streaming
+- Thumbnail generation
+- View count tracking
 
-### Courses
-- `GET /api/courses` - Get all courses
-- `GET /api/courses/:id` - Get single course
+### Quiz System
+- Chapter-wise questions for Class 10 & 12
+- Instant results with XP rewards
+- Quiz history tracking
+- Bulk question upload via Excel/CSV
 
-### Enrollments
-- `POST /api/enrollments` - Submit enrollment
-- `GET /api/enrollments/user/:userId` - Get user enrollments
-- `PUT /api/enrollments/:id/status` - Update enrollment status (admin)
+### Contest System
+- Timed contests with leaderboards
+- XP-based ranking
+- Automatic result calculation
+- Contest history
 
-### Quizzes
-- `GET /api/quiz/questions` - Get quiz questions
-- `POST /api/quiz/submit` - Submit quiz result
-- `GET /api/quiz/history` - Get quiz history
-
-### Contests
-- `GET /api/contests` - Get all contests
-- `POST /api/contests` - Create contest (admin)
-- `POST /api/contests/:id/submit` - Submit contest
-- `GET /api/contests/:id/leaderboard` - Get leaderboard
-
-### Demo Bookings
-- `POST /api/demo-bookings` - Book demo class
-- `GET /api/demo-bookings` - Get all bookings (admin)
+### Email Notifications
+- Welcome emails on signup
+- Enrollment status updates
+- Demo booking confirmations
 
 ## Project Structure
 
@@ -197,150 +130,73 @@ Use this key when signing up or logging in as admin.
 Coaching_Website/
 ├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── Admin/          # Admin panel components
-│   │   │   ├── SignUp.jsx      # Signup page
-│   │   │   ├── Login.jsx       # Login page
-│   │   │   ├── Home.jsx        # Landing page
-│   │   │   ├── Courses.jsx     # Course catalog
-│   │   │   ├── Enrollment.jsx  # Admission form
-│   │   │   ├── Quiz.jsx        # Quiz system
-│   │   │   ├── ContestQuiz.jsx # Contest page
-│   │   │   ├── Profile.jsx     # User profile
-│   │   │   └── ...
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx # Authentication state
-│   │   ├── services/
-│   │   │   └── api.js          # API calls
-│   │   ├── App.jsx
-│   │   └── index.css
+│   │   ├── components/      # React components
+│   │   ├── context/         # Auth context
+│   │   ├── services/        # API calls
+│   │   └── index.css        # Styles
 │   └── package.json
 │
 ├── backend/
-│   ├── config/
-│   │   ├── db.js               # MongoDB connection
-│   │   └── googleAuth.js       # Google OAuth
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Course.js
-│   │   ├── Enrollment.js
-│   │   ├── Question.js
-│   │   ├── QuizResult.js
-│   │   ├── Contest.js
-│   │   ├── ContestResult.js
-│   │   └── DemoBooking.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── courseRoutes.js
-│   │   ├── enrollmentRoutes.js
-│   │   ├── questionRoutes.js
-│   │   ├── quizRoutes.js
-│   │   ├── contestRoutes.js
-│   │   └── demoBookingRoutes.js
-│   ├── middleware/
-│   │   └── auth.js             # JWT verification
-│   ├── utils/
-│   │   ├── email.js            # Email notifications
-│   │   ├── emailResubmit.js    # Resubmit emails
-│   │   └── googleSheets.js     # Google Sheets sync
-│   ├── server.js
-│   └── package.json
+│   ├── config/              # Database & OAuth config
+│   ├── models/              # MongoDB models
+│   ├── routes/              # API routes
+│   ├── middleware/          # Auth middleware
+│   ├── utils/               # Email, video processing
+│   ├── uploads/             # Video files
+│   └── server.js
 │
 └── README.md
 ```
 
-## Database Schema
+## API Endpoints
 
-### User
-```javascript
-{
-  name: String,
-  email: String (unique),
-  password: String (hashed),
-  role: String (student/admin),
-  isVerified: Boolean,
-  createdAt: Date
-}
-```
+### Authentication
+- `POST /api/auth/signup` - Register new user
+- `POST /api/auth/login` - Login
+- `POST /api/auth/google` - Google OAuth login
 
-### Enrollment
-```javascript
-{
-  user: ObjectId,
-  studentName: String,
-  fatherName: String,
-  motherName: String,
-  dateOfBirth: { day, month, year },
-  gender: String,
-  aadharNumber: String,
-  mobileNumber: String,
-  address: String,
-  photo: String (base64),
-  status: String (pending/active/cancelled),
-  adminRemarks: String,
-  createdAt: Date
-}
-```
+### Videos
+- `GET /api/videos` - Get all videos
+- `POST /api/videos/upload` - Upload video (admin)
+- `DELETE /api/videos/:id` - Delete video (admin)
 
-### Contest
-```javascript
-{
-  title: String,
-  description: String,
-  questions: [ObjectId],
-FRONTEND_URL=http://localhost:3000
-  startTime: Date,
-  endTime: Date,
-  isActive: Boolean,
-  createdAt: Date
-}
-```
+### Quizzes
+- `GET /api/quiz/questions` - Get questions
+- `POST /api/quiz/submit` - Submit quiz
 
-## Optional: Google Sheets Integration
+### Contests
+- `GET /api/contests` - Get contests
+- `POST /api/contests/:id/submit` - Submit contest
 
-Automatically backup user signups and enrollments to Google Sheets.
+### Enrollments
+- `POST /api/enrollments` - Submit enrollment
+- `PUT /api/enrollments/:id/status` - Update status (admin)
 
-### Setup Steps:
-1. Create Google Cloud project
-2. Enable Google Sheets API
-3. Create Service Account and download JSON key
-4. Create Google Sheet with "Users" and "Enrollments" tabs
-5. Share sheet with service account email
-6. Add credentials to `.env` file
+## Security
 
-See `backend/GOOGLE_SHEETS_SETUP.md` for detailed instructions.
-
-## Design System
-
-### Colors
-- Primary: Indigo (#4f46e5)
-- Secondary: Amber (#f59e0b)
-- Accent: Cyan (#06b6d4)
-- Background: Slate (#f8fafc)
-
-### Typography
-- Font: Outfit (Google Fonts)
-- Weights: 300, 400, 500, 600, 700, 800
-
-## Security Features
 - Password hashing with bcrypt
-- JWT token authentication
-- Protected routes
-- CORS configuration
-- Input validation
+- JWT authentication
+- Protected admin routes
 - Secure file uploads
-- Admin secret key protection
+- Input validation
 
 ## Browser Support
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers
+
+Works on all modern browsers including Chrome, Firefox, Safari, Edge, and mobile browsers.
+
+## Contributing
+
+Contributions are welcome! Feel free to submit a Pull Request.
 
 ## License
+
 Educational purposes only.
+
+## Author
+
+**Devendra Mishra**  
+GitHub: [@Mishra-coder](https://github.com/Mishra-coder)
 
 ---
 
-**Made with for Success Mantra Institute**
+Made with ❤️ for Success Mantra Institute
