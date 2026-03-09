@@ -17,9 +17,22 @@ router.post('/register', async (req, res) => {
     const { name, email, password, phone } = req.body;
     console.log('Registration attempt:', { name, email, phone });
 
-    const validEmailPattern =
-      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
-    if (!validEmailPattern.test(email)) {
+    const emailLower = email.toLowerCase();
+    const hasAtSymbol = emailLower.includes('@');
+    const parts = emailLower.split('@');
+    
+    let isValidEmail = false;
+    if (hasAtSymbol && parts.length === 2) {
+      const domain = parts[1];
+      if (domain.endsWith('.com') || domain.endsWith('.in') || 
+          domain.endsWith('.org') || domain.endsWith('.net') || 
+          domain.endsWith('.edu') || domain.endsWith('.gov') ||
+          domain.endsWith('.co.in') || domain.endsWith('.ac.in')) {
+        isValidEmail = true;
+      }
+    }
+
+    if (!isValidEmail) {
       return res.status(400).json({
         success: false,
         message:
@@ -34,8 +47,18 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-    if (!strongPasswordPattern.test(password)) {
+    let hasLowercase = false;
+    let hasUppercase = false;
+    let hasNumber = false;
+
+    for (let i = 0; i < password.length; i++) {
+      const char = password[i];
+      if (char >= 'a' && char <= 'z') hasLowercase = true;
+      if (char >= 'A' && char <= 'Z') hasUppercase = true;
+      if (char >= '0' && char <= '9') hasNumber = true;
+    }
+
+    if (!hasLowercase || !hasUppercase || !hasNumber) {
       return res.status(400).json({
         success: false,
         message:
@@ -91,9 +114,22 @@ router.post('/admin-register', async (req, res) => {
   try {
     const { name, email, password, secretKey } = req.body;
 
-    const validEmailPattern =
-      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
-    if (!validEmailPattern.test(email)) {
+    const emailLower = email.toLowerCase();
+    const hasAtSymbol = emailLower.includes('@');
+    const parts = emailLower.split('@');
+    
+    let isValidEmail = false;
+    if (hasAtSymbol && parts.length === 2) {
+      const domain = parts[1];
+      if (domain.endsWith('.com') || domain.endsWith('.in') || 
+          domain.endsWith('.org') || domain.endsWith('.net') || 
+          domain.endsWith('.edu') || domain.endsWith('.gov') ||
+          domain.endsWith('.co.in') || domain.endsWith('.ac.in')) {
+        isValidEmail = true;
+      }
+    }
+
+    if (!isValidEmail) {
       return res.status(400).json({
         success: false,
         message:
@@ -108,8 +144,18 @@ router.post('/admin-register', async (req, res) => {
       });
     }
 
-    const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-    if (!strongPasswordPattern.test(password)) {
+    let hasLowercase = false;
+    let hasUppercase = false;
+    let hasNumber = false;
+
+    for (let i = 0; i < password.length; i++) {
+      const char = password[i];
+      if (char >= 'a' && char <= 'z') hasLowercase = true;
+      if (char >= 'A' && char <= 'Z') hasUppercase = true;
+      if (char >= '0' && char <= '9') hasNumber = true;
+    }
+
+    if (!hasLowercase || !hasUppercase || !hasNumber) {
       return res.status(400).json({
         success: false,
         message:

@@ -148,10 +148,13 @@ const QuestionManager = () => {
       'text/csv',
     ];
 
-    if (
-      !validTypes.includes(file.type) &&
-      !file.name.match(/\.(xlsx|xls|csv)$/i)
-    ) {
+    const fileName = file.name.toLowerCase();
+    const hasValidExtension = 
+      fileName.endsWith('.xlsx') || 
+      fileName.endsWith('.xls') || 
+      fileName.endsWith('.csv');
+
+    if (!validTypes.includes(file.type) && !hasValidExtension) {
       setToast({
         message:
           'Invalid file type. Please upload .xlsx, .xls, or .csv file only.',

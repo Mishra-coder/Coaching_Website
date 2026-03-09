@@ -31,9 +31,20 @@ const SignUp = () => {
     e.preventDefault();
     setError('');
 
-    const validEmailPattern =
-      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov|co\.in|ac\.in)$/;
-    const isValidEmail = validEmailPattern.test(formData.email);
+    const emailLower = formData.email.toLowerCase();
+    const hasAtSymbol = emailLower.includes('@');
+    const parts = emailLower.split('@');
+    
+    let isValidEmail = false;
+    if (hasAtSymbol && parts.length === 2) {
+      const domain = parts[1];
+      if (domain.endsWith('.com') || domain.endsWith('.in') || 
+          domain.endsWith('.org') || domain.endsWith('.net') || 
+          domain.endsWith('.edu') || domain.endsWith('.gov') ||
+          domain.endsWith('.co.in') || domain.endsWith('.ac.in')) {
+        isValidEmail = true;
+      }
+    }
 
     if (!isValidEmail) {
       setError(
@@ -48,10 +59,18 @@ const SignUp = () => {
       return;
     }
 
-    const strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-    const isStrongPassword = strongPasswordPattern.test(formData.password);
+    let hasLowercase = false;
+    let hasUppercase = false;
+    let hasNumber = false;
 
-    if (!isStrongPassword) {
+    for (let i = 0; i < formData.password.length; i++) {
+      const char = formData.password[i];
+      if (char >= 'a' && char <= 'z') hasLowercase = true;
+      if (char >= 'A' && char <= 'Z') hasUppercase = true;
+      if (char >= '0' && char <= '9') hasNumber = true;
+    }
+
+    if (!hasLowercase || !hasUppercase || !hasNumber) {
       setError(
         'Password must contain at least one uppercase letter, one lowercase letter, and one number'
       );

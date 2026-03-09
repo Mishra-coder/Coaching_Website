@@ -264,10 +264,14 @@ router.post('/bulk-upload', protect, authorize('admin'), async (req, res) => {
         if (!chapterName) chapterName = getFieldByIndex(7);
 
         if (classLevel) {
-          classLevel = classLevel
-            .replace(/class\s*/gi, '')
-            .replace(/grade\s*/gi, '')
-            .trim();
+          classLevel = classLevel.toLowerCase();
+          if (classLevel.includes('class')) {
+            classLevel = classLevel.replace('class', '').trim();
+          }
+          if (classLevel.includes('grade')) {
+            classLevel = classLevel.replace('grade', '').trim();
+          }
+          classLevel = classLevel.trim();
         }
 
         const options = [opt1, opt2, opt3, opt4].filter(
@@ -276,11 +280,18 @@ router.post('/bulk-upload', protect, authorize('admin'), async (req, res) => {
 
         let finalCorrectAnswer = correctAns;
 
-        if (correctAns && correctAns.match(/option\s*[1-4]/i)) {
-          const optionNum = correctAns.match(/[1-4]/)[0];
-          const optionIndex = parseInt(optionNum) - 1;
-          if (options[optionIndex]) {
-            finalCorrectAnswer = options[optionIndex];
+        if (correctAns) {
+          const lowerCorrectAns = correctAns.toLowerCase();
+          if (lowerCorrectAns.includes('option')) {
+            for (let i = 1; i <= 4; i++) {
+              if (lowerCorrectAns.includes(i.toString())) {
+                const optionIndex = i - 1;
+                if (options[optionIndex]) {
+                  finalCorrectAnswer = options[optionIndex];
+                }
+                break;
+              }
+            }
           }
         }
 

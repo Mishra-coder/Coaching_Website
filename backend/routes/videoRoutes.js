@@ -12,13 +12,15 @@ const upload = multer({
   storage,
   limits: { fileSize: 500 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /mp4|avi|mov|mkv|quicktime/;
-    const ext = allowedTypes.test(
-      file.originalname.toLowerCase().split('.').pop()
-    );
-    const mime = allowedTypes.test(file.mimetype);
-
-    if (ext || mime) {
+    const fileName = file.originalname.toLowerCase();
+    const fileType = file.mimetype.toLowerCase();
+    
+    const isMP4 = fileName.endsWith('.mp4') || fileType === 'video/mp4';
+    const isAVI = fileName.endsWith('.avi') || fileType === 'video/x-msvideo';
+    const isMOV = fileName.endsWith('.mov') || fileType === 'video/quicktime';
+    const isMKV = fileName.endsWith('.mkv') || fileType === 'video/x-matroska';
+    
+    if (isMP4 || isAVI || isMOV || isMKV) {
       cb(null, true);
     } else {
       cb(new Error('Only video files allowed'));
