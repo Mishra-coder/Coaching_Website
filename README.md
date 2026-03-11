@@ -47,6 +47,32 @@ This is a full-featured coaching institute website where students can enroll in 
 - Google Sheets API for data backup
 - Multer for file uploads
 
+## Architecture Diagram
+
+Here is a high-level diagram that illustrates the architecture of the Success Mantra Institute platform:
+
+```mermaid
+graph LR
+    subgraph Frontend
+        A[ReactJS<br/>UI Components<br/>API calls]
+    end
+    
+    subgraph Backend
+        B[NodeJS<br/>ExpressJS<br/>API endpoints]
+    end
+    
+    subgraph Database
+        C[MongoDB<br/>Collections<br/>Documents]
+    end
+    
+    A -->|RESTful API| B
+    B -->|MongoDB| C
+    
+    style Frontend fill:#e1f5ff
+    style Backend fill:#fff4e1
+    style Database fill:#e8f5e9
+```
+
 ## Getting Started
 
 ### What You Need
