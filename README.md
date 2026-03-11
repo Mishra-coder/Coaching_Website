@@ -2,6 +2,223 @@
 
 A complete web platform for coaching institute management built with React and Node.js. This application handles everything from student enrollment to video lectures, quizzes, and contests.
 
+## Architecture Diagram
+
+```mermaid
+graph TB
+    subgraph Frontend["Frontend (React + Vite)"]
+        UI[User Interface]
+        Auth[Authentication]
+        Router[React Router]
+        API_Client[API Client - Axios]
+    end
+    
+    subgraph Backend["Backend (Node.js + Express)"]
+        API[REST API]
+        AuthMW[Auth Middleware]
+        Routes[Route Handlers]
+        Controllers[Business Logic]
+    end
+    
+    subgraph Database["Database (MongoDB)"]
+        Users[(Users)]
+        Courses[(Courses)]
+        Videos[(Videos)]
+        Questions[(Questions)]
+        QuizResults[(Quiz Results)]
+        Contests[(Contests)]
+        ContestResults[(Contest Results)]
+        Enrollments[(Enrollments)]
+        DemoBookings[(Demo Bookings)]
+    end
+    
+    subgraph External["External Services"]
+        Cloudinary[Cloudinary - Video Storage]
+        Gmail[Gmail - Email Service]
+        GoogleSheets[Google Sheets - Backup]
+        GoogleOAuth[Google OAuth]
+    end
+    
+    UI --> Router
+    Router --> Auth
+    Auth --> API_Client
+    API_Client -->|HTTP/REST| API
+    
+    API --> AuthMW
+    AuthMW --> Routes
+    Routes --> Controllers
+    
+    Controllers --> Users
+    Controllers --> Courses
+    Controllers --> Videos
+    Controllers --> Questions
+    Controllers --> QuizResults
+    Controllers --> Contests
+    Controllers --> ContestResults
+    Controllers --> Enrollments
+    Controllers --> DemoBookings
+    
+    Controllers -->|Upload Videos| Cloudinary
+    Controllers -->|Send Emails| Gmail
+    Controllers -->|Backup Data| GoogleSheets
+    Auth -->|OAuth Login| GoogleOAuth
+    
+    style Frontend fill:#e1f5ff
+    style Backend fill:#fff4e1
+    style Database fill:#e8f5e9
+    style External fill:#fce4ec
+```
+
+## Database Schema
+
+```mermaid
+erDiagram
+    Users ||--o{ QuizResults : takes
+    Users ||--o{ ContestResults : participates
+    Users ||--o{ Enrollments : submits
+    Users ||--o{ DemoBookings : books
+    Users ||--o{ Videos : uploads
+    
+    Courses ||--o{ Videos : contains
+    Courses ||--o{ Enrollments : enrolls_in
+    
+    Contests ||--o{ ContestResults : has
+    
+    Users {
+        ObjectId _id PK
+        String name
+        String email UK
+        String password
+        String role
+        String phone
+        String address
+        Number xp
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    
+    Courses {
+        ObjectId _id PK
+        String title UK
+        String description
+        String category
+        Number price
+        String duration
+        String level
+        Boolean isActive
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    
+    Videos {
+        ObjectId _id PK
+        String title
+        String description
+        String cloudinaryId
+        String videoUrl
+        String hlsUrl
+        String thumbnail
+        Number duration
+        ObjectId courseId FK
+        String class
+        String chapter
+        ObjectId uploadedBy FK
+        Number views
+        String status
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    
+    Questions {
+        ObjectId _id PK
+        String question
+        Array options
+        String correctAnswer
+        String class
+        String chapter
+        Boolean isActive
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    
+    QuizResults {
+        ObjectId _id PK
+        ObjectId userId FK
+        String class
+        String chapter
+        Number score
+        Number totalQuestions
+        Number xpEarned
+        Array answers
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    
+    Contests {
+        ObjectId _id PK
+        String title UK
+        String description
+        Array questions
+        DateTime startTime
+        Number duration
+        DateTime endTime
+        String status
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    
+    ContestResults {
+        ObjectId _id PK
+        ObjectId userId FK
+        ObjectId contestId FK
+        Number score
+        Number totalQuestions
+        Number timeTaken
+        Array answers
+        Number rank
+        DateTime submittedAt
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    
+    Enrollments {
+        ObjectId _id PK
+        String studentName
+        String fatherName
+        String motherName
+        Date dateOfBirth
+        String gender
+        String aadharNumber UK
+        String mobileNumber
+        String address
+        String class
+        String board
+        String competitiveCourse
+        String status
+        String adminRemarks
+        ObjectId userId FK
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    
+    DemoBookings {
+        ObjectId _id PK
+        String studentName
+        String parentName
+        String mobileNumber
+        String email
+        String class
+        String subject
+        Date preferredDate
+        String preferredTime
+        String status
+        String adminRemarks
+        ObjectId userId FK
+        DateTime createdAt
+        DateTime updatedAt
+    }
+```
+
 ## What This Project Does
 
 This is a full-featured coaching institute website where students can enroll in courses, watch video lectures, take quizzes, and participate in contests. Admins can manage everything through a dedicated dashboard.
