@@ -18,10 +18,10 @@ router.get('/', protect, async (req, res) => {
 router.get('/active', protect, async (req, res) => {
   try {
     const currentTime = new Date();
+    // Fetch all scheduled/active contests (including upcoming ones)
     const scheduledContests = await Contest.find({
-      startTime: { $lte: currentTime },
       status: { $in: ['scheduled', 'active'] },
-    }).sort({ startTime: -1 });
+    }).sort({ startTime: 1 }); // Sort by startTime ascending (earliest first)
 
     const activeContestsList = scheduledContests.map((contest) => {
       const contestEndTime = new Date(
