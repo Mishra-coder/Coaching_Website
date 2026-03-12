@@ -1031,8 +1031,8 @@ footer {
 
 @media (max-width: 480px) {
   .hero-container {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 20px;
     align-items: center;
   }
 
@@ -1051,8 +1051,8 @@ footer {
 
   .hero-content p {
     font-size: 0.8rem;
-    line-height: 1.3;
-    margin: 0 auto 15px;
+    line-height: 1.4;
+    margin: 0 auto 12px;
   }
 
   .badge {
@@ -1063,16 +1063,16 @@ footer {
 
   .hero-btns {
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 20px;
     align-items: center;
   }
 
   .btn-primary,
   .btn-secondary {
-    padding: 10px 20px;
-    font-size: 0.8rem;
-    width: 100%;
+    padding: 12px 24px;
+    font-size: 0.85rem;
+    width: 90%;
   }
 
   .stats {
@@ -1087,12 +1087,12 @@ footer {
   }
 
   .stat-item h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 4px;
   }
 
   .stat-item p {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
 
   .btn-white {
@@ -1123,6 +1123,42 @@ footer {
   .btn-secondary {
     padding: 12px 20px;
     font-size: 0.9rem;
+  }
+
+  .programs-page {
+    padding-top: 85px !important;
+  }
+
+  .about-page {
+    padding-top: 85px !important;
+  }
+
+  .quiz-page {
+    padding-top: 85px !important;
+  }
+
+  .profile-page {
+    padding-top: 85px !important;
+  }
+
+  .contests-page {
+    padding-top: 85px !important;
+  }
+
+  .category-card {
+    padding: 15px !important;
+  }
+
+  .category-title {
+    font-size: 1.1rem !important;
+  }
+
+  .demo-container {
+    padding: 25px 15px !important;
+  }
+
+  .demo-header h1 {
+    font-size: 22px !important;
   }
 }
 
@@ -1612,6 +1648,16 @@ footer .footer-logo-img {
   color: rgba(255, 255, 255, 0.8);
 }
 
+.address-link {
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.address-link:hover {
+  color: var(--secondary);
+  opacity: 1;
+}
+
 .copyright-text {
   display: flex;
   align-items: center;
@@ -2015,10 +2061,42 @@ footer .footer-logo-img {
   .note-content p {
     font-size: 0.95rem;
   }
+
+  .about-page {
+    padding-top: 100px !important;
+  }
+
+  .vision-mission-row {
+    margin-top: 2rem;
+  }
+
+  .vision-card,
+  .mission-card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .quiz-page {
+    padding-top: 100px !important;
+  }
+
+  .class-card {
+    width: 100% !important;
+    padding: 30px !important;
+  }
+
+  .class-title {
+    font-size: 1.6rem !important;
+  }
+
+  .class-select-container {
+    gap: 20px !important;
+  }
 }
 
 .programs-page {
   padding-top: 120px;
+  padding-bottom: 80px;
   min-height: 100vh;
 }
 
@@ -3162,6 +3240,10 @@ footer .footer-logo-img {
   padding-bottom: 60px;
 }
 
+.profile-page .container {
+  max-width: 800px;
+}
+
 .profile-card {
   background: #fff;
   border-radius: 20px;
@@ -3745,6 +3827,9 @@ footer .footer-logo-img {
   gap: 15px;
   z-index: 2;
   animation: float 3s ease-in-out infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .floating-card i {
@@ -4179,14 +4264,16 @@ footer .footer-logo-img {
     position: absolute !important;
     display: flex !important;
     margin: 0 !important;
-    transform: none !important;
-    animation: none !important;
+    animation: float 3s ease-in-out infinite !important;
     max-width: 160px !important;
     font-size: 0.75rem !important;
     padding: 10px 14px !important;
     visibility: visible !important;
     opacity: 1 !important;
     z-index: 10 !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
   }
 
   .card-1 {
@@ -4197,6 +4284,7 @@ footer .footer-logo-img {
   .card-2 {
     bottom: 15px !important;
     right: 15px !important;
+    animation-delay: 1.5s !important;
   }
 
   .floating-card i {
@@ -4261,48 +4349,165 @@ footer .footer-logo-img {
   }
 
   .hero-content h1 {
-    font-size: 1.8rem !important;
+    font-size: 1.3rem !important;
   }
 
   .hero {
     padding-top: 100px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .hero-content h1 {
+    font-size: 1.2rem !important;
+  }
+
+  .hero-content p {
+    font-size: 0.7rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  .badge {
+    font-size: 0.6rem !important;
+    padding: 3px 8px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .hero-btns {
+    margin-bottom: 10px !important;
+    gap: 6px !important;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 8px 16px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .stats {
+    padding-top: 8px !important;
+    gap: 10px !important;
+  }
+
+  .stat-item h3 {
+    font-size: 1rem !important;
+  }
+
+  .stat-item p {
+    font-size: 0.6rem !important;
+  }
+
+  .hero-image {
+    margin-top: 10px !important;
+  }
+
+  .programs-page {
+    padding-top: 90px !important;
+  }
+
+  .section-subtitle-text {
+    font-size: 1.3rem !important;
+  }
+
+  .category-title {
+    font-size: 1.2rem !important;
+  }
+
+  .skill-tag {
+    font-size: 0.75rem !important;
+    padding: 5px 12px !important;
+  }
+
+  .enroll-text {
+    font-size: 0.9rem !important;
+  }
+
+  .enroll-icon {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .about-page {
+    padding-top: 90px !important;
+  }
+
+  .vision-card,
+  .mission-card {
+    padding: 15px !important;
+  }
+
+  .vision-title,
+  .mission-title {
+    font-size: 1.2rem !important;
+  }
+
+  .card-text {
+    font-size: 0.9rem !important;
+  }
+
+  .quiz-page {
+    padding-top: 90px !important;
+  }
+
+  .class-card {
+    padding: 25px !important;
+  }
+
+  .class-title {
+    font-size: 1.4rem !important;
+  }
+
+  .class-subtitle {
+    font-size: 0.9rem !important;
   }
 
   .hero-image {
     display: block !important;
-    margin-top: 40px !important;
+    margin-top: 20px !important;
     width: 100% !important;
-    max-width: 350px !important;
+    max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    position: relative !important;
+    padding: 0 !important;
+  }
+
+  .image-wrapper {
+    position: relative !important;
+    overflow: visible !important;
+    border-radius: 20px !important;
   }
 
   .image-wrapper img {
     transform: none !important;
+    width: 100% !important;
+    border-radius: 20px !important;
   }
 
   .floating-card {
     position: absolute !important;
     display: flex !important;
     margin: 0 !important;
-    transform: none !important;
-    animation: none !important;
-    max-width: 140px !important;
-    font-size: 0.7rem !important;
-    padding: 8px 12px !important;
+    animation: float 3s ease-in-out infinite !important;
+    max-width: 160px !important;
+    font-size: 0.75rem !important;
+    padding: 10px 14px !important;
     visibility: visible !important;
     opacity: 1 !important;
     z-index: 10 !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
   }
 
   .card-1 {
-    top: 10px !important;
-    left: 10px !important;
+    top: 15px !important;
+    left: 15px !important;
   }
 
   .card-2 {
-    bottom: 10px !important;
-    right: 10px !important;
+    bottom: 15px !important;
+    right: 15px !important;
+    animation-delay: 1.5s !important;
   }
 
   .floating-card i {
@@ -4339,8 +4544,117 @@ footer .footer-logo-img {
     padding-top: 100px !important;
   }
 
+  .profile-page .row {
+    justify-content: center !important;
+  }
+
+  .profile-page .col-lg-3,
+  .profile-page .col-lg-9 {
+    max-width: 90% !important;
+    margin: 0 auto !important;
+  }
+
   .profile-card {
     margin-bottom: 20px !important;
+    text-align: center !important;
+  }
+
+  .profile-sidebar-header {
+    padding: 30px 15px !important;
+    text-align: center !important;
+  }
+
+  .profile-avatar-wrapper {
+    width: 80px !important;
+    height: 80px !important;
+    margin: 0 auto 15px !important;
+  }
+
+  .profile-avatar-inner {
+    font-size: 2rem !important;
+  }
+
+  .profile-user-name {
+    font-size: 1.1rem !important;
+    text-align: center !important;
+  }
+
+  .profile-user-email {
+    font-size: 0.85rem !important;
+    text-align: center !important;
+  }
+
+  .profile-nav-menu {
+    padding: 15px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .profile-nav-item {
+    padding: 12px 15px !important;
+    font-size: 0.9rem !important;
+    max-width: 300px !important;
+    justify-content: center !important;
+  }
+
+  .profile-content-area {
+    padding: 20px !important;
+    min-height: auto !important;
+  }
+
+  .profile-section-header {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 15px !important;
+  }
+
+  .profile-section-header h3 {
+    font-size: 1.3rem !important;
+  }
+
+  .profile-section-header .btn-primary {
+    width: auto !important;
+    padding: 6px 16px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .info-display-card {
+    padding: 18px !important;
+  }
+
+  .info-label {
+    font-size: 0.8rem !important;
+  }
+
+  .info-value {
+    font-size: 0.95rem !important;
+  }
+
+  .enrollment-card {
+    padding: 18px !important;
+  }
+
+  .enrollment-title {
+    font-size: 1.1rem !important;
+  }
+
+  .modal-content-box {
+    padding: 20px !important;
+    max-width: 95% !important;
+  }
+
+  .detail-row {
+    margin-bottom: 12px !important;
+  }
+
+  .detail-label {
+    font-size: 0.8rem !important;
+  }
+
+  .detail-data {
+    font-size: 0.95rem !important;
   }
 
   .stat-card {
@@ -6994,8 +7308,67 @@ footer .footer-logo-img {
 }
 
 .contests-section {
+  margin-top: 60px;
   margin-bottom: 40px;
   padding: 0 15px;
+}
+
+/* Grid Layout for Contest Cards */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+}
+
+.g-4 {
+  gap: 24px;
+}
+
+.col-md-6 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 0 12px;
+}
+
+.col-lg-3 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 0 12px;
+}
+
+.col-lg-9 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 0 12px;
+}
+
+.col-lg-4 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .col-lg-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+
+  .col-lg-4 {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+  }
 }
 
 .section-heading {
@@ -7009,6 +7382,17 @@ footer .footer-logo-img {
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 20px !important;
+  max-width: 400px;
+}
+
+.contest-card .enrollment-header {
+  margin-bottom: 12px;
+}
+
+.contest-card .enrollment-title {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
 }
 
 .question-count {
@@ -7023,10 +7407,10 @@ footer .footer-logo-img {
 }
 
 .contest-details {
-  margin-top: 15px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .contest-detail-item {
@@ -7034,7 +7418,7 @@ footer .footer-logo-img {
   align-items: center;
   gap: 8px;
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .contest-action-btn {
@@ -7045,7 +7429,7 @@ footer .footer-logo-img {
 }
 
 .weekly-contest-section {
-  margin-top: 60px;
+  margin-top: 0;
   padding: 0 15px;
 }
 
@@ -7067,6 +7451,39 @@ footer .footer-logo-img {
 
   .weekly-contest-section {
     margin-top: 40px;
+  }
+
+  .programs-page {
+    padding-top: 100px !important;
+    padding-bottom: 60px !important;
+  }
+
+  .section-subtitle-text {
+    font-size: 1.5rem !important;
+  }
+
+  .category-card {
+    min-height: auto !important;
+    padding: 20px !important;
+  }
+
+  .category-title {
+    font-size: 1.3rem !important;
+  }
+
+  .skill-tags {
+    max-width: 100% !important;
+  }
+
+  .category-bg-icon {
+    width: 120px !important;
+    height: 120px !important;
+    right: -20px !important;
+    bottom: -20px !important;
+  }
+
+  .enroll-btn-simple {
+    font-size: 0.9rem !important;
   }
 }
 
