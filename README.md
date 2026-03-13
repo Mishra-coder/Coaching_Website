@@ -4,69 +4,22 @@ A complete web platform for coaching institute management built with React and N
 
 ## Architecture Diagram
 
-```mermaid
-graph TB
-    subgraph Frontend["Frontend (React + Vite)"]
-        UI[User Interface]
-        Auth[Authentication]
-        Router[React Router]
-        API_Client[API Client - Axios]
-    end
-    
-    subgraph Backend["Backend (Node.js + Express)"]
-        API[REST API]
-        AuthMW[Auth Middleware]
-        Routes[Route Handlers]
-        Controllers[Business Logic]
-    end
-    
-    subgraph Database["Database (MongoDB)"]
-        Users[(Users)]
-        Courses[(Courses)]
-        Videos[(Videos)]
-        Questions[(Questions)]
-        QuizResults[(Quiz Results)]
-        Contests[(Contests)]
-        ContestResults[(Contest Results)]
-        Enrollments[(Enrollments)]
-        DemoBookings[(Demo Bookings)]
-    end
-    
-    subgraph External["External Services"]
-        Cloudinary[Cloudinary - Video Storage]
-        Gmail[Gmail - Email Service]
-        GoogleSheets[Google Sheets - Backup]
-        GoogleOAuth[Google OAuth]
-    end
-    
-    UI --> Router
-    Router --> Auth
-    Auth --> API_Client
-    API_Client -->|HTTP/REST| API
-    
-    API --> AuthMW
-    AuthMW --> Routes
-    Routes --> Controllers
-    
-    Controllers --> Users
-    Controllers --> Courses
-    Controllers --> Videos
-    Controllers --> Questions
-    Controllers --> QuizResults
-    Controllers --> Contests
-    Controllers --> ContestResults
-    Controllers --> Enrollments
-    Controllers --> DemoBookings
-    
-    Controllers -->|Upload Videos| Cloudinary
-    Controllers -->|Send Emails| Gmail
-    Controllers -->|Backup Data| GoogleSheets
-    Auth -->|OAuth Login| GoogleOAuth
-    
-    style Frontend fill:#e1f5ff
-    style Backend fill:#fff4e1
-    style Database fill:#e8f5e9
-    style External fill:#fce4ec
+```
+┌───────────────────────────────────────────────────────────────────┐
+│                                                                   │
+│  ┌─────────────┐      ┌─────────────┐      ┌─────────────┐        │
+│  │             │      │             │      │             │        │
+│  │  Front-end  │      │  Back-end   │      │  Database   │        │
+│  │             │      │             │      │             │        │ 
+│  │   ReactJS   │◄────►│   NodeJS    │◄────►│  MongoDB    │        │
+│  │             │      │             │      │             │        │
+│  │UI Components│      │  ExpressJS  │      │ Collections │        │
+│  │             │      │             │      │             │        │
+│  │ API calls   │      │API endpoints│      │  Documents  │        │
+│  │             │      │             │      │             │        │
+│  └─────────────┘      └─────────────┘      └─────────────┘        │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
 ```
 
 ## Database Schema
@@ -429,26 +382,6 @@ To access admin features, use the secret key `admin123` when signing up or loggi
 3. Add questions manually or bulk upload
 4. Students can participate during the contest window
 
-## Cloudinary Setup
-
-1. Create account at https://cloudinary.com
-2. Get your credentials from dashboard:
-   - Cloud Name
-   - API Key
-   - API Secret
-3. Add these to `backend/.env`
-4. Videos will automatically upload to cloud storage
-
-## Google Sheets Integration (Optional)
-
-This feature automatically backs up user signups and enrollments to Google Sheets.
-
-1. Create a Google Cloud project
-2. Enable Google Sheets API
-3. Create a Service Account and download JSON key
-4. Share your Google Sheet with the service account email
-5. Add credentials to `backend/.env`
-
 ## API Endpoints
 
 ### Authentication
@@ -480,56 +413,6 @@ This feature automatically backs up user signups and enrollments to Google Sheet
 - `GET /api/enrollments` - Get all enrollments (admin)
 - `PUT /api/enrollments/:id/status` - Update status (admin)
 
-## Database Schema
-
-### User
-- name, email, password (hashed)
-- role (student/admin)
-- phone, address
-- timestamps
-
-### Video
-- title, description
-- cloudinaryId, videoUrl, hlsUrl
-- thumbnail, duration
-- uploadedBy, views, status
-
-### Question
-- question, options (array)
-- correctAnswer
-- class, chapter
-- isActive
-
-### Contest
-- title, description
-- questions (array)
-- startTime, duration, endTime
-- status
-
-### Enrollment
-- studentName, fatherName, motherName
-- dateOfBirth, gender, aadharNumber
-- mobileNumber, address
-- class, board, competitiveCourse
-- status, adminRemarks
-
-## Environment Variables
-
-### Backend Required
-- `PORT` - Server port (default: 5001)
-- `MONGODB_URI` - MongoDB connection string
-- `JWT_SECRET` - Secret key for JWT tokens
-- `FRONTEND_URL` - Frontend URL for CORS
-- `EMAIL_USER` - Gmail for sending emails
-- `EMAIL_PASSWORD` - Gmail app password
-- `CLOUDINARY_CLOUD_NAME` - Cloudinary cloud name
-- `CLOUDINARY_API_KEY` - Cloudinary API key
-- `CLOUDINARY_API_SECRET` - Cloudinary API secret
-
-### Frontend Required
-- `VITE_API_URL` - Backend API URL
-- `VITE_GOOGLE_CLIENT_ID` - Google OAuth client ID
-
 ## Development
 
 ### Backend Development
@@ -554,32 +437,7 @@ cd frontend
 npm run build
 ```
 
-Backend is production-ready as-is.
 
-## Common Issues
-
-### Videos not uploading
-- Check Cloudinary credentials in `.env`
-- Verify file size is under 500MB
-- Check internet connection
-
-### Emails not sending
-- Use Gmail app password, not regular password
-- Enable "Less secure app access" in Gmail settings
-- Check EMAIL_USER and EMAIL_PASSWORD in `.env`
-
-### MongoDB connection failed
-- Make sure MongoDB is running
-- Check MONGODB_URI in `.env`
-- Verify database name is correct
-
-## Contributing
-
-Feel free to fork this project and submit pull requests. For major changes, please open an issue first.
-
-## License
-
-This project is for educational purposes.
 
 ## Author
 
