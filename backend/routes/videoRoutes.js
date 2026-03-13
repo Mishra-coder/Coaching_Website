@@ -39,63 +39,96 @@ router.post('/upload', protect, upload.single('video'), async (req, res) => {
         .json({ success: false, message: 'No video file uploaded' });
     }
 
+    console.log('Starting video upload to Cloudinary...');
+    console.log('File size:', videoFile.size, 'bytes');
+    console.log('File type:', videoFile.mimetype);
+
+    // Upload to Cloudinary synchronously
+    const uploadPromise = new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          resource_type: 'video',
+          folder: 'success-mantra/videos',
+          timeout: 120000, // 2 minutes timeout
+        },
+        (error, result) => {
+          if (error) {
+            console.error('Cloudinary upload error:', error);
+            reject(error);
+          } else {
+            console.log('Cloudinary upload success:', result.public_id);
+            resolve(result);
+          }
+        }
+      );
+      streamifier.createReadStream(videoFile.buffer).pipe(uploadStream);
+    });
+
+    const result = await uploadPromise;
+
+    // Create thumbnail URL by changing extension to .jpg
+    const videoUrl = result.secure_url;
+    const lastDotIndex = videoUrl.lastIndexOf('.');
+    let thumbnailUrl = videoUrl;
+    if (lastDotIndex > 0) {
+      thumbnailUrl = videoUrl.substring(0, lastDotIndex) + '.jpg';
+    }
+
+    // Create video with URL immediately available
     const newVideo = await Video.create({
       title,
       description,
       uploadedBy: req.user._id,
-      status: 'processing',
+      status: 'ready',
+      cloudinaryId: result.public_id,
+      videoUrl: result.secure_url,
+      hlsUrl: result.secure_url,
+      thumbnail: thumbnailUrl,
+      duration: result.duration || 0,
     });
 
-    const uploadToCloudinary = cloudinary.uploader.upload_stream(
-      {
-        resource_type: 'video',
-        folder: 'success-mantra/videos',
-        public_id: `video_${newVideo._id}`,
-        eager: [
-          { streaming_profile: 'hd', format: 'm3u8' },
-          { width: 640, height: 360, crop: 'limit', format: 'jpg' },
-        ],
-        eager_async: true,
-      },
-      async (error, result) => {
-        if (error) {
-          newVideo.status = 'failed';
-          await newVideo.save();
-          console.error('Cloudinary upload failed:', error);
-          return;
-        }
-
-        newVideo.cloudinaryId = result.public_id;
-        newVideo.videoUrl = result.secure_url;
-        newVideo.hlsUrl = result.eager?.[0]?.secure_url || result.secure_url;
-        newVideo.thumbnail = result.eager?.[1]?.secure_url || result.secure_url;
-        newVideo.duration = result.duration || 0;
-        newVideo.status = 'ready';
-        await newVideo.save();
-
-        console.log('Video uploaded to Cloudinary:', newVideo._id);
-      }
-    );
-
-    streamifier.createReadStream(videoFile.buffer).pipe(uploadToCloudinary);
+    console.log('Video saved to database:', newVideo._id);
+    console.log('Video URL:', newVideo.videoUrl);
 
     res.json({
       success: true,
-      message: 'Video uploaded and processing started',
+      message: 'Video uploaded successfully',
       video: {
         id: newVideo._id,
         title: newVideo.title,
         status: newVideo.status,
+        videoUrl: newVideo.videoUrl,
       },
     });
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || 'Upload failed',
+      error: error.toString()
+    });
+  }
+});
+
+router.get('/stats', protect, async (req, res) => {
+  try {
+    const count = await Video.countDocuments();
+    res.json({ success: true, count });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', protect, async (req, res) => {
   try {
-    const allVideos = await Video.find({ status: 'ready' })
+    let query = {};
+    
+    // If user is not admin, only show ready videos
+    if (req.user.role !== 'admin') {
+      query.status = 'ready';
+    }
+    
+    const allVideos = await Video.find(query)
       .populate('uploadedBy', 'name email')
       .sort({ createdAt: -1 });
 

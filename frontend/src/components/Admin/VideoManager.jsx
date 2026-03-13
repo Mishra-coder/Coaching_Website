@@ -18,6 +18,12 @@ const VideoManager = () => {
     description: '',
     videoFile: null,
   });
+  const [bulkUpload, setBulkUpload] = useState({
+    files: [],
+    uploading: false,
+    currentIndex: 0,
+    results: [],
+  });
 
   useEffect(() => {
     fetchVideos();
@@ -99,6 +105,59 @@ const VideoManager = () => {
     setConfirmDialog({ isOpen: true, videoId });
   };
 
+  const handleBulkFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setBulkUpload({ ...bulkUpload, files, results: [] });
+  };
+
+  const handleBulkUpload = async () => {
+    if (bulkUpload.files.length === 0) {
+      setToast({ message: 'Please select video files', type: 'error' });
+      return;
+    }
+
+    setBulkUpload({ ...bulkUpload, uploading: true, currentIndex: 0, results: [] });
+    const token = localStorage.getItem('token');
+    const results = [];
+
+    for (let i = 0; i < bulkUpload.files.length; i++) {
+      const file = bulkUpload.files[i];
+      setBulkUpload(prev => ({ ...prev, currentIndex: i }));
+
+      const data = new FormData();
+      data.append('video', file);
+      // Remove file extension from filename
+      const fileName = file.name;
+      const lastDotIndex = fileName.lastIndexOf('.');
+      const titleWithoutExt = lastDotIndex > 0 ? fileName.substring(0, lastDotIndex) : fileName;
+      data.append('title', titleWithoutExt);
+      data.append('description', '');
+
+      try {
+        await axios.post(`${import.meta.env.VITE_API_URL}/videos/upload`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        results.push({ file: file.name, status: 'success' });
+      } catch (error) {
+        results.push({ 
+          file: file.name, 
+          status: 'error',
+          message: error.response?.data?.message || 'Upload failed'
+        });
+      }
+    }
+
+    setBulkUpload({ files: [], uploading: false, currentIndex: 0, results });
+    setToast({
+      message: `Bulk upload completed! ${results.filter(r => r.status === 'success').length}/${results.length} videos uploaded successfully.`,
+      type: results.some(r => r.status === 'error') ? 'warning' : 'success',
+    });
+    fetchVideos();
+  };
+
   const confirmDelete = async () => {
     const videoId = confirmDialog.videoId;
     setConfirmDialog({ isOpen: false, videoId: null });
@@ -138,9 +197,9 @@ const VideoManager = () => {
 
       <h2 className="admin-header-title">Video Management</h2>
 
-      <div className="admin-manager-layout">
+      <div className="video-upload-grid">
         <div className="manager-section">
-          <h3 className="section-title">Upload New Video</h3>
+          <h3 className="section-title">Upload Single Video</h3>
           <form onSubmit={handleUpload} className="upload-form">
             <div className="form-group">
               <label className="form-label">Video Title</label>
@@ -206,61 +265,114 @@ const VideoManager = () => {
         </div>
 
         <div className="manager-section">
-          <h3 className="section-title">All Videos ({videos.length})</h3>
-
-          {loading ? (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
+          <h3 className="section-title">Bulk Upload Videos</h3>
+          <div className="bulk-upload-section">
+            <div className="form-group">
+              <label className="form-label">
+                Select Multiple Video Files
+              </label>
+              <input
+                type="file"
+                accept="video/*"
+                multiple
+                onChange={handleBulkFileChange}
+                className="form-input"
+                disabled={bulkUpload.uploading}
+              />
+              {bulkUpload.files.length > 0 && (
+                <p className="file-info">
+                  {bulkUpload.files.length} file(s) selected
+                </p>
+              )}
             </div>
-          ) : videos.length === 0 ? (
-            <p className="no-videos-text">No videos uploaded yet</p>
-          ) : (
-            <div className="video-grid">
-              {videos.map((video) => (
-                <div key={video._id} className="video-card">
-                  <div className="video-thumbnail">
-                    {video.thumbnail ? (
-                      <img
-                        src={video.thumbnail}
-                        alt={video.title}
-                        className="thumbnail-img"
-                      />
-                    ) : (
-                      <div className="video-placeholder">
-                        <i className="fas fa-video"></i>
-                      </div>
-                    )}
-                    <span className={`status-badge ${video.status}`}>
-                      {video.status}
+
+            {bulkUpload.uploading && (
+              <div className="bulk-upload-progress">
+                <p>Uploading {bulkUpload.currentIndex + 1} of {bulkUpload.files.length}...</p>
+                <p className="file-info">{bulkUpload.files[bulkUpload.currentIndex]?.name}</p>
+              </div>
+            )}
+
+            {bulkUpload.results.length > 0 && (
+              <div className="bulk-upload-results">
+                <h4>Upload Results:</h4>
+                {bulkUpload.results.map((result, idx) => (
+                  <div key={idx} className={`result-item ${result.status}`}>
+                    <span>{result.file}</span>
+                    <span className={`status-${result.status}`}>
+                      {result.status === 'success' ? '✓' : '✗'}
                     </span>
                   </div>
-                  <div className="video-card-body">
-                    <h4 className="video-card-title">{video.title}</h4>
-                    <p className="video-card-description">
-                      {video.description || 'No description'}
-                    </p>
-                    <div className="video-card-meta">
-                      <div>Views: {video.views}</div>
-                      <div>
-                        Duration: {Math.floor(video.duration / 60)}:
-                        {String(Math.floor(video.duration % 60)).padStart(
-                          2,
-                          '0'
-                        )}
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => handleDelete(video._id)}
-                      className="btn-secondary btn-delete"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+
+            <button
+              onClick={handleBulkUpload}
+              className="btn-primary"
+              disabled={bulkUpload.uploading || bulkUpload.files.length === 0}
+            >
+              {bulkUpload.uploading ? 'Uploading...' : 'Upload All Videos'}
+            </button>
+          </div>
         </div>
+      </div>
+
+      <div className="manager-section manager-section-full">
+        <h3 className="section-title">All Videos ({videos.length})</h3>
+
+        {loading ? (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : videos.length === 0 ? (
+          <p className="no-videos-text">No videos uploaded yet</p>
+        ) : (
+          <div className="video-grid">
+            {videos.map((video) => (
+              <div key={video._id} className="video-card">
+                <div className="video-thumbnail">
+                  {video.thumbnail ? (
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="thumbnail-img"
+                    />
+                  ) : (
+                    <div className="video-placeholder">
+                      <i className="fas fa-video"></i>
+                    </div>
+                  )}
+                  <span className={`status-badge ${video.status}`}>
+                    {video.status}
+                  </span>
+                </div>
+                <div className="video-card-body">
+                  <h4 className="video-card-title">{video.title}</h4>
+                  <p className="video-card-description">
+                    {video.description || 'No description'}
+                  </p>
+                  <div className="video-card-meta">
+                    <div>Views: {video.views}</div>
+                    <div>
+                      Duration: {Math.floor(video.duration / 60)}:
+                      {String(Math.floor(video.duration % 60)).padStart(
+                        2,
+                        '0'
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleDelete(video._id)}
+                    className="btn-secondary btn-delete"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

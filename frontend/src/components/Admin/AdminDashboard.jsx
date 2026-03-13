@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   questionsAPI,
-  coursesAPI,
   enrollmentsAPI,
   demoBookingsAPI,
   contestsAPI,
+  videosAPI,
 } from '../../services/api';
 
 const AdminDashboard = () => {
@@ -13,10 +13,10 @@ const AdminDashboard = () => {
   const [searchParams] = useSearchParams();
   const [stats, setStats] = useState({
     totalQuestions: 0,
-    totalCourses: 0,
     totalEnrolled: 0,
     totalDemoBookings: 0,
     totalContests: 0,
+    totalVideos: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -32,20 +32,20 @@ const AdminDashboard = () => {
     const fetchStats = async () => {
       try {
         setLoading(true);
-        const [questions, courses, enrollments, demoBookings, contests] =
+        const [questions, enrollments, demoBookings, contests, videos] =
           await Promise.all([
             questionsAPI.getStats(),
-            coursesAPI.getStats(),
             enrollmentsAPI.getStats(),
             demoBookingsAPI.getAll(),
             contestsAPI.getAll(),
+            videosAPI.getStats(),
           ]);
         setStats({
           totalQuestions: questions.count || 0,
-          totalCourses: courses.count || 0,
           totalEnrolled: enrollments.count || 0,
           totalDemoBookings: demoBookings.count || 0,
           totalContests: contests.contests?.length || 0,
+          totalVideos: videos.count || 0,
         });
       } catch (error) {
       } finally {
@@ -67,15 +67,6 @@ const AdminDashboard = () => {
           <Link to="/admin/questions" className="btn-primary">
             Manage Questions
           </Link>
-        </div>
-        <div className="stat-card">
-          <h1 className="stat-number" style={{ color: '#ffab00' }}>
-            {loading ? '...' : stats.totalCourses}
-          </h1>
-          <p className="stat-label">Total Courses</p>
-          <button className="btn-primary btn-disabled" disabled>
-            Manage Courses
-          </button>
         </div>
         <div className="stat-card">
           <h1 className="stat-number" style={{ color: '#4caf50' }}>
@@ -106,7 +97,7 @@ const AdminDashboard = () => {
         </div>
         <div className="stat-card">
           <h1 className="stat-number" style={{ color: '#00bcd4' }}>
-            0
+            {loading ? '...' : stats.totalVideos}
           </h1>
           <p className="stat-label">Videos</p>
           <Link to="/admin/videos" className="btn-primary">

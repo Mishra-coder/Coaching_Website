@@ -1034,6 +1034,20 @@ footer {
     left: 0;
   }
 
+  .nav-links .btn-nav-action {
+    background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    color: white;
+    border-radius: 50px;
+    padding: 12px 32px;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    width: auto !important;
+    max-width: 180px !important;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 auto;
+    display: inline-block;
+  }
+
   .hamburger {
     display: block;
   }
@@ -3314,20 +3328,20 @@ footer .footer-logo-img {
 .profile-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
 }
 
 .profile-card:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .profile-sidebar-header {
-  padding: 30px 20px;
+  padding: 20px 15px;
   text-align: center;
   background: linear-gradient(
     135deg,
@@ -3338,19 +3352,19 @@ footer .footer-logo-img {
 }
 
 .profile-avatar-wrapper {
-  width: 70px;
-  height: 70px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 4px;
-  margin: 0 auto 18px;
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  padding: 3px;
+  margin: 0 auto 12px;
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
   transition: all 0.3s ease;
 }
 
 .profile-avatar-wrapper:hover {
   transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
 }
 
 .profile-avatar-inner {
@@ -3361,40 +3375,40 @@ footer .footer-logo-img {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: #fff;
 }
 
 .profile-user-name {
   font-weight: 800;
-  font-size: 1.1rem;
-  margin-bottom: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
   color: #1e293b;
   letter-spacing: 0.3px;
 }
 
 .profile-user-email {
   color: #64748b;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 500;
 }
 
 .profile-nav-menu {
-  padding: 15px;
+  padding: 10px;
 }
 
 .profile-nav-item {
   display: flex;
   align-items: center;
-  padding: 12px 18px;
-  margin: 6px 0;
-  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 4px 0;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   width: 100%;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   background: transparent;
   color: #64748b;
   font-weight: 600;
@@ -7528,8 +7542,17 @@ footer .footer-logo-img {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 20px !important;
+  padding: 25px !important;
   max-width: 400px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.contest-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(26, 35, 126, 0.15);
+  border-color: #1a237e;
 }
 
 .contest-card .enrollment-header {
@@ -7537,34 +7560,60 @@ footer .footer-logo-img {
 }
 
 .contest-card .enrollment-title {
-  font-size: 1.3rem;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  font-weight: 800;
+  color: #1a237e;
+  letter-spacing: -0.3px;
 }
 
 .question-count {
-  color: #64748b;
+  color: #1a237e;
+  font-weight: 700;
+  background: rgba(26, 35, 126, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
 }
 
 .contest-description {
   color: #64748b;
-  font-size: 0.9rem;
-  margin-top: 8px;
+  font-size: 0.95rem;
+  margin-top: 10px;
   flex: 1;
+  line-height: 1.6;
 }
 
 .contest-details {
-  margin-top: 12px;
+  margin-top: 15px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
+  padding: 15px;
+  background: rgba(26, 35, 126, 0.03);
+  border-radius: 12px;
+  border-left: 3px solid #1a237e;
 }
 
 .contest-detail-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #64748b;
-  font-size: 0.85rem;
+  gap: 10px;
+  color: #1e293b;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.contest-detail-item i {
+  color: #1a237e;
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.contest-detail-item strong {
+  color: #1a237e;
+  margin-right: 5px;
 }
 
 .contest-action-btn {
@@ -7693,3 +7742,110 @@ footer .footer-logo-img {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(185, 28, 28, 0.4);
 }
+
+/* Bulk Upload Styles */
+.bulk-upload-section {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e1;
+}
+
+.bulk-upload-progress {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border-left: 4px solid #1a237e;
+}
+
+.bulk-upload-progress p {
+  margin: 5px 0;
+  color: #1e293b;
+}
+
+.bulk-upload-results {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.bulk-upload-results h4 {
+  margin-bottom: 10px;
+  color: #1e293b;
+  font-size: 16px;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+  background: #f8fafc;
+  border-left: 3px solid #cbd5e1;
+}
+
+.result-item.success {
+  border-left-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.result-item.error {
+  border-left-color: #ef4444;
+  background: #fef2f2;
+}
+
+.status-success {
+  color: #22c55e;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.status-error {
+  color: #ef4444;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.file-info {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Video Upload Grid Layout */
+.video-upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.manager-section-full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 968px) {
+  .video-upload-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Center Profile Card Horizontally on Desktop Only */
+@media (min-width: 992px) {
+  .profile-page .col-lg-3 {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .profile-page .col-lg-3 .profile-card {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+

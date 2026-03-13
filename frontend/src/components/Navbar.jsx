@@ -44,6 +44,13 @@ const Navbar = () => {
   const toggleNav = () => setIsMenuOpen(!isMenuOpen);
   const closeNav = () => setIsMenuOpen(false);
 
+  const handleLogoClick = () => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    closeNav();
+  };
+
   const onLogout = () => {
     logout();
     navigate('/');
@@ -57,7 +64,7 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container nav-container">
-        <Link to="/" className="nav-logo-link" onClick={closeNav}>
+        <Link to="/" className="nav-logo-link" onClick={handleLogoClick}>
           <img src={logo} alt="Logo" className="footer-logo-img" />
           <div className="footer-logo-text">
             <div>

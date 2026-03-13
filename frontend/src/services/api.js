@@ -242,6 +242,10 @@ export const videosAPI = {
     const response = await api.get('/videos');
     return response.data;
   },
+  getStats: async () => {
+    const response = await api.get('/videos/stats');
+    return response.data;
+  },
   getById: async (id) => {
     const response = await api.get(`/videos/${id}`);
     return response.data;

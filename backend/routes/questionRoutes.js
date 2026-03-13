@@ -14,7 +14,14 @@ router.get('/', async (req, res) => {
       searchQuery.class = classLevel;
     }
     if (chapter) {
-      searchQuery.chapter = { $regex: new RegExp(`^${chapter.trim()}$`, 'i') };
+      // Case-insensitive chapter matching
+      const chapterTrimmed = chapter.trim();
+      searchQuery.$or = [
+        { chapter: chapterTrimmed },
+        { chapter: chapterTrimmed.toLowerCase() },
+        { chapter: chapterTrimmed.toUpperCase() },
+        { chapter: chapterTrimmed.charAt(0).toUpperCase() + chapterTrimmed.slice(1).toLowerCase() }
+      ];
     }
 
     const foundQuestions = await Question.find(searchQuery);

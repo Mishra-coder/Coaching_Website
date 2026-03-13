@@ -22,6 +22,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import QuestionManager from './components/Admin/QuestionManager';
+import CourseManager from './components/Admin/CourseManager';
 import StudentManager from './components/Admin/StudentManager';
 import EnrollmentManager from './components/Admin/EnrollmentManager';
 import DemoBooking from './components/DemoBooking';
@@ -41,13 +42,27 @@ function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }, []);
 
   return null;
 }
 
 function App() {
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
   return (
     <Router>
       <AuthProvider>
@@ -141,6 +156,15 @@ function App() {
               element={
                 <AdminRoute>
                   <QuestionManager />
+                </AdminRoute>
+              }
+            />
+
+            <Route
+              path="/admin/courses"
+              element={
+                <AdminRoute>
+                  <CourseManager />
                 </AdminRoute>
               }
             />

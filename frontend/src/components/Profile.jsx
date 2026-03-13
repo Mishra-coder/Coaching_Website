@@ -28,6 +28,12 @@ const Profile = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }, []);
+
   const loadData = async () => {
     try {
       setIsFetching(true);
