@@ -1,12 +1,15 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import logo from '../assets/logo.png';
 
 const Footer = () => {
+  const { user } = useAuth();
+
   return (
     <footer>
       <div className="container footer-container">
         <div className="footer-col">
-          <a href="#" className="footer-logo-link">
+          <Link to="/" className="footer-logo-link">
             <img
               src={logo}
               alt="Success Mantra Logo"
@@ -19,7 +22,7 @@ const Footer = () => {
               </div>
               <span className="footer-brand-tag">INSTITUTE</span>
             </div>
-          </a>
+          </Link>
           <p>
             <strong>Directed by:</strong> Mr. Vikas Sir
             <br />
@@ -34,17 +37,31 @@ const Footer = () => {
           <h4>Quick Links</h4>
           <ul>
             <li>
-              <a href="#home">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="#about">About Us</a>
+              <Link to="/about">About</Link>
             </li>
             <li>
-              <a href="#programs">Courses</a>
+              <Link to="/courses">Courses</Link>
             </li>
             <li>
-              <a href="#contact">Contact</a>
+              <Link to="/faculty">Faculty</Link>
             </li>
+            <li>
+              <Link to="/videos">Lectures</Link>
+            </li>
+            <li>
+              <Link to="/quiz">Quiz</Link>
+            </li>
+            <li>
+              <Link to="/contests">Contest</Link>
+            </li>
+            {user?.role === 'admin' && (
+              <li>
+                <Link to="/admin">Admin Panel</Link>
+              </li>
+            )}
           </ul>
         </div>
 
@@ -52,16 +69,16 @@ const Footer = () => {
           <h4>Programs</h4>
           <ul>
             <li>
-              <a href="#">Junior Wing (1-5)</a>
+              <Link to="/enroll" onClick={() => window.scrollTo(0, 0)}>Junior Wing (1-5)</Link>
             </li>
             <li>
-              <a href="#">Middle Wing (6-8)</a>
+              <Link to="/enroll" onClick={() => window.scrollTo(0, 0)}>Middle Wing (6-8)</Link>
             </li>
             <li>
-              <a href="#">Senior Wing (9-12)</a>
+              <Link to="/enroll" onClick={() => window.scrollTo(0, 0)}>Senior Wing (9-12)</Link>
             </li>
             <li>
-              <a href="#">JEE/NEET Foundation</a>
+              <Link to="/enroll" onClick={() => window.scrollTo(0, 0)}>Competitive Exams</Link>
             </li>
           </ul>
         </div>
@@ -71,26 +88,42 @@ const Footer = () => {
           <ul className="contact-list">
             <li className="contact-li">
               <i className="fas fa-map-marker-alt contact-icon"></i>
-              <span className="contact-text">
-                Adarsh Shiksha Niketan School,
-                <br />
-                GGIC Road, Ram Lila Tiraha,
-                <br />
-                Deeh - Raebareli
-              </span>
+              <a
+                href="https://maps.app.goo.gl/aZaMJdJ5wNy2oJXU7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-link address-link"
+              >
+                <span className="contact-text">
+                  Adarsh Shiksha Niketan School,
+                  <br />
+                  GGIC Road, Ram Lila Tiraha,
+                  <br />
+                  Deeh - Raebareli
+                </span>
+              </a>
             </li>
             <li className="contact-li">
               <i className="fas fa-phone-alt contact-icon"></i>
               <div className="contact-text">
-                <div>+91 63911 71731 (Vikas Sir)</div>
-                <div>+91 70814 31511 (Himanshu Sir)</div>
+                <a href="tel:+916391171731" className="contact-link">
+                  +91 63911 71731 (Vikas Sir)
+                </a>
+                <a href="tel:+917081431511" className="contact-link">
+                  +91 70814 31511 (Himanshu Sir)
+                </a>
               </div>
             </li>
             <li className="contact-li">
               <i className="fas fa-envelope contact-icon"></i>
-              <span className="contact-text">
-                mysuccessmantrainstitute@gmail.com
-              </span>
+              <a
+                href="mailto:mysuccessmantrainstitute@gmail.com"
+                className="contact-link"
+              >
+                <span className="contact-text">
+                  mysuccessmantrainstitute@gmail.com
+                </span>
+              </a>
             </li>
           </ul>
         </div>
