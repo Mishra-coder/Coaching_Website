@@ -18,6 +18,7 @@ import Profile from './components/Profile';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Footer from './components/Footer';
+import FloatingCallButton from './components/FloatingCallButton';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './components/Admin/AdminDashboard';
@@ -69,6 +70,7 @@ function App() {
         <ScrollToTop />
         <div className="App page-transition">
           <Navbar />
+          <FloatingCallButton />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
