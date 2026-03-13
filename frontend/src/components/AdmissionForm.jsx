@@ -115,7 +115,28 @@ const AdmissionForm = () => {
   };
 
   const updateField = (e) => {
-    setDetails({ ...details, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    // Mobile number validation - only 10 digits
+    if (name === 'mobile') {
+      if (value.length <= 10 && /^\d*$/.test(value)) {
+        setDetails({ ...details, [name]: value });
+      }
+      return;
+    }
+    
+    // Birth year validation - 4 digits, 1970-2024
+    if (name === 'birthYear') {
+      if (value.length <= 4 && /^\d*$/.test(value)) {
+        const year = parseInt(value);
+        if (value === '' || (year >= 1970 && year <= 2024)) {
+          setDetails({ ...details, [name]: value });
+        }
+      }
+      return;
+    }
+    
+    setDetails({ ...details, [name]: value });
   };
 
   const onFormSubmit = async (e) => {
@@ -337,9 +358,14 @@ const AdmissionForm = () => {
                       name="birthYear"
                       value={details.birthYear}
                       onChange={updateField}
+                      onKeyDown={(e) => {
+                        if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-' || e.key === '.') {
+                          e.preventDefault();
+                        }
+                      }}
                       placeholder="YYYY"
-                      min="2000"
-                      max="2025"
+                      min="1970"
+                      max="2024"
                       required
                       className="modern-input"
                       inputMode="numeric"
@@ -427,7 +453,36 @@ const AdmissionForm = () => {
                     <option value="">Select Board</option>
                     <option value="CBSE">CBSE</option>
                     <option value="ICSE">ICSE</option>
-                    <option value="State Board">State Board</option>
+                    <optgroup label="State Boards">
+                      <option value="Andhra Pradesh Board">Andhra Pradesh Board</option>
+                      <option value="Arunachal Pradesh Board">Arunachal Pradesh Board</option>
+                      <option value="Assam Board">Assam Board</option>
+                      <option value="Bihar Board">Bihar Board</option>
+                      <option value="Chhattisgarh Board">Chhattisgarh Board</option>
+                      <option value="Goa Board">Goa Board</option>
+                      <option value="Gujarat Board">Gujarat Board</option>
+                      <option value="Haryana Board">Haryana Board</option>
+                      <option value="Himachal Pradesh Board">Himachal Pradesh Board</option>
+                      <option value="Jharkhand Board">Jharkhand Board</option>
+                      <option value="Karnataka Board">Karnataka Board</option>
+                      <option value="Kerala Board">Kerala Board</option>
+                      <option value="Madhya Pradesh Board">Madhya Pradesh Board</option>
+                      <option value="Maharashtra Board">Maharashtra Board</option>
+                      <option value="Manipur Board">Manipur Board</option>
+                      <option value="Meghalaya Board">Meghalaya Board</option>
+                      <option value="Mizoram Board">Mizoram Board</option>
+                      <option value="Nagaland Board">Nagaland Board</option>
+                      <option value="Odisha Board">Odisha Board</option>
+                      <option value="Punjab Board">Punjab Board</option>
+                      <option value="Rajasthan Board">Rajasthan Board</option>
+                      <option value="Sikkim Board">Sikkim Board</option>
+                      <option value="Tamil Nadu Board">Tamil Nadu Board</option>
+                      <option value="Telangana Board">Telangana Board</option>
+                      <option value="Tripura Board">Tripura Board</option>
+                      <option value="Uttar Pradesh Board">Uttar Pradesh Board</option>
+                      <option value="Uttarakhand Board">Uttarakhand Board</option>
+                      <option value="West Bengal Board">West Bengal Board</option>
+                    </optgroup>
                   </select>
                 </div>
 
@@ -505,8 +560,14 @@ const AdmissionForm = () => {
                     name="mobile"
                     value={details.mobile}
                     onChange={updateField}
+                    onKeyDown={(e) => {
+                      if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-' || e.key === '.') {
+                        e.preventDefault();
+                      }
+                    }}
                     placeholder="Enter 10-digit mobile"
                     pattern="[0-9]{10}"
+                    inputMode="numeric"
                     required
                     className="modern-input"
                   />

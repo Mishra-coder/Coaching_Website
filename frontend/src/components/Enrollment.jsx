@@ -1,4 +1,3 @@
-import React from 'react';
 import AdmissionForm from './AdmissionForm';
 
 const Enrollment = () => {
@@ -7,7 +6,7 @@ const Enrollment = () => {
       <div className="container">
         <div
           className="section-header text-center"
-          style={{ marginBottom: '40px' }}
+          style={{ marginBottom: '30px' }}
         >
           <h2 className="section-title">
             Admission <span className="highlight">Form</span>

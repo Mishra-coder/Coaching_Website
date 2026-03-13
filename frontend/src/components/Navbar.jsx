@@ -172,7 +172,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/signup"
-                className="btn-secondary btn-signup"
+                className="btn-primary btn-signup"
                 onClick={closeNav}
               >
                 SignUp
