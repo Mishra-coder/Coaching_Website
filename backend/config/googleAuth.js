@@ -1,6 +1,7 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from '../models/User.js';
+import { addUserToSheet } from '../utils/googleSheets.js';
 import dotenv from 'dotenv';
 dotenv.config();
 passport.use(
@@ -39,6 +40,9 @@ passport.use(
           authProvider: 'google',
           avatar: profile.photos[0]?.value,
           phone: '0000000000',
+        });
+        addUserToSheet(user).catch((error) => {
+          console.error('Failed to add Google user to sheet:', error.message);
         });
         done(null, user);
       } catch (error) {
