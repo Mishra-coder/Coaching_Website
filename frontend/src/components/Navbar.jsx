@@ -172,14 +172,14 @@ const Navbar = () => {
             <>
               <Link
                 to="/signup"
-                className="btn-primary btn-signup"
+                className="btn-signup"
                 onClick={closeNav}
               >
                 SignUp
               </Link>
               <Link
                 to="/login"
-                className="btn-primary btn-login-pulse"
+                className="btn-login"
                 onClick={closeNav}
               >
                 Login

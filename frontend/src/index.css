@@ -238,9 +238,9 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 100%;
-  padding: 0 20px 0 0;
-  margin: 0;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 .nav-logo-link {
@@ -274,16 +274,17 @@ body {
   gap: 30px;
 }
 
-.nav-links a:not(.btn-primary):not(.btn-secondary) {
+.nav-links a:not(.btn-signup):not(.btn-login) {
   text-decoration: none;
-  color: var(--text-dark);
-  font-weight: 500;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1rem;
   transition: var(--transition);
 }
 
-.nav-links a:not(.btn-primary):not(.btn-secondary):hover,
+.nav-links a:not(.btn-signup):not(.btn-login):hover,
 .nav-links a.active {
-  color: var(--primary);
+  color: #4f46e5;
 }
 
 .hamburger {
@@ -1778,38 +1779,58 @@ footer .footer-logo-img {
 }
 
 .btn-signup {
-  display: block;
-  width: 100%;
-  text-align: center;
-  margin: 0;
+  border: 1.5px solid #4f46e5;
+  color: #4f46e5;
+  padding: 10px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
 }
 
+.btn-signup:hover {
+  background-color: #4f46e5;
+  color: #ffffff;
+}
 
-.btn-login-pulse {
-  animation: pulse-glow 2s infinite;
-  box-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+.btn-login {
+  background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
 }
 
 .nav-brand-main {
-  color: #1a237e;
+  color: #5c278e;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 26px;
 }
 
 .nav-brand-sub {
-  color: #ffab00;
+  color: #f59e0b;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 26px;
   margin-left: 5px;
-  text-shadow: 1px 1px 0 #000;
 }
 
 .nav-brand-tag {
-  color: #1a237e;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  margin-top: 2px;
+  color: #4a148c;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-top: -2px;
+  opacity: 0.9;
 }
 
 .auth-page {
