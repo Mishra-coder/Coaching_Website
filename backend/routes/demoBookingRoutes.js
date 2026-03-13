@@ -2,6 +2,8 @@ import express from 'express';
 import DemoBooking from '../models/DemoBooking.js';
 import { protect } from '../middleware/auth.js';
 import { sendDemoBookingNotification } from '../utils/email.js';
+import { addDemoBookingToSheet } from '../utils/googleSheets.js';
+import User from '../models/User.js';
 
 const router = express.Router();
 
@@ -17,8 +19,15 @@ router.post('/', protect, async (req, res) => {
       user: req.user.id,
     });
 
-    sendDemoBookingNotification(newBooking).catch((error) => {
+    const currentUser = await User.findById(req.user.id).select('email');
+    const userEmail = currentUser ? currentUser.email : null;
+
+    sendDemoBookingNotification(newBooking, userEmail).catch((error) => {
       console.error('Failed to send demo booking email:', error.message);
+    });
+
+    addDemoBookingToSheet(newBooking, userEmail).catch((error) => {
+      console.error('Failed to add demo booking to Google Sheet:', error.message);
     });
 
     res.status(201).json({

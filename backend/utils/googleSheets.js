@@ -144,3 +144,31 @@ export async function updateEnrollmentStatusInSheet(
     );
   }
 }
+
+export async function addDemoBookingToSheet(booking, userEmail) {
+  if (!spreadsheetId || !serviceEmail) {
+    console.log('Google Sheets not configured, skipping...');
+    return;
+  }
+
+  try {
+    const timestamp = new Date().toLocaleString('en-IN');
+    const bookingId = booking._id.toString();
+    const formattedDate = new Date(booking.preferredDate).toLocaleDateString('en-IN');
+
+    const rowData = [
+      [timestamp, bookingId, booking.name, booking.phone, userEmail || '', formattedDate, booking.preferredTime, booking.status || 'pending'],
+    ];
+
+    await sheetsAPI.spreadsheets.values.append({
+      spreadsheetId: spreadsheetId,
+      range: 'DemoBookings!A:H',
+      valueInputOption: 'USER_ENTERED',
+      resource: { values: rowData },
+    });
+
+    console.log('Demo booking added to Google Sheet:', booking.name);
+  } catch (error) {
+    console.error('Failed to add demo booking to Google Sheet:', error.message);
+  }
+}
