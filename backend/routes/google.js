@@ -2,6 +2,7 @@ import express from 'express';
 import passport from '../config/googleAuth.js';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { addUserToSheet } from '../utils/googleSheets.js';
 
 const router = express.Router();
 
@@ -83,6 +84,9 @@ router.post('/google/token', async (req, res) => {
           authProvider: 'google',
           avatar: picture,
           role: isAdmin ? 'admin' : 'student',
+        });
+        addUserToSheet(user).catch((error) => {
+          console.error('Failed to add Google user to sheet:', error.message);
         });
       }
     } else {
