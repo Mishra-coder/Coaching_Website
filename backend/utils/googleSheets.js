@@ -34,7 +34,7 @@ export async function addUserToSheet(user) {
 
     await sheetsAPI.spreadsheets.values.append({
       spreadsheetId: spreadsheetId,
-      range: 'Users!A:F',
+      range: 'SignUp!A:F',
       valueInputOption: 'USER_ENTERED',
       resource: { values: rowData },
     });
