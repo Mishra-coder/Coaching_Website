@@ -238,9 +238,9 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 20px;
 }
 
 .nav-logo-link {
@@ -271,20 +271,43 @@ body {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
-.nav-links a:not(.btn-signup):not(.btn-login) {
+.nav-links a:not(.btn-signup):not(.btn-login):not(.btn-profile-outline):not(.btn-nav-action):not(.nav-xp-container) {
   text-decoration: none;
   color: #1e293b;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: var(--transition);
+  white-space: nowrap;
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
-.nav-links a:not(.btn-signup):not(.btn-login):hover,
+.nav-links a:not(.btn-signup):not(.btn-login):not(.btn-profile-outline):not(.btn-nav-action):not(.nav-xp-container):hover,
 .nav-links a.active {
   color: #4f46e5;
+  background-color: rgba(79, 70, 229, 0.08);
+  transform: translateY(-2px);
+}
+
+.nav-links a:not(.btn-signup):not(.btn-login):not(.btn-profile-outline):not(.btn-nav-action):not(.nav-xp-container)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+  transition: transform 0.3s ease;
+}
+
+.nav-links a:not(.btn-signup):not(.btn-login):not(.btn-profile-outline):not(.btn-nav-action):not(.nav-xp-container):hover::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
 .hamburger {
@@ -1663,6 +1686,9 @@ footer .footer-logo-img {
 
 .contact-text {
   color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .address-link {
@@ -3275,136 +3301,189 @@ footer .footer-logo-img {
 }
 
 .profile-page {
-  background: #f8fafc;
+  background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
   min-height: 100vh;
-  padding-top: 120px;
-  padding-bottom: 60px;
+  padding-top: 100px;
+  padding-bottom: 40px;
 }
 
 .profile-page .container {
-  max-width: 800px;
+  max-width: 1000px;
 }
 
 .profile-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
 }
 
 .profile-sidebar-header {
-  padding: 40px 20px;
+  padding: 30px 20px;
   text-align: center;
   background: linear-gradient(
-    180deg,
-    rgba(26, 35, 126, 0.05) 0%,
-    rgba(255, 255, 255, 0) 100%
+    135deg,
+    rgba(102, 126, 234, 0.1) 0%,
+    rgba(118, 75, 162, 0.1) 100%
   );
+  border-bottom: 2px solid rgba(102, 126, 234, 0.2);
 }
 
 .profile-avatar-wrapper {
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #1a237e, #ffab00);
-  padding: 3px;
-  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 4px;
+  margin: 0 auto 18px;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+}
+
+.profile-avatar-wrapper:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
 }
 
 .profile-avatar-inner {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #1a237e;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
 }
 
 .profile-user-name {
-  font-weight: 700;
-  margin-bottom: 5px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
   color: #1e293b;
+  letter-spacing: 0.3px;
 }
 
 .profile-user-email {
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .profile-nav-menu {
-  padding: 20px;
+  padding: 15px;
 }
 
 .profile-nav-item {
   display: flex;
   align-items: center;
-  padding: 15px 20px;
-  margin: 5px 0;
+  padding: 12px 18px;
+  margin: 6px 0;
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   width: 100%;
-  font-size: 1rem;
+  font-size: 0.9rem;
   background: transparent;
   color: #64748b;
-  font-weight: 500;
-}
-
-.profile-nav-item:hover {
-  background: #f1f5f9;
-  color: #1a237e;
-}
-
-.profile-nav-item.active {
-  background: linear-gradient(45deg, #1a237e, #3949ab);
-  color: #fff;
   font-weight: 600;
 }
 
+.profile-nav-item:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  color: #667eea;
+  transform: translateX(5px);
+}
+
+.profile-nav-item.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.profile-nav-item i {
+  font-size: 1.1rem;
+}
+
 .profile-content-area {
-  padding: 40px;
-  min-height: 600px;
+  padding: 30px;
+  min-height: 500px;
 }
 
 .profile-section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
+}
+
+.profile-section-header h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .info-display-card {
-  padding: 25px;
-  background: #f8fafc;
-  border-radius: 15px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 12px;
   height: 100%;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.info-display-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #667eea;
 }
 
 .info-label {
-  color: #64748b;
-  font-size: 0.85rem;
-  margin-bottom: 5px;
+  color: #667eea;
+  font-size: 0.75rem;
+  margin-bottom: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .info-value {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   color: #1e293b;
+  font-size: 1rem;
 }
 
 .enrollment-card {
-  padding: 25px;
-  border-radius: 15px;
+  padding: 20px;
+  border-radius: 14px;
   border: 1px solid #e2e8f0;
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  transition: all 0.3s ease;
+}
+
+.enrollment-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
 }
 
 .enrollment-header {
@@ -3460,18 +3539,33 @@ footer .footer-logo-img {
 .test-schedule-banner {
   background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
   color: #fff;
-  padding: 30px;
-  border-radius: 15px;
+  padding: 40px 30px;
+  border-radius: 20px;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 30px rgba(26, 35, 126, 0.3);
+  transition: all 0.3s ease;
+}
+
+.test-schedule-banner:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(26, 35, 126, 0.4);
 }
 
 .schedule-list-item {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-  border-bottom: 1px solid #f1f5f9;
-  font-weight: 500;
+  align-items: center;
+  padding: 25px 30px;
+  border-bottom: 1px solid #e2e8f0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.schedule-list-item:hover {
+  background: rgba(26, 35, 126, 0.05);
+  padding-left: 35px;
 }
 
 .schedule-list-item:last-child {
@@ -3479,8 +3573,12 @@ footer .footer-logo-img {
 }
 
 .schedule-time {
-  color: #3949ab;
-  font-weight: 700;
+  color: #1a237e;
+  font-weight: 800;
+  font-size: 1.15rem;
+  background: rgba(26, 35, 126, 0.1);
+  padding: 8px 20px;
+  border-radius: 25px;
 }
 
 .modal-overlay {
@@ -3594,12 +3692,17 @@ footer .footer-logo-img {
 }
 
 .btn-delete {
-  border: 1px solid #ef4444;
-  color: #ef4444;
+  border: 1px solid #b91c1c;
+  color: #b91c1c;
+  background: linear-gradient(135deg, rgba(185, 28, 28, 0.05) 0%, rgba(220, 38, 38, 0.05) 100%);
 }
 
 .btn-delete:hover {
-  background: #fee2e2;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border-color: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.3);
 }
 
 .details-panel-header {
@@ -5003,7 +5106,7 @@ footer .footer-logo-img {
 
 .leaderboard-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e293b 100%);
+  background: #ffffff;
   font-family:
     'Outfit',
     -apple-system,
@@ -7414,10 +7517,11 @@ footer .footer-logo-img {
 }
 
 .section-heading {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 800;
   color: #1a237e;
   margin-bottom: 30px;
+  letter-spacing: -0.5px;
 }
 
 .contest-card {
@@ -7473,17 +7577,27 @@ footer .footer-logo-img {
 .weekly-contest-section {
   margin-top: 0;
   padding: 0 15px;
+  margin-bottom: 50px;
 }
 
 .schedule-date {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 800;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .schedule-card {
   padding: 0;
   overflow: hidden;
-  margin-top: 20px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.schedule-card:hover {
+  border-color: #1a237e;
+  box-shadow: 0 8px 25px rgba(26, 35, 126, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -7568,9 +7682,14 @@ footer .footer-logo-img {
 
 .btn-delete {
   width: 100%;
-  background-color: #ff6b6b;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.3);
 }
 
 .btn-delete:hover {
-  background-color: #ff5252;
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(185, 28, 28, 0.4);
 }

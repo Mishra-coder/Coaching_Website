@@ -96,7 +96,7 @@ const Leaderboard = () => {
           </button>
         </div>
 
-        <div className="contest-badge">MARCH 2026 CONTEST</div>
+        <div className="contest-badge">MARCH 2026 QUIZES</div>
         <h1 className="page-title">Leaderboard</h1>
 
         {topThree.length > 0 && (

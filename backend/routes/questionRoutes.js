@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
       searchQuery.class = classLevel;
     }
     if (chapter) {
-      searchQuery.chapter = chapter.trim();
+      searchQuery.chapter = { $regex: new RegExp(`^${chapter.trim()}$`, 'i') };
     }
 
     const foundQuestions = await Question.find(searchQuery);

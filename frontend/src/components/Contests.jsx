@@ -66,10 +66,23 @@ const Contests = () => {
 
   return (
     <div className="container contests-page">
+      <div className="weekly-contest-section">
+        <h3 className="section-heading">Weekly Contest</h3>
+        <div className="test-schedule-banner">
+          <h2 className="schedule-date">{getNextSundayDate()}</h2>
+        </div>
+        <div className="info-display-card schedule-card">
+          <div className="schedule-list-item">
+            <span>Maths</span>
+            <span className="schedule-time">10:00 AM</span>
+          </div>
+        </div>
+      </div>
+
       <div className="contests-section">
         {contests.length > 0 && (
           <>
-            <h3 className="section-heading">Available Contests</h3>
+            <h3 className="section-heading">Upcoming Contests</h3>
             <div className="row g-4">
               {contests.map((contest) => {
                 const { isActive, isUpcoming, start, end } =
@@ -148,19 +161,6 @@ const Contests = () => {
             </div>
           </>
         )}
-      </div>
-
-      <div className="weekly-contest-section">
-        <h3 className="section-heading">Weekly Contest</h3>
-        <div className="test-schedule-banner">
-          <h2 className="schedule-date">{getNextSundayDate()}</h2>
-        </div>
-        <div className="info-display-card schedule-card">
-          <div className="schedule-list-item">
-            <span>Maths</span>
-            <span className="schedule-time">10:00 AM</span>
-          </div>
-        </div>
       </div>
     </div>
   );
